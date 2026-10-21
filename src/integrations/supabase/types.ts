@@ -581,6 +581,30 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          id: string
+          nome: string
+          preferencias: Json
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          id: string
+          nome?: string
+          preferencias?: Json
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          nome?: string
+          preferencias?: Json
+        }
+        Relationships: []
+      }
       publicacoes: {
         Row: {
           ano: number | null

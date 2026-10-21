@@ -8,3 +8,9 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Application architecture
+- Keep municipal modules in a central configuration shared by public queries and the administrative editor, so fields stay consistent.
+- Public route loaders prime TanStack Query through publishable-client server functions; private operations use authenticated functions and database RLS.
+- Store profile fields separately from protected user roles; never grant staff access automatically at signup.
+- Mount one session subscriber in the root and share it with the header and account screens to keep identity transitions consistent.

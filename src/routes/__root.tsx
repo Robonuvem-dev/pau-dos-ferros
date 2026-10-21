@@ -8,7 +8,12 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import type { Session } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
+import { SessionContext } from '@/hooks/use-session';
+import { SiteHeader, SiteFooter } from '@/components/site/SiteHeader';
+import { Toaster } from '@/components/ui/sonner';
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -78,21 +83,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Prefeitura de Pau dos Ferros" },
+      { name: "description", content: "Portal oficial de Pau dos Ferros: serviços, notícias e transparência municipal." },
+      { property: "og:title", content: "Prefeitura de Pau dos Ferros" },
+      { property: "og:description", content: "Serviços ao cidadão e transparência municipal." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Condensed:wght@400;600;700;800&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -103,7 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
@@ -117,11 +121,35 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  const [identity, setIdentity] = useState<{ session: Session | null; roles: string[]; ready: boolean }>({ session: null, roles: [], ready: false });
+  useEffect(() => {
+    let active = true;
+    let version = 0;
+    const load = async (session: Session | null) => {
+      const current = ++version;
+      const { data: verified } = session ? await supabase.auth.getUser() : { data: { user: null } };
+      const user = verified.user;
+      const { data } = user ? await supabase.from('user_roles').select('role').eq('user_id', user.id) : { data: [] };
+      if (active && version === current) setIdentity({ session: user ? session : null, roles: (data ?? []).map(r => r.role), ready: true });
+    };
+    void supabase.auth.getSession().then(({ data }) => load(data.session));
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!['SIGNED_IN','SIGNED_OUT','USER_UPDATED'].includes(event)) return;
+      if (event === 'SIGNED_OUT') setIdentity({ session: null, roles: [], ready: true });
+      setTimeout(() => { void load(session); void router.invalidate(); if (event !== 'SIGNED_OUT') void queryClient.invalidateQueries(); }, 0);
+    });
+    return () => { active = false; data.subscription.unsubscribe(); };
+  }, [queryClient, router]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <SessionContext.Provider value={identity}>
+        <SiteHeader />
+        <main id="conteudo" className="min-h-[50vh]"><Outlet /></main>
+        <SiteFooter />
+        <Toaster richColors />
+      </SessionContext.Provider>
     </QueryClientProvider>
   );
 }

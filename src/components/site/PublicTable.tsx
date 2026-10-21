@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Download, FileText, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { fetchModule } from "@/lib/data";
+import { moduleQuery } from '@/lib/queries';
 import { formatCell, toCSV, type ModuleDef } from "@/lib/modules";
 
 export function PublicTable({ mod }: { mod: ModuleDef }) {
-  const { data = [], isLoading, error } = useQuery({ queryKey: ["mod", mod.key], queryFn: () => fetchModule(mod) });
+  const { data } = useSuspenseQuery(moduleQuery(mod.key));
   const [q, setQ] = useState("");
   const cols = mod.fields.filter((f) => !f.hideInTable);
 
@@ -24,6 +24,7 @@ export function PublicTable({ mod }: { mod: ModuleDef }) {
     a.href = URL.createObjectURL(blob);
     a.download = `${mod.key}.${tipo}`;
     a.click();
+    URL.revokeObjectURL(a.href);
   };
 
   return (
@@ -44,9 +45,7 @@ export function PublicTable({ mod }: { mod: ModuleDef }) {
             <tr>{cols.map((c) => <th key={c.name} className="px-4 py-3 font-semibold">{c.label}</th>)}</tr>
           </thead>
           <tbody>
-            {isLoading && <tr><td className="px-4 py-6 text-muted-foreground" colSpan={cols.length}>Carregando...</td></tr>}
-            {error && <tr><td className="px-4 py-6 text-destructive" colSpan={cols.length}>Não foi possível carregar os dados.</td></tr>}
-            {!isLoading && rows.length === 0 && <tr><td className="px-4 py-6 text-muted-foreground" colSpan={cols.length}>Nenhum registro encontrado.</td></tr>}
+            {rows.length === 0 && <tr><td className="px-4 py-6 text-muted-foreground" colSpan={cols.length}>Nenhum registro encontrado.</td></tr>}
             {rows.map((r) => (
               <tr key={r.id} className="border-t align-top hover:bg-muted">
                 {cols.map((c) => (

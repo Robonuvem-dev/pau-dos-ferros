@@ -4,7 +4,8 @@ import type { ModuleDef } from "./modules";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const db = supabase as any;
 
-export type Row = Record<string, unknown> & { id: string };
+export type RowValue = string | number | boolean | null | string[];
+export type Row = Record<string, RowValue> & { id: string };
 
 export async function fetchModule(mod: ModuleDef): Promise<Row[]> {
   let q = db.from(mod.table).select("*");
