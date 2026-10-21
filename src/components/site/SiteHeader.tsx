@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { Headphones, Info, Search, Accessibility, Menu, Facebook, Instagram, Youtube, Mail, LogIn } from "lucide-react";
 import { useState } from "react";
 import { useSession } from "@/hooks/use-session";
@@ -39,37 +38,37 @@ export function SiteHeader() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2">
           <span className="hidden sm:inline">Prefeitura Municipal de Pau dos Ferros</span>
           <nav className="flex flex-wrap items-center gap-4" aria-label="Acesso rápido">
-            <Link to="/esic" className="flex items-center gap-1 hover:underline"><Headphones className="size-4" />Ouvidoria/e-SIC</Link>
-            <Link to="/transparencia" className="flex items-center gap-1 hover:underline"><Info className="size-4" />Transparência</Link>
+            <a href="/esic" className="flex items-center gap-1 hover:underline"><Headphones className="size-4" />Ouvidoria/e-SIC</a>
+            <a href="/transparencia" className="flex items-center gap-1 hover:underline"><Info className="size-4" />Transparência</a>
             <button onClick={toggleFont} className="flex items-center gap-1 hover:underline" aria-label="Aumentar fonte">A+</button>
             <button onClick={toggleContrast} className="flex items-center gap-1 hover:underline"><Accessibility className="size-4" />Contraste</button>
-            <Link to="/busca" className="flex items-center gap-1 hover:underline"><Search className="size-4" />Pesquisar</Link>
+            <a href="/busca" className="flex items-center gap-1 hover:underline"><Search className="size-4" />Pesquisar</a>
             <span className="hidden items-center gap-3 md:flex">
               <a href="https://www.facebook.com/prefeituradepaudosferros" aria-label="Facebook"><Facebook className="size-4" /></a>
               <a href="https://www.instagram.com/prefeituradepaudosferros" aria-label="Instagram"><Instagram className="size-4" /></a>
               <a href="https://www.youtube.com" aria-label="YouTube"><Youtube className="size-4" /></a>
-              <Link to="/webmail" aria-label="Webmail"><Mail className="size-4" /></Link>
+              <a href="/webmail" aria-label="Webmail"><Mail className="size-4" /></a>
             </span>
           </nav>
         </div>
       </div>
       <div className="border-b bg-card">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5">
-          <Link to="/" className="flex items-center gap-3">
+          <a href="/" className="flex items-center gap-3">
             <div className="grid size-14 place-items-center rounded-full border-4 border-primary bg-card font-display text-lg font-black text-primary">PF</div>
             <div className="leading-none">
               <div className="text-xs font-bold uppercase tracking-wider text-primary">Prefeitura de</div>
               <div className="font-display text-3xl font-black uppercase text-primary">Pau dos Ferros</div>
               <div className="mt-1 inline-block bg-highlight px-2 py-0.5 text-[10px] font-bold uppercase italic text-highlight-foreground">Avançando com você</div>
             </div>
-          </Link>
-          <Link
-            to={isStaff ? "/admin" : "/auth"}
+          </a>
+          <a
+            href={isStaff ? "/admin" : "/auth"}
             className="hidden items-center gap-2 rounded-md border border-primary px-3 py-2 text-sm font-medium text-primary hover:bg-secondary sm:flex"
           >
             <LogIn className="size-4" />
             {isStaff ? "Painel administrativo" : user ? "Minha conta" : "Área restrita"}
-          </Link>
+          </a>
         </div>
       </div>
       <div className="bg-primary text-primary-foreground">
@@ -79,16 +78,14 @@ export function SiteHeader() {
           </button>
           <nav className={`${open ? "flex" : "hidden"} flex-col md:flex md:flex-row`} aria-label="Principal">
             {NAV.map((n) => (
-              <Link
+              <a
                 key={n.to}
-                to={n.to}
-                activeOptions={{ exact: n.to === "/" }}
-                activeProps={{ className: "bg-primary-deep" }}
+                href={n.to}
                 className="px-3 py-3 text-sm hover:bg-primary-deep"
                 onClick={() => setOpen(false)}
               >
                 {n.label}
-              </Link>
+              </a>
             ))}
           </nav>
         </div>
@@ -109,11 +106,11 @@ export function SiteFooter() {
         <div className="text-sm">
           <div className="mb-2 font-bold">Acesso rápido</div>
           <ul className="space-y-1 opacity-90">
-            <li><Link to="/transparencia" className="hover:underline">Portal da Transparência</Link></li>
-            <li><Link to="/esic" className="hover:underline">e-SIC e Ouvidoria</Link></li>
-            <li><Link to="/servicos" className="hover:underline">Carta de Serviços</Link></li>
-            <li><Link to="/lgpd" className="hover:underline">Proteção de dados (LGPD)</Link></li>
-            <li><Link to="/webmail" className="hover:underline">Webmail institucional</Link></li>
+            <li><a href="/transparencia" className="hover:underline">Portal da Transparência</a></li>
+            <li><a href="/esic" className="hover:underline">e-SIC e Ouvidoria</a></li>
+            <li><a href="/servicos" className="hover:underline">Carta de Serviços</a></li>
+            <li><a href="/lgpd" className="hover:underline">Proteção de dados (LGPD)</a></li>
+            <li><a href="/webmail" className="hover:underline">Webmail institucional</a></li>
           </ul>
         </div>
         <div className="text-sm">
