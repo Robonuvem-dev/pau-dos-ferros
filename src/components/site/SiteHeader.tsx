@@ -23,7 +23,7 @@ export function SiteHeader() {
   const { isStaff, user } = useSession();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const signOut = async () => { await queryClient.cancelQueries(); queryClient.clear(); await supabase.auth.signOut(); await navigate({ to: '/auth', replace: true }); };
+  const signOut = async () => { await supabase.rpc('registrar_acesso', { _evento: 'LOGOUT' }); await queryClient.cancelQueries(); queryClient.clear(); await supabase.auth.signOut(); await navigate({ to: '/auth', replace: true }); };
 
   const toggleFont = () => {
     const el = document.documentElement;
@@ -106,6 +106,7 @@ export function SiteFooter() {
             <li><a href="/esic" className="hover:underline">e-SIC e Ouvidoria</a></li>
             <li><a href="/servicos" className="hover:underline">Carta de Serviços</a></li>
             <li><a href="/lgpd" className="hover:underline">Proteção de dados (LGPD)</a></li>
+            <li><a href="/sobre" className="hover:underline">Sobre o sistema</a></li>
           </ul>
         </div>
         <div className="text-sm">

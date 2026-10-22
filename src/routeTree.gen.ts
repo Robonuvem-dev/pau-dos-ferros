@@ -22,6 +22,7 @@ import { Route as PrefeituraRouteImport } from './routes/prefeitura'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SecretariasRouteImport } from './routes/secretarias'
 import { Route as ServicosRouteImport } from './routes/servicos'
+import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
@@ -31,6 +32,7 @@ import { Route as TransparenciaModuleRouteImport } from './routes/transparencia.
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminModuleRouteImport } from './routes/_authenticated/admin.$module'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
+import { Route as AuthenticatedAdminMelhoriasRouteImport } from './routes/_authenticated/admin.melhorias'
 import { Route as AuthenticatedAdminUsuariosRouteImport } from './routes/_authenticated/admin.usuarios'
 
 const IndexRoute = IndexRouteImport.update({
@@ -97,6 +99,11 @@ const ServicosRoute = ServicosRouteImport.update({
   path: '/servicos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -144,6 +151,12 @@ const AuthenticatedAdminAuditoriaRoute =
     path: '/auditoria',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminMelhoriasRoute =
+  AuthenticatedAdminMelhoriasRouteImport.update({
+    id: '/melhorias',
+    path: '/melhorias',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminUsuariosRoute =
   AuthenticatedAdminUsuariosRouteImport.update({
     id: '/usuarios',
@@ -164,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
+  '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
@@ -172,6 +186,7 @@ export interface FileRoutesByFullPath {
   '/transparencia/': typeof TransparenciaIndexRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -188,6 +203,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
+  '/sobre': typeof SobreRoute
   '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
@@ -195,6 +211,7 @@ export interface FileRoutesByTo {
   '/transparencia': typeof TransparenciaIndexRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
@@ -213,6 +230,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
+  '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
@@ -221,6 +239,7 @@ export interface FileRoutesById {
   '/transparencia/': typeof TransparenciaIndexRoute
   '/_authenticated/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/_authenticated/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/_authenticated/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -239,6 +258,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/secretarias'
     | '/servicos'
+    | '/sobre'
     | '/admin'
     | '/conta'
     | '/noticias/$slug'
@@ -247,6 +267,7 @@ export interface FileRouteTypes {
     | '/transparencia/'
     | '/admin/$module'
     | '/admin/auditoria'
+    | '/admin/melhorias'
     | '/admin/usuarios'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -263,6 +284,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/secretarias'
     | '/servicos'
+    | '/sobre'
     | '/conta'
     | '/noticias/$slug'
     | '/transparencia/$module'
@@ -270,6 +292,7 @@ export interface FileRouteTypes {
     | '/transparencia'
     | '/admin/$module'
     | '/admin/auditoria'
+    | '/admin/melhorias'
     | '/admin/usuarios'
     | '/admin'
   id:
@@ -287,6 +310,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/secretarias'
     | '/servicos'
+    | '/sobre'
     | '/_authenticated/admin'
     | '/_authenticated/conta'
     | '/noticias/$slug'
@@ -295,6 +319,7 @@ export interface FileRouteTypes {
     | '/transparencia/'
     | '/_authenticated/admin/$module'
     | '/_authenticated/admin/auditoria'
+    | '/_authenticated/admin/melhorias'
     | '/_authenticated/admin/usuarios'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
@@ -313,6 +338,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SecretariasRoute: typeof SecretariasRoute
   ServicosRoute: typeof ServicosRoute
+  SobreRoute: typeof SobreRoute
   NoticiasSlugRoute: typeof NoticiasSlugRoute
   TransparenciaModuleRoute: typeof TransparenciaModuleRoute
   NoticiasIndexRoute: typeof NoticiasIndexRoute
@@ -412,6 +438,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -475,6 +508,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAuditoriaRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/melhorias': {
+      id: '/_authenticated/admin/melhorias'
+      path: '/melhorias'
+      fullPath: '/admin/melhorias'
+      preLoaderRoute: typeof AuthenticatedAdminMelhoriasRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/usuarios': {
       id: '/_authenticated/admin/usuarios'
       path: '/usuarios'
@@ -488,6 +528,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminModuleRoute: typeof AuthenticatedAdminModuleRoute
   AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
+  AuthenticatedAdminMelhoriasRoute: typeof AuthenticatedAdminMelhoriasRoute
   AuthenticatedAdminUsuariosRoute: typeof AuthenticatedAdminUsuariosRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
@@ -495,6 +536,7 @@ interface AuthenticatedAdminRouteChildren {
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminModuleRoute: AuthenticatedAdminModuleRoute,
   AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
+  AuthenticatedAdminMelhoriasRoute: AuthenticatedAdminMelhoriasRoute,
   AuthenticatedAdminUsuariosRoute: AuthenticatedAdminUsuariosRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
@@ -529,6 +571,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SecretariasRoute: SecretariasRoute,
   ServicosRoute: ServicosRoute,
+  SobreRoute: SobreRoute,
   NoticiasSlugRoute: NoticiasSlugRoute,
   TransparenciaModuleRoute: TransparenciaModuleRoute,
   NoticiasIndexRoute: NoticiasIndexRoute,

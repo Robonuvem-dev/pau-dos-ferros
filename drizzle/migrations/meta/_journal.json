@@ -36,6 +36,13 @@
       "when": 1792627264387,
       "tag": "0004_estatisticas_atendimentos",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792629701644,
+      "tag": "0005_sprint1_permissoes_acessos_melhorias",
+      "breakpoints": true
     }
   ]
 }
