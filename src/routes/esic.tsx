@@ -30,7 +30,7 @@ const TIPOS = {
   lgpd: ["Acesso aos meus dados", "Correção de dados", "Exclusão de dados", "Revogação de consentimento"],
 };
 
-const FAQ = [
+const FAQ: [string, string][] = [
   ["Preciso me identificar para pedir informação?", "Para pedidos do e-SIC é necessário informar um nome e um contato para envio da resposta. Na Ouvidoria você pode registrar de forma anônima."],
   ["Qual o prazo de resposta?", "Até 20 dias, prorrogáveis por mais 10 mediante justificativa (art. 11 da Lei 12.527/2011). Na Ouvidoria, até 30 dias (Lei 13.460/2017)."],
   ["Como acompanho meu pedido?", "Guarde o número de protocolo exibido após o envio e consulte na aba “Consultar protocolo”."],
