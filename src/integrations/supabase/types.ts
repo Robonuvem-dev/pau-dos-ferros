@@ -674,6 +674,27 @@ export type Database = {
         }
         Relationships: []
       }
+      permissoes_modulo: {
+        Row: {
+          created_at: string
+          id: string
+          tabela: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          tabela: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          tabela?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -908,6 +929,45 @@ export type Database = {
         }
         Relationships: []
       }
+      solicitacoes_melhoria: {
+        Row: {
+          created_at: string
+          descricao: string
+          id: string
+          modulo: string | null
+          prioridade: string
+          resposta: string | null
+          status: string
+          titulo: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          descricao: string
+          id?: string
+          modulo?: string | null
+          prioridade?: string
+          resposta?: string | null
+          status?: string
+          titulo: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          descricao?: string
+          id?: string
+          modulo?: string | null
+          prioridade?: string
+          resposta?: string | null
+          status?: string
+          titulo?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -1008,6 +1068,11 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      pode_editar: {
+        Args: { _tabela: string; _user_id: string }
+        Returns: boolean
+      }
+      registrar_acesso: { Args: { _evento: string }; Returns: undefined }
       registrar_atendimento: {
         Args: {
           _anonimo: boolean
