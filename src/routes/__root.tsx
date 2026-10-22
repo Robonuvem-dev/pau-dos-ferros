@@ -136,7 +136,11 @@ function RootComponent() {
     void supabase.auth.getSession().then(({ data }) => load(data.session));
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       if (!['SIGNED_IN','SIGNED_OUT','USER_UPDATED'].includes(event)) return;
-      if (event === 'SIGNED_OUT') setIdentity({ session: null, roles: [], ready: true });
+      if (event === 'SIGNED_OUT') { sessionStorage.removeItem('acesso-registrado'); setIdentity({ session: null, roles: [], ready: true }); }
+      if (event === 'SIGNED_IN' && session && sessionStorage.getItem('acesso-registrado') !== session.user.id) {
+        sessionStorage.setItem('acesso-registrado', session.user.id);
+        setTimeout(() => { void supabase.rpc('registrar_acesso', { _evento: 'LOGIN' }); }, 0);
+      }
       setTimeout(() => { void load(session); void router.invalidate(); if (event !== 'SIGNED_OUT') void queryClient.invalidateQueries(); }, 0);
     });
     return () => { active = false; data.subscription.unsubscribe(); };

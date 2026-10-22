@@ -22,6 +22,7 @@ import { Route as PrefeituraRouteImport } from './routes/prefeitura'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SecretariasRouteImport } from './routes/secretarias'
 import { Route as ServicosRouteImport } from './routes/servicos'
+import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
@@ -97,6 +98,11 @@ const ServicosRoute = ServicosRouteImport.update({
   path: '/servicos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
+  '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
@@ -188,6 +195,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
+  '/sobre': typeof SobreRoute
   '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
@@ -213,6 +221,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
+  '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
@@ -239,6 +248,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/secretarias'
     | '/servicos'
+    | '/sobre'
     | '/admin'
     | '/conta'
     | '/noticias/$slug'
@@ -263,6 +273,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/secretarias'
     | '/servicos'
+    | '/sobre'
     | '/conta'
     | '/noticias/$slug'
     | '/transparencia/$module'
@@ -287,6 +298,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/secretarias'
     | '/servicos'
+    | '/sobre'
     | '/_authenticated/admin'
     | '/_authenticated/conta'
     | '/noticias/$slug'
@@ -313,6 +325,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SecretariasRoute: typeof SecretariasRoute
   ServicosRoute: typeof ServicosRoute
+  SobreRoute: typeof SobreRoute
   NoticiasSlugRoute: typeof NoticiasSlugRoute
   TransparenciaModuleRoute: typeof TransparenciaModuleRoute
   NoticiasIndexRoute: typeof NoticiasIndexRoute
@@ -410,6 +423,13 @@ declare module '@tanstack/react-router' {
       path: '/servicos'
       fullPath: '/servicos'
       preLoaderRoute: typeof ServicosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -529,6 +549,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SecretariasRoute: SecretariasRoute,
   ServicosRoute: ServicosRoute,
+  SobreRoute: SobreRoute,
   NoticiasSlugRoute: NoticiasSlugRoute,
   TransparenciaModuleRoute: TransparenciaModuleRoute,
   NoticiasIndexRoute: NoticiasIndexRoute,
