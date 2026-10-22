@@ -10,28 +10,46 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AcessibilidadeRouteImport } from './routes/acessibilidade'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as EsicRouteImport } from './routes/esic'
 import { Route as GaleriaRouteImport } from './routes/galeria'
 import { Route as LgpdRouteImport } from './routes/lgpd'
 import { Route as MapaDoSiteRouteImport } from './routes/mapa-do-site'
 import { Route as PrefeituraRouteImport } from './routes/prefeitura'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SecretariasRouteImport } from './routes/secretarias'
 import { Route as ServicosRouteImport } from './routes/servicos'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as TransparenciaIndexRouteImport } from './routes/transparencia.index'
 import { Route as TransparenciaModuleRouteImport } from './routes/transparencia.$module'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminModuleRouteImport } from './routes/_authenticated/admin.$module'
+import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
+import { Route as AuthenticatedAdminUsuariosRouteImport } from './routes/_authenticated/admin.usuarios'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AcessibilidadeRoute = AcessibilidadeRouteImport.update({
   id: '/acessibilidade',
   path: '/acessibilidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BuscaRoute = BuscaRouteImport.update({
@@ -64,6 +82,11 @@ const PrefeituraRoute = PrefeituraRouteImport.update({
   path: '/prefeitura',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SecretariasRoute = SecretariasRouteImport.update({
   id: '/secretarias',
   path: '/secretarias',
@@ -73,6 +96,16 @@ const ServicosRoute = ServicosRouteImport.update({
   id: '/servicos',
   path: '/servicos',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
+  id: '/conta',
+  path: '/conta',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
   id: '/noticias/',
@@ -94,116 +127,190 @@ const TransparenciaModuleRoute = TransparenciaModuleRouteImport.update({
   path: '/transparencia/$module',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminModuleRoute =
+  AuthenticatedAdminModuleRouteImport.update({
+    id: '/$module',
+    path: '/$module',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminAuditoriaRoute =
+  AuthenticatedAdminAuditoriaRouteImport.update({
+    id: '/auditoria',
+    path: '/auditoria',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminUsuariosRoute =
+  AuthenticatedAdminUsuariosRouteImport.update({
+    id: '/usuarios',
+    path: '/usuarios',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/acessibilidade': typeof AcessibilidadeRoute
+  '/auth': typeof AuthRoute
   '/busca': typeof BuscaRoute
   '/esic': typeof EsicRoute
   '/galeria': typeof GaleriaRoute
   '/lgpd': typeof LgpdRoute
   '/mapa-do-site': typeof MapaDoSiteRoute
   '/prefeitura': typeof PrefeituraRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/transparencia/': typeof TransparenciaIndexRoute
+  '/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/acessibilidade': typeof AcessibilidadeRoute
+  '/auth': typeof AuthRoute
   '/busca': typeof BuscaRoute
   '/esic': typeof EsicRoute
   '/galeria': typeof GaleriaRoute
   '/lgpd': typeof LgpdRoute
   '/mapa-do-site': typeof MapaDoSiteRoute
   '/prefeitura': typeof PrefeituraRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
+  '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
   '/noticias': typeof NoticiasIndexRoute
   '/transparencia': typeof TransparenciaIndexRoute
+  '/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/acessibilidade': typeof AcessibilidadeRoute
+  '/auth': typeof AuthRoute
   '/busca': typeof BuscaRoute
   '/esic': typeof EsicRoute
   '/galeria': typeof GaleriaRoute
   '/lgpd': typeof LgpdRoute
   '/mapa-do-site': typeof MapaDoSiteRoute
   '/prefeitura': typeof PrefeituraRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/transparencia/': typeof TransparenciaIndexRoute
+  '/_authenticated/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/_authenticated/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/acessibilidade'
+    | '/auth'
     | '/busca'
     | '/esic'
     | '/galeria'
     | '/lgpd'
     | '/mapa-do-site'
     | '/prefeitura'
+    | '/reset-password'
     | '/secretarias'
     | '/servicos'
+    | '/admin'
+    | '/conta'
     | '/noticias/$slug'
     | '/transparencia/$module'
     | '/noticias/'
     | '/transparencia/'
+    | '/admin/$module'
+    | '/admin/auditoria'
+    | '/admin/usuarios'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/acessibilidade'
+    | '/auth'
     | '/busca'
     | '/esic'
     | '/galeria'
     | '/lgpd'
     | '/mapa-do-site'
     | '/prefeitura'
+    | '/reset-password'
     | '/secretarias'
     | '/servicos'
+    | '/conta'
     | '/noticias/$slug'
     | '/transparencia/$module'
     | '/noticias'
     | '/transparencia'
+    | '/admin/$module'
+    | '/admin/auditoria'
+    | '/admin/usuarios'
+    | '/admin'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/acessibilidade'
+    | '/auth'
     | '/busca'
     | '/esic'
     | '/galeria'
     | '/lgpd'
     | '/mapa-do-site'
     | '/prefeitura'
+    | '/reset-password'
     | '/secretarias'
     | '/servicos'
+    | '/_authenticated/admin'
+    | '/_authenticated/conta'
     | '/noticias/$slug'
     | '/transparencia/$module'
     | '/noticias/'
     | '/transparencia/'
+    | '/_authenticated/admin/$module'
+    | '/_authenticated/admin/auditoria'
+    | '/_authenticated/admin/usuarios'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AcessibilidadeRoute: typeof AcessibilidadeRoute
+  AuthRoute: typeof AuthRoute
   BuscaRoute: typeof BuscaRoute
   EsicRoute: typeof EsicRoute
   GaleriaRoute: typeof GaleriaRoute
   LgpdRoute: typeof LgpdRoute
   MapaDoSiteRoute: typeof MapaDoSiteRoute
   PrefeituraRoute: typeof PrefeituraRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SecretariasRoute: typeof SecretariasRoute
   ServicosRoute: typeof ServicosRoute
   NoticiasSlugRoute: typeof NoticiasSlugRoute
@@ -221,11 +328,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/acessibilidade': {
       id: '/acessibilidade'
       path: '/acessibilidade'
       fullPath: '/acessibilidade'
       preLoaderRoute: typeof AcessibilidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/busca': {
@@ -270,6 +391,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrefeituraRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/secretarias': {
       id: '/secretarias'
       path: '/secretarias'
@@ -283,6 +411,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/servicos'
       preLoaderRoute: typeof ServicosRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/conta': {
+      id: '/_authenticated/conta'
+      path: '/conta'
+      fullPath: '/conta'
+      preLoaderRoute: typeof AuthenticatedContaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/noticias/': {
       id: '/noticias/'
@@ -312,18 +454,79 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TransparenciaModuleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/$module': {
+      id: '/_authenticated/admin/$module'
+      path: '/$module'
+      fullPath: '/admin/$module'
+      preLoaderRoute: typeof AuthenticatedAdminModuleRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/auditoria': {
+      id: '/_authenticated/admin/auditoria'
+      path: '/auditoria'
+      fullPath: '/admin/auditoria'
+      preLoaderRoute: typeof AuthenticatedAdminAuditoriaRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/usuarios': {
+      id: '/_authenticated/admin/usuarios'
+      path: '/usuarios'
+      fullPath: '/admin/usuarios'
+      preLoaderRoute: typeof AuthenticatedAdminUsuariosRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminModuleRoute: typeof AuthenticatedAdminModuleRoute
+  AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
+  AuthenticatedAdminUsuariosRoute: typeof AuthenticatedAdminUsuariosRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminModuleRoute: AuthenticatedAdminModuleRoute,
+  AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
+  AuthenticatedAdminUsuariosRoute: AuthenticatedAdminUsuariosRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedContaRoute: typeof AuthenticatedContaRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedContaRoute: AuthenticatedContaRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AcessibilidadeRoute: AcessibilidadeRoute,
+  AuthRoute: AuthRoute,
   BuscaRoute: BuscaRoute,
   EsicRoute: EsicRoute,
   GaleriaRoute: GaleriaRoute,
   LgpdRoute: LgpdRoute,
   MapaDoSiteRoute: MapaDoSiteRoute,
   PrefeituraRoute: PrefeituraRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SecretariasRoute: SecretariasRoute,
   ServicosRoute: ServicosRoute,
   NoticiasSlugRoute: NoticiasSlugRoute,

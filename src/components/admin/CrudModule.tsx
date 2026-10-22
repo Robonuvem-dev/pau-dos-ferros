@@ -107,12 +107,12 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
   );
 }
 
-function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values; id?: string; onDone: () => void }) {
+function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values; id?: string | undefined; onDone: () => void }) {
   const [values, setValues] = useState<Values>(initial);
   const [saving, setSaving] = useState(false);
   const set = (name: string, v: unknown) => setValues((p) => ({ ...p, [name]: v }));
 
-  const submit = async (e: React.FormEvent) => {
+  const submit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const missing = mod.fields.find((f) => f.required && String(values[f.name] ?? "").trim() === "");
     if (missing) { toast.error(`Preencha o campo “${missing.label}”.`); return; }

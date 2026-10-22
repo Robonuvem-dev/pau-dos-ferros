@@ -30,7 +30,7 @@ const TIPOS = {
   lgpd: ["Acesso aos meus dados", "Correção de dados", "Exclusão de dados", "Revogação de consentimento"],
 };
 
-const FAQ = [
+const FAQ: [string, string][] = [
   ["Preciso me identificar para pedir informação?", "Para pedidos do e-SIC é necessário informar um nome e um contato para envio da resposta. Na Ouvidoria você pode registrar de forma anônima."],
   ["Qual o prazo de resposta?", "Até 20 dias, prorrogáveis por mais 10 mediante justificativa (art. 11 da Lei 12.527/2011). Na Ouvidoria, até 30 dias (Lei 13.460/2017)."],
   ["Como acompanho meu pedido?", "Guarde o número de protocolo exibido após o envio e consulte na aba “Consultar protocolo”."],
@@ -79,10 +79,10 @@ function Esic() {
 
 export function NovoPedido({ canalFixo }: { canalFixo?: keyof typeof TIPOS }) {
   const [canal, setCanal] = useState<keyof typeof TIPOS>(canalFixo ?? "esic");
-  const [form, setForm] = useState({ tipo: TIPOS[canalFixo ?? "esic"][0], nome: "", email: "", telefone: "", assunto: "", mensagem: "", anonimo: false });
+  const [form, setForm] = useState({ tipo: TIPOS[canalFixo ?? "esic"][0] ?? "", nome: "", email: "", telefone: "", assunto: "", mensagem: "", anonimo: false });
   const [protocolo, setProtocolo] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
-  const set = (k: keyof typeof form, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }));
+  const set = (k: keyof typeof form, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }) as typeof f);
   const anonimoPermitido = canal === "ouvidoria";
 
   const submit = async (e: FormEvent) => {
@@ -114,7 +114,7 @@ export function NovoPedido({ canalFixo }: { canalFixo?: keyof typeof TIPOS }) {
       {!canalFixo && (
         <div className="grid gap-1.5">
           <Label htmlFor="canal">Canal</Label>
-          <select id="canal" className="h-9 rounded-md border border-input bg-background px-3 text-sm" value={canal} onChange={(e) => { const c = e.target.value as keyof typeof TIPOS; setCanal(c); setForm((f) => ({ ...f, tipo: TIPOS[c][0], anonimo: false })); }}>
+          <select id="canal" className="h-9 rounded-md border border-input bg-background px-3 text-sm" value={canal} onChange={(e) => { const c = e.target.value as keyof typeof TIPOS; setCanal(c); setForm((f) => ({ ...f, tipo: TIPOS[c][0] ?? "", anonimo: false })); }}>
             <option value="esic">e-SIC — Pedido de informação</option>
             <option value="ouvidoria">Ouvidoria</option>
             <option value="lgpd">Direitos do titular (LGPD)</option>

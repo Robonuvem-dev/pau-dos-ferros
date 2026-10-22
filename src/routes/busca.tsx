@@ -29,7 +29,7 @@ function Busca() {
   const s = q.trim().toLowerCase();
   const grupos = s.length < 2 ? [] : ALVOS.map((m, i) => ({
     mod: m,
-    itens: results[i].data.filter((r) => m.fields.some((f) => String(r[f.name] ?? "").toLowerCase().includes(s))).slice(0, 8),
+    itens: (results[i]?.data ?? []).filter((r) => m.fields.some((f) => String(r[f.name] ?? "").toLowerCase().includes(s))).slice(0, 8),
   })).filter((g) => g.itens.length);
 
   return (

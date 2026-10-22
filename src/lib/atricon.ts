@@ -97,10 +97,10 @@ const raw: [string, string, string | null][] = [
 
 export const CRITERIOS: Criterio[] = raw.map(([dimensao, descricao, fonte], i) => ({ id: String(i + 1).padStart(2, "0"), dimensao, descricao, fonte }));
 
-export interface Avaliacao extends Criterio { status: AtriconStatus; automatico: boolean; observacao?: string | null }
+export interface Avaliacao extends Criterio { status: AtriconStatus; automatico: boolean; observacao?: string | null | undefined }
 
 /** Avalia cada ponto: avaliação manual vence; senão, o preenchimento do módulo comprova o item. */
-export function avaliar(counts: Record<string, number>, manuais: Record<string, { status: AtriconStatus; observacao?: string | null }>): Avaliacao[] {
+export function avaliar(counts: Record<string, number>, manuais: Record<string, { status: AtriconStatus; observacao?: string | null | undefined }>): Avaliacao[] {
   return CRITERIOS.map((c) => {
     const m = manuais[c.id];
     if (m) return { ...c, status: m.status, observacao: m.observacao, automatico: false };
