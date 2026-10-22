@@ -10,7 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AcessibilidadeRouteImport } from './routes/acessibilidade'
+import { Route as BuscaRouteImport } from './routes/busca'
+import { Route as EsicRouteImport } from './routes/esic'
 import { Route as GaleriaRouteImport } from './routes/galeria'
+import { Route as LgpdRouteImport } from './routes/lgpd'
+import { Route as MapaDoSiteRouteImport } from './routes/mapa-do-site'
 import { Route as PrefeituraRouteImport } from './routes/prefeitura'
 import { Route as SecretariasRouteImport } from './routes/secretarias'
 import { Route as ServicosRouteImport } from './routes/servicos'
@@ -24,9 +29,34 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcessibilidadeRoute = AcessibilidadeRouteImport.update({
+  id: '/acessibilidade',
+  path: '/acessibilidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuscaRoute = BuscaRouteImport.update({
+  id: '/busca',
+  path: '/busca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsicRoute = EsicRouteImport.update({
+  id: '/esic',
+  path: '/esic',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GaleriaRoute = GaleriaRouteImport.update({
   id: '/galeria',
   path: '/galeria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LgpdRoute = LgpdRouteImport.update({
+  id: '/lgpd',
+  path: '/lgpd',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapaDoSiteRoute = MapaDoSiteRouteImport.update({
+  id: '/mapa-do-site',
+  path: '/mapa-do-site',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrefeituraRoute = PrefeituraRouteImport.update({
@@ -67,7 +97,12 @@ const TransparenciaModuleRoute = TransparenciaModuleRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/acessibilidade': typeof AcessibilidadeRoute
+  '/busca': typeof BuscaRoute
+  '/esic': typeof EsicRoute
   '/galeria': typeof GaleriaRoute
+  '/lgpd': typeof LgpdRoute
+  '/mapa-do-site': typeof MapaDoSiteRoute
   '/prefeitura': typeof PrefeituraRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
@@ -78,7 +113,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/acessibilidade': typeof AcessibilidadeRoute
+  '/busca': typeof BuscaRoute
+  '/esic': typeof EsicRoute
   '/galeria': typeof GaleriaRoute
+  '/lgpd': typeof LgpdRoute
+  '/mapa-do-site': typeof MapaDoSiteRoute
   '/prefeitura': typeof PrefeituraRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
@@ -90,7 +130,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/acessibilidade': typeof AcessibilidadeRoute
+  '/busca': typeof BuscaRoute
+  '/esic': typeof EsicRoute
   '/galeria': typeof GaleriaRoute
+  '/lgpd': typeof LgpdRoute
+  '/mapa-do-site': typeof MapaDoSiteRoute
   '/prefeitura': typeof PrefeituraRoute
   '/secretarias': typeof SecretariasRoute
   '/servicos': typeof ServicosRoute
@@ -103,7 +148,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/acessibilidade'
+    | '/busca'
+    | '/esic'
     | '/galeria'
+    | '/lgpd'
+    | '/mapa-do-site'
     | '/prefeitura'
     | '/secretarias'
     | '/servicos'
@@ -114,7 +164,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/acessibilidade'
+    | '/busca'
+    | '/esic'
     | '/galeria'
+    | '/lgpd'
+    | '/mapa-do-site'
     | '/prefeitura'
     | '/secretarias'
     | '/servicos'
@@ -125,7 +180,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/acessibilidade'
+    | '/busca'
+    | '/esic'
     | '/galeria'
+    | '/lgpd'
+    | '/mapa-do-site'
     | '/prefeitura'
     | '/secretarias'
     | '/servicos'
@@ -137,7 +197,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AcessibilidadeRoute: typeof AcessibilidadeRoute
+  BuscaRoute: typeof BuscaRoute
+  EsicRoute: typeof EsicRoute
   GaleriaRoute: typeof GaleriaRoute
+  LgpdRoute: typeof LgpdRoute
+  MapaDoSiteRoute: typeof MapaDoSiteRoute
   PrefeituraRoute: typeof PrefeituraRoute
   SecretariasRoute: typeof SecretariasRoute
   ServicosRoute: typeof ServicosRoute
@@ -156,11 +221,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acessibilidade': {
+      id: '/acessibilidade'
+      path: '/acessibilidade'
+      fullPath: '/acessibilidade'
+      preLoaderRoute: typeof AcessibilidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/busca': {
+      id: '/busca'
+      path: '/busca'
+      fullPath: '/busca'
+      preLoaderRoute: typeof BuscaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/esic': {
+      id: '/esic'
+      path: '/esic'
+      fullPath: '/esic'
+      preLoaderRoute: typeof EsicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/galeria': {
       id: '/galeria'
       path: '/galeria'
       fullPath: '/galeria'
       preLoaderRoute: typeof GaleriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lgpd': {
+      id: '/lgpd'
+      path: '/lgpd'
+      fullPath: '/lgpd'
+      preLoaderRoute: typeof LgpdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mapa-do-site': {
+      id: '/mapa-do-site'
+      path: '/mapa-do-site'
+      fullPath: '/mapa-do-site'
+      preLoaderRoute: typeof MapaDoSiteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/prefeitura': {
@@ -217,7 +317,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AcessibilidadeRoute: AcessibilidadeRoute,
+  BuscaRoute: BuscaRoute,
+  EsicRoute: EsicRoute,
   GaleriaRoute: GaleriaRoute,
+  LgpdRoute: LgpdRoute,
+  MapaDoSiteRoute: MapaDoSiteRoute,
   PrefeituraRoute: PrefeituraRoute,
   SecretariasRoute: SecretariasRoute,
   ServicosRoute: ServicosRoute,
