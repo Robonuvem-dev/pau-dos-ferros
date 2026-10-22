@@ -992,6 +992,14 @@ export type Database = {
           status: string
         }[]
       }
+      estatisticas_atendimentos: {
+        Args: never
+        Returns: {
+          canal: string
+          status: string
+          total: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
