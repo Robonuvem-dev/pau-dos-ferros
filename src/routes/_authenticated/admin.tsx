@@ -24,7 +24,7 @@ function AvisoAtualizacao() {
   return (
     <div role="status" className="mb-4 flex items-start gap-3 rounded-lg border border-primary bg-secondary p-3 text-sm">
       <div className="flex-1">
-        <strong>Sistema atualizado para a versão {VERSAO}.</strong> {HISTORICO[0].itens.slice(0, 2).join(" ")}{" "}
+        <strong>Sistema atualizado para a versão {VERSAO}.</strong> {(HISTORICO[0]?.itens ?? []).slice(0, 2).join(" ")}{" "}
         <Link to="/sobre" className="underline">Ver novidades</Link>
       </div>
       <button onClick={fechar} aria-label="Fechar aviso"><X className="size-4" /></button>
