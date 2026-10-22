@@ -140,6 +140,60 @@ export type Database = {
         }
         Relationships: []
       }
+      atricon_avaliacoes: {
+        Row: {
+          criterio: string
+          link: string | null
+          observacao: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          criterio: string
+          link?: string | null
+          observacao?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          criterio?: string
+          link?: string | null
+          observacao?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      auditoria: {
+        Row: {
+          acao: string
+          created_at: string
+          dados: Json | null
+          id: number
+          registro_id: string | null
+          tabela: string
+          user_id: string | null
+        }
+        Insert: {
+          acao: string
+          created_at?: string
+          dados?: Json | null
+          id?: number
+          registro_id?: string | null
+          tabela: string
+          user_id?: string | null
+        }
+        Update: {
+          acao?: string
+          created_at?: string
+          dados?: Json | null
+          id?: number
+          registro_id?: string | null
+          tabela?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       banners: {
         Row: {
           ativo: boolean | null
@@ -311,6 +365,42 @@ export type Database = {
           tipo?: string | null
           updated_at?: string
           valor?: number | null
+        }
+        Relationships: []
+      }
+      credores: {
+        Row: {
+          cpf_cnpj: string | null
+          created_at: string
+          id: string
+          municipio: string | null
+          nome: string
+          origem: string | null
+          tipo: string | null
+          uf: string | null
+          updated_at: string
+        }
+        Insert: {
+          cpf_cnpj?: string | null
+          created_at?: string
+          id?: string
+          municipio?: string | null
+          nome: string
+          origem?: string | null
+          tipo?: string | null
+          uf?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cpf_cnpj?: string | null
+          created_at?: string
+          id?: string
+          municipio?: string | null
+          nome?: string
+          origem?: string | null
+          tipo?: string | null
+          uf?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -495,6 +585,7 @@ export type Database = {
           titulo: string
           updated_at: string
           video_url: string | null
+          visualizacoes: number
         }
         Insert: {
           audio_url?: string | null
@@ -511,6 +602,7 @@ export type Database = {
           titulo: string
           updated_at?: string
           video_url?: string | null
+          visualizacoes?: number
         }
         Update: {
           audio_url?: string | null
@@ -527,6 +619,7 @@ export type Database = {
           titulo?: string
           updated_at?: string
           video_url?: string | null
+          visualizacoes?: number
         }
         Relationships: []
       }
@@ -877,6 +970,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_listar_usuarios: {
+        Args: never
+        Returns: {
+          created_at: string
+          email: string
+          id: string
+          nome: string
+          roles: string[]
+        }[]
+      }
       consultar_protocolo: {
         Args: { _protocolo: string }
         Returns: {
@@ -887,6 +990,14 @@ export type Database = {
           respondido_em: string
           resposta: string
           status: string
+        }[]
+      }
+      estatisticas_atendimentos: {
+        Args: never
+        Returns: {
+          canal: string
+          status: string
+          total: number
         }[]
       }
       has_role: {
@@ -910,6 +1021,7 @@ export type Database = {
         }
         Returns: string
       }
+      registrar_visualizacao: { Args: { _slug: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "editor"

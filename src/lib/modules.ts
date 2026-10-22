@@ -1,5 +1,5 @@
 // Configuração central dos módulos: dirige o Portal da Transparência e o painel administrativo.
-export type FieldType = "text" | "textarea" | "number" | "money" | "date" | "bool" | "file" | "tags" | "select" | "int";
+export type FieldType = "text" | "textarea" | "number" | "money" | "date" | "bool" | "file" | "tags" | "select" | "int" | "files";
 
 export interface Field {
   name: string;
@@ -81,6 +81,7 @@ export const MODULES: ModuleDef[] = [
       { name: "data", label: "Data", type: "date" },
       { name: "descricao", label: "Descrição", type: "textarea", hideInTable: true },
       { name: "capa_url", label: "Capa", type: "file", hideInTable: true },
+      { name: "fotos", label: "Fotos do álbum", type: "files", hideInTable: true },
     ],
   },
   {
@@ -179,6 +180,18 @@ export const MODULES: ModuleDef[] = [
       { name: "data_inicio", label: "Início", type: "date" },
       { name: "data_fim", label: "Fim", type: "date" },
       { name: "motivo", label: "Motivo", type: "textarea", hideInTable: true },
+    ],
+  },
+  {
+    key: "credores", table: "credores", label: "Credores", grupo: "Licitações e Contratos", orderBy: "nome", publico: true,
+    descricao: "Fornecedores e credores do município, inclusive importados do TCE.",
+    fields: [
+      { name: "nome", label: "Nome / Razão social", required: true },
+      { name: "cpf_cnpj", label: "CPF/CNPJ" },
+      { name: "tipo", label: "Tipo", type: "select", options: ["Pessoa jurídica", "Pessoa física"] },
+      { name: "municipio", label: "Município" },
+      { name: "uf", label: "UF" },
+      { name: "origem", label: "Origem", hideInTable: true },
     ],
   },
   {
@@ -309,6 +322,7 @@ export function formatCell(f: Field, v: unknown): string {
   if (f.type === "money") return brl(v);
   if (f.type === "date") return dataBR(v);
   if (f.type === "bool") return v ? "Sim" : "Não";
+  if (f.type === "files") return Array.isArray(v) ? `${v.length} arquivo(s)` : "";
   if (f.type === "tags") return Array.isArray(v) ? v.join(", ") : "";
   if (v == null || v === "") return "—";
   return String(v);

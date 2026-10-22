@@ -10,33 +10,206 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AcessibilidadeRouteImport } from './routes/acessibilidade'
+import { Route as BuscaRouteImport } from './routes/busca'
+import { Route as EsicRouteImport } from './routes/esic'
+import { Route as GaleriaRouteImport } from './routes/galeria'
+import { Route as LgpdRouteImport } from './routes/lgpd'
+import { Route as MapaDoSiteRouteImport } from './routes/mapa-do-site'
+import { Route as PrefeituraRouteImport } from './routes/prefeitura'
+import { Route as SecretariasRouteImport } from './routes/secretarias'
+import { Route as ServicosRouteImport } from './routes/servicos'
+import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
+import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
+import { Route as TransparenciaIndexRouteImport } from './routes/transparencia.index'
+import { Route as TransparenciaModuleRouteImport } from './routes/transparencia.$module'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcessibilidadeRoute = AcessibilidadeRouteImport.update({
+  id: '/acessibilidade',
+  path: '/acessibilidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuscaRoute = BuscaRouteImport.update({
+  id: '/busca',
+  path: '/busca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsicRoute = EsicRouteImport.update({
+  id: '/esic',
+  path: '/esic',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GaleriaRoute = GaleriaRouteImport.update({
+  id: '/galeria',
+  path: '/galeria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LgpdRoute = LgpdRouteImport.update({
+  id: '/lgpd',
+  path: '/lgpd',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapaDoSiteRoute = MapaDoSiteRouteImport.update({
+  id: '/mapa-do-site',
+  path: '/mapa-do-site',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrefeituraRoute = PrefeituraRouteImport.update({
+  id: '/prefeitura',
+  path: '/prefeitura',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecretariasRoute = SecretariasRouteImport.update({
+  id: '/secretarias',
+  path: '/secretarias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicosRoute = ServicosRouteImport.update({
+  id: '/servicos',
+  path: '/servicos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
+  id: '/noticias/',
+  path: '/noticias/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
+  id: '/noticias/$slug',
+  path: '/noticias/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransparenciaIndexRoute = TransparenciaIndexRouteImport.update({
+  id: '/transparencia/',
+  path: '/transparencia/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransparenciaModuleRoute = TransparenciaModuleRouteImport.update({
+  id: '/transparencia/$module',
+  path: '/transparencia/$module',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/acessibilidade': typeof AcessibilidadeRoute
+  '/busca': typeof BuscaRoute
+  '/esic': typeof EsicRoute
+  '/galeria': typeof GaleriaRoute
+  '/lgpd': typeof LgpdRoute
+  '/mapa-do-site': typeof MapaDoSiteRoute
+  '/prefeitura': typeof PrefeituraRoute
+  '/secretarias': typeof SecretariasRoute
+  '/servicos': typeof ServicosRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
+  '/transparencia/$module': typeof TransparenciaModuleRoute
+  '/noticias/': typeof NoticiasIndexRoute
+  '/transparencia/': typeof TransparenciaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/acessibilidade': typeof AcessibilidadeRoute
+  '/busca': typeof BuscaRoute
+  '/esic': typeof EsicRoute
+  '/galeria': typeof GaleriaRoute
+  '/lgpd': typeof LgpdRoute
+  '/mapa-do-site': typeof MapaDoSiteRoute
+  '/prefeitura': typeof PrefeituraRoute
+  '/secretarias': typeof SecretariasRoute
+  '/servicos': typeof ServicosRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
+  '/transparencia/$module': typeof TransparenciaModuleRoute
+  '/noticias': typeof NoticiasIndexRoute
+  '/transparencia': typeof TransparenciaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/acessibilidade': typeof AcessibilidadeRoute
+  '/busca': typeof BuscaRoute
+  '/esic': typeof EsicRoute
+  '/galeria': typeof GaleriaRoute
+  '/lgpd': typeof LgpdRoute
+  '/mapa-do-site': typeof MapaDoSiteRoute
+  '/prefeitura': typeof PrefeituraRoute
+  '/secretarias': typeof SecretariasRoute
+  '/servicos': typeof ServicosRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
+  '/transparencia/$module': typeof TransparenciaModuleRoute
+  '/noticias/': typeof NoticiasIndexRoute
+  '/transparencia/': typeof TransparenciaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/acessibilidade'
+    | '/busca'
+    | '/esic'
+    | '/galeria'
+    | '/lgpd'
+    | '/mapa-do-site'
+    | '/prefeitura'
+    | '/secretarias'
+    | '/servicos'
+    | '/noticias/$slug'
+    | '/transparencia/$module'
+    | '/noticias/'
+    | '/transparencia/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/acessibilidade'
+    | '/busca'
+    | '/esic'
+    | '/galeria'
+    | '/lgpd'
+    | '/mapa-do-site'
+    | '/prefeitura'
+    | '/secretarias'
+    | '/servicos'
+    | '/noticias/$slug'
+    | '/transparencia/$module'
+    | '/noticias'
+    | '/transparencia'
+  id:
+    | '__root__'
+    | '/'
+    | '/acessibilidade'
+    | '/busca'
+    | '/esic'
+    | '/galeria'
+    | '/lgpd'
+    | '/mapa-do-site'
+    | '/prefeitura'
+    | '/secretarias'
+    | '/servicos'
+    | '/noticias/$slug'
+    | '/transparencia/$module'
+    | '/noticias/'
+    | '/transparencia/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AcessibilidadeRoute: typeof AcessibilidadeRoute
+  BuscaRoute: typeof BuscaRoute
+  EsicRoute: typeof EsicRoute
+  GaleriaRoute: typeof GaleriaRoute
+  LgpdRoute: typeof LgpdRoute
+  MapaDoSiteRoute: typeof MapaDoSiteRoute
+  PrefeituraRoute: typeof PrefeituraRoute
+  SecretariasRoute: typeof SecretariasRoute
+  ServicosRoute: typeof ServicosRoute
+  NoticiasSlugRoute: typeof NoticiasSlugRoute
+  TransparenciaModuleRoute: typeof TransparenciaModuleRoute
+  NoticiasIndexRoute: typeof NoticiasIndexRoute
+  TransparenciaIndexRoute: typeof TransparenciaIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +221,115 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acessibilidade': {
+      id: '/acessibilidade'
+      path: '/acessibilidade'
+      fullPath: '/acessibilidade'
+      preLoaderRoute: typeof AcessibilidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/busca': {
+      id: '/busca'
+      path: '/busca'
+      fullPath: '/busca'
+      preLoaderRoute: typeof BuscaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/esic': {
+      id: '/esic'
+      path: '/esic'
+      fullPath: '/esic'
+      preLoaderRoute: typeof EsicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/galeria': {
+      id: '/galeria'
+      path: '/galeria'
+      fullPath: '/galeria'
+      preLoaderRoute: typeof GaleriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lgpd': {
+      id: '/lgpd'
+      path: '/lgpd'
+      fullPath: '/lgpd'
+      preLoaderRoute: typeof LgpdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mapa-do-site': {
+      id: '/mapa-do-site'
+      path: '/mapa-do-site'
+      fullPath: '/mapa-do-site'
+      preLoaderRoute: typeof MapaDoSiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prefeitura': {
+      id: '/prefeitura'
+      path: '/prefeitura'
+      fullPath: '/prefeitura'
+      preLoaderRoute: typeof PrefeituraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/secretarias': {
+      id: '/secretarias'
+      path: '/secretarias'
+      fullPath: '/secretarias'
+      preLoaderRoute: typeof SecretariasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicos': {
+      id: '/servicos'
+      path: '/servicos'
+      fullPath: '/servicos'
+      preLoaderRoute: typeof ServicosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias/': {
+      id: '/noticias/'
+      path: '/noticias'
+      fullPath: '/noticias/'
+      preLoaderRoute: typeof NoticiasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias/$slug': {
+      id: '/noticias/$slug'
+      path: '/noticias/$slug'
+      fullPath: '/noticias/$slug'
+      preLoaderRoute: typeof NoticiasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transparencia/': {
+      id: '/transparencia/'
+      path: '/transparencia'
+      fullPath: '/transparencia/'
+      preLoaderRoute: typeof TransparenciaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transparencia/$module': {
+      id: '/transparencia/$module'
+      path: '/transparencia/$module'
+      fullPath: '/transparencia/$module'
+      preLoaderRoute: typeof TransparenciaModuleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AcessibilidadeRoute: AcessibilidadeRoute,
+  BuscaRoute: BuscaRoute,
+  EsicRoute: EsicRoute,
+  GaleriaRoute: GaleriaRoute,
+  LgpdRoute: LgpdRoute,
+  MapaDoSiteRoute: MapaDoSiteRoute,
+  PrefeituraRoute: PrefeituraRoute,
+  SecretariasRoute: SecretariasRoute,
+  ServicosRoute: ServicosRoute,
+  NoticiasSlugRoute: NoticiasSlugRoute,
+  TransparenciaModuleRoute: TransparenciaModuleRoute,
+  NoticiasIndexRoute: NoticiasIndexRoute,
+  TransparenciaIndexRoute: TransparenciaIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
