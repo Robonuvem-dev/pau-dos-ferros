@@ -82,7 +82,7 @@ export function NovoPedido({ canalFixo }: { canalFixo?: keyof typeof TIPOS }) {
   const [form, setForm] = useState({ tipo: TIPOS[canalFixo ?? "esic"][0] ?? "", nome: "", email: "", telefone: "", assunto: "", mensagem: "", anonimo: false });
   const [protocolo, setProtocolo] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
-  const set = (k: keyof typeof form, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }));
+  const set = (k: keyof typeof form, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }) as typeof f);
   const anonimoPermitido = canal === "ouvidoria";
 
   const submit = async (e: FormEvent) => {
