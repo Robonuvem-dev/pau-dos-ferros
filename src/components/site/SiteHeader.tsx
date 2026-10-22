@@ -14,8 +14,6 @@ const NAV = [
   { to: "/servicos", label: "Serviços" },
   { to: "/noticias", label: "Notícias" },
   { to: "/transparencia", label: "Transparência" },
-  { to: "/transparencia/licitacoes", label: "Licitações" },
-  { to: "/transparencia/obras", label: "Obras" },
   { to: "/lgpd", label: "LGPD" },
 ] as const;
 
@@ -50,7 +48,7 @@ export function SiteHeader() {
             <Link to="/transparencia" className="flex items-center gap-1 hover:underline"><Info className="size-4" />Transparência</Link>
             <Button variant="ghost" size="sm" onClick={toggleFont} aria-label="Aumentar fonte">A+</Button>
             <Button variant="ghost" size="sm" onClick={toggleContrast}><Accessibility className="size-4" />Contraste</Button>
-            <Link to="/busca" className="flex items-center gap-1 hover:underline"><Search className="size-4" />Pesquisar</Link>
+            <Link to="/busca" search={{ q: "" }} className="flex items-center gap-1 hover:underline"><Search className="size-4" />Pesquisar</Link>
             <span className="hidden items-center gap-3 md:flex">
               <a href="https://www.facebook.com/prefeituradepaudosferros" aria-label="Facebook"><Facebook className="size-4" /></a>
               <a href="https://www.instagram.com/prefeituradepaudosferros" aria-label="Instagram"><Instagram className="size-4" /></a>
@@ -83,6 +81,8 @@ export function SiteHeader() {
                 {n.label}
               </Link>
             ))}
+            <Link to="/transparencia/$module" params={{ module: "licitacoes" }} className="px-3 py-3 text-sm hover:bg-primary-deep">Licitações</Link>
+            <Link to="/transparencia/$module" params={{ module: "obras" }} className="px-3 py-3 text-sm hover:bg-primary-deep">Obras</Link>
           </nav>
         </div>
       </div>

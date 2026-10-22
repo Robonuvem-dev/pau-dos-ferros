@@ -79,7 +79,7 @@ function Esic() {
 
 export function NovoPedido({ canalFixo }: { canalFixo?: keyof typeof TIPOS }) {
   const [canal, setCanal] = useState<keyof typeof TIPOS>(canalFixo ?? "esic");
-  const [form, setForm] = useState({ tipo: TIPOS[canalFixo ?? "esic"][0], nome: "", email: "", telefone: "", assunto: "", mensagem: "", anonimo: false });
+  const [form, setForm] = useState({ tipo: TIPOS[canalFixo ?? "esic"][0] ?? "", nome: "", email: "", telefone: "", assunto: "", mensagem: "", anonimo: false });
   const [protocolo, setProtocolo] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const set = (k: keyof typeof form, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }));
@@ -114,7 +114,7 @@ export function NovoPedido({ canalFixo }: { canalFixo?: keyof typeof TIPOS }) {
       {!canalFixo && (
         <div className="grid gap-1.5">
           <Label htmlFor="canal">Canal</Label>
-          <select id="canal" className="h-9 rounded-md border border-input bg-background px-3 text-sm" value={canal} onChange={(e) => { const c = e.target.value as keyof typeof TIPOS; setCanal(c); setForm((f) => ({ ...f, tipo: TIPOS[c][0], anonimo: false })); }}>
+          <select id="canal" className="h-9 rounded-md border border-input bg-background px-3 text-sm" value={canal} onChange={(e) => { const c = e.target.value as keyof typeof TIPOS; setCanal(c); setForm((f) => ({ ...f, tipo: TIPOS[c][0] ?? "", anonimo: false })); }}>
             <option value="esic">e-SIC — Pedido de informação</option>
             <option value="ouvidoria">Ouvidoria</option>
             <option value="lgpd">Direitos do titular (LGPD)</option>
