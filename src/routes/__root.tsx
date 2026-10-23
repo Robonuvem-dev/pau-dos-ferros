@@ -14,6 +14,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { SessionContext } from '@/hooks/use-session';
 import { SiteHeader, SiteFooter } from '@/components/site/SiteHeader';
 import { Toaster } from '@/components/ui/sonner';
+import { useQuery } from '@tanstack/react-query';
+import { configQuery } from '@/lib/queries';
+import { temaCss } from '@/lib/temas';
+
+function TemaSite() {
+  const { data } = useQuery({ ...configQuery, refetchInterval: 15_000 });
+  const css = data ? temaCss(data) : '';
+  return css ? <style>{css}</style> : null;
+}
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -149,6 +158,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContext.Provider value={identity}>
+        <TemaSite />
         <SiteHeader />
         <main id="conteudo" className="min-h-[50vh]"><Outlet /></main>
         <SiteFooter />
