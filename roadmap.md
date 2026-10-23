@@ -8,7 +8,7 @@ Plano aprovado: .lovable/plan/novo-plano-de-sprints-entrega-completa-do-edital-s
 - [ ] Sprint 3 — M02 Site oficial + M15 Carta de Serviços
   - [x] Temas/cores ao vivo, Facebook, links úteis, banners com período e rotação, documentos, unidades gestoras
   - [x] Serviços: etapas, setor, perfil, anexo, parecer do Ouvidor, avaliação 1–5, visualizações, ficha em branco, críticas
-  - [ ] Notícias com agendamento/evento, álbuns com legenda por foto, agentes políticos em página pública, concursos com etapas, estatísticas de serviços no painel
+  - [x] Notícias com agendamento/evento, álbuns com legenda por foto, agentes políticos em página pública, concursos com etapas, estatísticas de serviços no painel
 - [ ] Sprint 4 — M03 Licitações, contratos e aditivos
 - [ ] Sprint 5 — M04 Convênios + M05 Portais do Município
 - [ ] Sprint 6 — M08 LC 131 + M07 integração contábil (bloqueio: amostras de arquivos)
