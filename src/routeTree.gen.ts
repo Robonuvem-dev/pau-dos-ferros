@@ -34,6 +34,7 @@ import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminModuleRouteImport } from './routes/_authenticated/admin.$module'
 import { Route as AuthenticatedAdminAparenciaRouteImport } from './routes/_authenticated/admin.aparencia'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
+import { Route as AuthenticatedAdminLicitacoesRelatoriosRouteImport } from './routes/_authenticated/admin.licitacoes-relatorios'
 import { Route as AuthenticatedAdminMelhoriasRouteImport } from './routes/_authenticated/admin.melhorias'
 import { Route as AuthenticatedAdminPendenciasRouteImport } from './routes/_authenticated/admin.pendencias'
 import { Route as AuthenticatedAdminServicosEstatisticasRouteImport } from './routes/_authenticated/admin.servicos-estatisticas'
@@ -166,6 +167,12 @@ const AuthenticatedAdminAuditoriaRoute =
     path: '/auditoria',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminLicitacoesRelatoriosRoute =
+  AuthenticatedAdminLicitacoesRelatoriosRouteImport.update({
+    id: '/licitacoes-relatorios',
+    path: '/licitacoes-relatorios',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminMelhoriasRoute =
   AuthenticatedAdminMelhoriasRouteImport.update({
     id: '/melhorias',
@@ -215,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/licitacoes-relatorios': typeof AuthenticatedAdminLicitacoesRelatoriosRoute
   '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
   '/admin/servicos-estatisticas': typeof AuthenticatedAdminServicosEstatisticasRoute
@@ -244,6 +252,7 @@ export interface FileRoutesByTo {
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/licitacoes-relatorios': typeof AuthenticatedAdminLicitacoesRelatoriosRoute
   '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
   '/admin/servicos-estatisticas': typeof AuthenticatedAdminServicosEstatisticasRoute
@@ -276,6 +285,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/_authenticated/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/_authenticated/admin/licitacoes-relatorios': typeof AuthenticatedAdminLicitacoesRelatoriosRoute
   '/_authenticated/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/_authenticated/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
   '/_authenticated/admin/servicos-estatisticas': typeof AuthenticatedAdminServicosEstatisticasRoute
@@ -308,6 +318,7 @@ export interface FileRouteTypes {
     | '/admin/$module'
     | '/admin/aparencia'
     | '/admin/auditoria'
+    | '/admin/licitacoes-relatorios'
     | '/admin/melhorias'
     | '/admin/pendencias'
     | '/admin/servicos-estatisticas'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/admin/$module'
     | '/admin/aparencia'
     | '/admin/auditoria'
+    | '/admin/licitacoes-relatorios'
     | '/admin/melhorias'
     | '/admin/pendencias'
     | '/admin/servicos-estatisticas'
@@ -368,6 +380,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/$module'
     | '/_authenticated/admin/aparencia'
     | '/_authenticated/admin/auditoria'
+    | '/_authenticated/admin/licitacoes-relatorios'
     | '/_authenticated/admin/melhorias'
     | '/_authenticated/admin/pendencias'
     | '/_authenticated/admin/servicos-estatisticas'
@@ -574,6 +587,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAuditoriaRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/licitacoes-relatorios': {
+      id: '/_authenticated/admin/licitacoes-relatorios'
+      path: '/licitacoes-relatorios'
+      fullPath: '/admin/licitacoes-relatorios'
+      preLoaderRoute: typeof AuthenticatedAdminLicitacoesRelatoriosRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/melhorias': {
       id: '/_authenticated/admin/melhorias'
       path: '/melhorias'
@@ -609,6 +629,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminModuleRoute: typeof AuthenticatedAdminModuleRoute
   AuthenticatedAdminAparenciaRoute: typeof AuthenticatedAdminAparenciaRoute
   AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
+  AuthenticatedAdminLicitacoesRelatoriosRoute: typeof AuthenticatedAdminLicitacoesRelatoriosRoute
   AuthenticatedAdminMelhoriasRoute: typeof AuthenticatedAdminMelhoriasRoute
   AuthenticatedAdminPendenciasRoute: typeof AuthenticatedAdminPendenciasRoute
   AuthenticatedAdminServicosEstatisticasRoute: typeof AuthenticatedAdminServicosEstatisticasRoute
@@ -620,6 +641,8 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminModuleRoute: AuthenticatedAdminModuleRoute,
   AuthenticatedAdminAparenciaRoute: AuthenticatedAdminAparenciaRoute,
   AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
+  AuthenticatedAdminLicitacoesRelatoriosRoute:
+    AuthenticatedAdminLicitacoesRelatoriosRoute,
   AuthenticatedAdminMelhoriasRoute: AuthenticatedAdminMelhoriasRoute,
   AuthenticatedAdminPendenciasRoute: AuthenticatedAdminPendenciasRoute,
   AuthenticatedAdminServicosEstatisticasRoute:
