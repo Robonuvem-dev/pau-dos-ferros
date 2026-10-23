@@ -33,6 +33,7 @@ import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminModuleRouteImport } from './routes/_authenticated/admin.$module'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
 import { Route as AuthenticatedAdminMelhoriasRouteImport } from './routes/_authenticated/admin.melhorias'
+import { Route as AuthenticatedAdminPendenciasRouteImport } from './routes/_authenticated/admin.pendencias'
 import { Route as AuthenticatedAdminUsuariosRouteImport } from './routes/_authenticated/admin.usuarios'
 
 const IndexRoute = IndexRouteImport.update({
@@ -157,6 +158,12 @@ const AuthenticatedAdminMelhoriasRoute =
     path: '/melhorias',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminPendenciasRoute =
+  AuthenticatedAdminPendenciasRouteImport.update({
+    id: '/pendencias',
+    path: '/pendencias',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminUsuariosRoute =
   AuthenticatedAdminUsuariosRouteImport.update({
     id: '/usuarios',
@@ -187,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
+  '/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
   '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -212,6 +220,7 @@ export interface FileRoutesByTo {
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
+  '/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
   '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
@@ -240,6 +249,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/_authenticated/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
+  '/_authenticated/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
   '/_authenticated/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -268,6 +278,7 @@ export interface FileRouteTypes {
     | '/admin/$module'
     | '/admin/auditoria'
     | '/admin/melhorias'
+    | '/admin/pendencias'
     | '/admin/usuarios'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -293,6 +304,7 @@ export interface FileRouteTypes {
     | '/admin/$module'
     | '/admin/auditoria'
     | '/admin/melhorias'
+    | '/admin/pendencias'
     | '/admin/usuarios'
     | '/admin'
   id:
@@ -320,6 +332,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/$module'
     | '/_authenticated/admin/auditoria'
     | '/_authenticated/admin/melhorias'
+    | '/_authenticated/admin/pendencias'
     | '/_authenticated/admin/usuarios'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
@@ -515,6 +528,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminMelhoriasRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/pendencias': {
+      id: '/_authenticated/admin/pendencias'
+      path: '/pendencias'
+      fullPath: '/admin/pendencias'
+      preLoaderRoute: typeof AuthenticatedAdminPendenciasRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/usuarios': {
       id: '/_authenticated/admin/usuarios'
       path: '/usuarios'
@@ -529,6 +549,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminModuleRoute: typeof AuthenticatedAdminModuleRoute
   AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
   AuthenticatedAdminMelhoriasRoute: typeof AuthenticatedAdminMelhoriasRoute
+  AuthenticatedAdminPendenciasRoute: typeof AuthenticatedAdminPendenciasRoute
   AuthenticatedAdminUsuariosRoute: typeof AuthenticatedAdminUsuariosRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
@@ -537,6 +558,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminModuleRoute: AuthenticatedAdminModuleRoute,
   AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
   AuthenticatedAdminMelhoriasRoute: AuthenticatedAdminMelhoriasRoute,
+  AuthenticatedAdminPendenciasRoute: AuthenticatedAdminPendenciasRoute,
   AuthenticatedAdminUsuariosRoute: AuthenticatedAdminUsuariosRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
