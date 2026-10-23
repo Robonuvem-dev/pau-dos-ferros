@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { adminModuleQuery } from "@/lib/admin-queries";
 import { deleteRow, saveRow, uploadFile, type Row } from "@/lib/data";
 import { formatCell, type Field, type ModuleDef } from "@/lib/modules";
+import { ResumoConvenios } from "@/components/convenios/ResumoConvenios";
 
 type Values = Record<string, unknown>;
 
@@ -65,6 +66,7 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
         </div>
         <Button onClick={() => setEditing({ values: emptyValues(mod) })}><Plus />Novo registro</Button>
       </div>
+      {mod.key === "convenios" && <ResumoConvenios />}
       <div className="rounded-lg border bg-card">
         <div className="flex items-center gap-3 border-b p-3">
           <div className="relative flex-1">
