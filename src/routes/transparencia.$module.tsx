@@ -31,9 +31,46 @@ function Consulta() {
       <div className="mx-auto max-w-6xl px-4 py-8">
         <PublicTable mod={mod} />
         {mod.key === "concurso" && <EtapasConcursos />}
+        {mod.key === "licitacoes" && <LinhaDoTempo />}
         <p className="mt-4 text-xs text-muted-foreground">Dados públicos disponibilizados em formato aberto, nos termos da Lei 12.527/2011 e da LC 131/2009.</p>
       </div>
     </>
+  );
+}
+
+function LinhaDoTempo() {
+  const { data } = useSuspenseQuery(moduleQuery("andamentos-licitacao"));
+  const porLicitacao = new Map<string, typeof data>();
+  for (const a of data) {
+    const k = String(a.licitacao_numero ?? "");
+    if (!k) continue;
+    porLicitacao.set(k, [...(porLicitacao.get(k) ?? []), a]);
+  }
+  if (!porLicitacao.size) return null;
+  return (
+    <section className="mt-10">
+      <h2 className="section-title">Andamento dos processos</h2>
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
+        {[...porLicitacao.entries()].map(([numero, itens]) => (
+          <div key={numero} className="rounded-lg border bg-card p-5">
+            <h3 className="font-display text-lg font-bold">{numero}</h3>
+            <ol className="mt-3 space-y-2 border-l-2 border-primary pl-4 text-sm">
+              {itens
+                .slice()
+                .sort((a, b) => String(a.data ?? "").localeCompare(String(b.data ?? "")))
+                .map((a) => (
+                  <li key={a.id}>
+                    <strong>{String(a.fase)}</strong>
+                    {a.data ? ` · ${dataBR(a.data)}` : ""}
+                    {a.descricao ? <span className="block text-muted-foreground">{String(a.descricao)}</span> : null}
+                    {a.arquivo_url ? <a className="block text-primary underline" href={String(a.arquivo_url)} target="_blank" rel="noreferrer">Anexo</a> : null}
+                  </li>
+                ))}
+            </ol>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 

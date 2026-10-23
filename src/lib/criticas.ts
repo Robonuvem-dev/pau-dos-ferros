@@ -37,11 +37,30 @@ export const REGRAS: Regra[] = [
   { modulo: "licitacoes", nome: (r) => String(r.numero ?? ""), testes: [
     { problema: "Licitação sem edital anexado", gravidade: "alta", falha: (r) => vazio(r.arquivo_url) },
     { problema: "Dispensa/inexigibilidade sem fundamentação legal", gravidade: "alta", falha: (r) => ["Dispensa", "Inexigibilidade"].includes(String(r.modalidade ?? r.tipo)) && vazio(r.fundamentacao) },
+    { problema: "Licitação sem data de abertura", gravidade: "media", falha: (r) => vazio(r.data_abertura) },
+    { problema: "Licitação sem valor estimado", gravidade: "baixa", falha: (r) => vazio(r.valor_estimado) },
   ] },
   { modulo: "contratos", nome: (r) => String(r.numero ?? ""), testes: [
-    { problema: "Contrato vencido", gravidade: "media", falha: (r, h) => vencido(r.data_fim, h) },
-    { problema: "Contrato vence em até 30 dias", gravidade: "baixa", falha: (r, h) => !vazio(r.data_fim) && diasAte(r.data_fim, h) >= 0 && diasAte(r.data_fim, h) <= 30 },
+    { problema: "Contrato vencido", gravidade: "media", falha: (r, h) => vencido(r.data_fim_atualizada ?? r.data_fim, h) && r.tipo !== "Aditivo" },
+    { problema: "Contrato vence em até 30 dias", gravidade: "baixa", falha: (r, h) => { const f = r.data_fim_atualizada ?? r.data_fim; return r.tipo !== "Aditivo" && !vazio(f) && diasAte(f, h) >= 0 && diasAte(f, h) <= 30; } },
     { problema: "Contrato sem documento anexado", gravidade: "alta", falha: (r) => vazio(r.arquivo_url) },
+    { problema: "Aditivo sem contrato de origem", gravidade: "alta", falha: (r) => r.tipo === "Aditivo" && vazio(r.contrato_origem) },
+    { problema: "Adesão (carona) sem ata de origem", gravidade: "alta", falha: (r) => r.tipo === "Adesão (Carona)" && vazio(r.contrato_origem) },
+    { problema: "Contrato sem valor", gravidade: "media", falha: (r) => (!r.tipo || r.tipo === "Contrato") && vazio(r.valor) },
+  ] },
+  { modulo: "empresas-inidoneas", nome: (r) => String(r.razao_social ?? ""), testes: [
+    { problema: "Empresa com sanção vigente (impedida de licitar)", gravidade: "alta", falha: (r, h) => vazio(r.data_fim) || String(r.data_fim).slice(0, 10) >= h },
+  ] },
+  { modulo: "comissoes", nome: (r) => String(r.nome ?? ""), testes: [
+    { problema: "Comissão com mandato vencido", gravidade: "media", falha: (r, h) => vencido(r.data_fim, h) },
+    { problema: "Comissão sem portaria de designação", gravidade: "media", falha: (r) => vazio(r.portaria) },
+  ] },
+  { modulo: "termos-fomento", nome: (r) => String(r.numero ?? ""), testes: [
+    { problema: "Termo de fomento vencido", gravidade: "media", falha: (r, h) => vencido(r.data_fim, h) },
+    { problema: "Termo de fomento sem documento", gravidade: "media", falha: (r) => vazio(r.arquivo_url) },
+  ] },
+  { modulo: "parcerias", nome: (r) => String(r.nome ?? ""), testes: [
+    { problema: "Parceria sem documento anexado", gravidade: "media", falha: (r) => vazio(r.arquivo_url) },
   ] },
   { modulo: "convenios", nome: (r) => String(r.numero ?? ""), testes: [
     { problema: "Convênio vencido", gravidade: "media", falha: (r, h) => vencido(r.data_fim, h) },

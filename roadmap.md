@@ -9,7 +9,10 @@ Plano aprovado: .lovable/plan/novo-plano-de-sprints-entrega-completa-do-edital-s
   - [x] Temas/cores ao vivo, Facebook, links úteis, banners com período e rotação, documentos, unidades gestoras
   - [x] Serviços: etapas, setor, perfil, anexo, parecer do Ouvidor, avaliação 1–5, visualizações, ficha em branco, críticas
   - [x] Notícias com agendamento/evento, álbuns com legenda por foto, agentes políticos em página pública, concursos com etapas, estatísticas de serviços no painel
-- [ ] Sprint 4 — M03 Licitações, contratos e aditivos
+- [x] Sprint 4 — M03 Licitações, contratos e aditivos
+  - [x] Modalidades Lei 14.133, fluxo de situações, linha do tempo pública, aditivos/adesões com valor recalculado sozinho
+  - [x] Comissões, membros de equipes, parcerias, termos de fomento, empresas inidôneas com alerta
+  - [x] Boletim do dia, mapa de licitações com filtros, contratos a vencer, novas críticas
 - [ ] Sprint 5 — M04 Convênios + M05 Portais do Município
 - [ ] Sprint 6 — M08 LC 131 + M07 integração contábil (bloqueio: amostras de arquivos)
 - [ ] Sprint 7 — M09 Folha, importação TCE, M06 COVID-19
