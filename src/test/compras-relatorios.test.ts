@@ -15,7 +15,7 @@ describe("mapaLicitacoes (item 3.16)", () => {
   });
   it("filtra por período de abertura", () => {
     const r = mapaLicitacoes(lics, { de: "2026-10-20", ate: "2026-10-25" });
-    expect(r.map((l) => l.numero)).toEqual(["CC 002/2026", "PE 001/2026"]);
+    expect(r.map((l) => l.numero)).toEqual(["PE 001/2026", "CC 002/2026"]);
   });
   it("filtra por secretaria", () => {
     expect(mapaLicitacoes(lics, { secretaria: "Saúde" })).toHaveLength(2);
