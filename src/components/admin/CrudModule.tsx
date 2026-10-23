@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { FileText, Pencil, Plus, Search, Trash2, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -195,6 +195,22 @@ function FieldInput({ field: f, value, onChange }: { field: Field; value: unknow
   return (
     <div className="grid gap-1.5">{label}
       <Input id={id} type={type} step={f.type === "money" ? "0.01" : undefined} value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} placeholder={f.type === "tags" ? "separe por vírgulas" : undefined} />
+    </div>
+  );
+}
+
+function RelationInput({ field: f, value, onChange, label, id }: { field: Field; value: unknown; onChange: (v: unknown) => void; label: React.ReactNode; id: string }) {
+  const ref = f.ref!;
+  const { data = [] } = useQuery({ ...adminModuleQuery(ref.module) });
+  const opts = Array.from(new Set(data.map((r) => String(r[ref.column] ?? "")).filter(Boolean))).sort();
+  const cur = String(value ?? "");
+  return (
+    <div className="grid gap-1.5">{label}
+      <select id={id} className="h-9 rounded-md border border-input bg-background px-3 text-sm" value={cur} onChange={(e) => onChange(e.target.value)}>
+        <option value="">Selecione...</option>
+        {cur && !opts.includes(cur) && <option value={cur}>{cur} (não cadastrado)</option>}
+        {opts.map((o) => <option key={o} value={o}>{o}</option>)}
+      </select>
     </div>
   );
 }
