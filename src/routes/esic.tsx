@@ -195,7 +195,7 @@ function Consulta() {
               }}>Registrar recurso</Button>
               {protocoloRecurso && <p role="status">Protocolo do recurso: <strong>{protocoloRecurso}</strong></p>}
             </div>
-          )}}
+          )}
         </dl>
       )}
     </div>
