@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { db } from "@/lib/data";
-import { prazoEsic } from "@/lib/atendimento/prazos";
+import { prazoAtendimento } from "@/lib/atendimento/prazos";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -46,9 +46,11 @@ export function GestaoEsic() {
     {isPending && <p>Carregando atendimentos...</p>}
     {error && <p role="alert" className="text-destructive">{(error as Error).message}. Verifique a migração 0010.</p>}
     <div className="mt-4 space-y-4">{data.map(a => {
-      const prazo = prazoEsic(new Date(a.created_at), a.canal === "esic" && a.prorrogado);
-      const vencido = !a.respondido_em && prazo.getTime() < Date.now();
-      const now = new Date().toISOString().slice(0,10);
+      const prazo = prazoAtendimento(new Date(a.created_at), a.canal, a.prorrogado);
+      const hojePartes = new Intl.DateTimeFormat("en-US", { timeZone: "America/Fortaleza", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+      const hoje = (key: string) => hojePartes.find(p => p.type === key)?.value ?? "";
+      const now = `${hoje("year")}-${hoje("month")}-${hoje("day")}`;
+      const vencido = !a.respondido_em && prazo.toISOString().slice(0, 10) < now;
       const podeProrrogar = a.canal === "esic" && !a.prorrogado && !a.respondido_em
         && prazo.toISOString().slice(0,10) >= now;
       return <article key={a.id} className="rounded border p-4">
