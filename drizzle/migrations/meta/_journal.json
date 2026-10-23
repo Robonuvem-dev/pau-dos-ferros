@@ -43,6 +43,13 @@
       "when": 1792629701644,
       "tag": "0005_sprint1_permissoes_acessos_melhorias",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792754652103,
+      "tag": "0006_sprint3_site_e_servicos",
+      "breakpoints": true
     }
   ]
 }

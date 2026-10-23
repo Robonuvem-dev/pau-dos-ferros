@@ -24,11 +24,12 @@ export const readPublicModule = createServerFn({ method: 'GET' })
     if (!mod) throw new Error('Consulta indisponível');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const client = publicClient() as any;
-    const columns = [...new Set(['id', ...mod.fields.map(f => f.name), ...(mod.key === 'noticias' ? ['publicado_em'] : [])])].join(',');
+    const columns = [...new Set(['id', ...mod.fields.map(f => f.name), ...(mod.key === 'servicos' ? ['visualizacoes'] : []), ...(mod.key === 'noticias' ? ['publicado_em'] : [])])].join(',');
     let query = client.from(mod.table).select(columns);
     if (mod.filtro) query = query.eq(mod.filtro.column, mod.filtro.value);
     if (mod.key === 'noticias') query = query.eq('publicado', true);
     if (mod.key === 'banners') query = query.eq('ativo', true);
+    if (mod.key === 'links-uteis') query = query.eq('ativo', true);
     if (mod.orderBy) query = query.order(mod.orderBy, { ascending: ['nome','ordem','placa'].includes(mod.orderBy) });
     const { data: rows, error } = await query.limit(1000);
     if (error) throw new Error('Não foi possível carregar a consulta.');
@@ -39,4 +40,18 @@ export const readEstatisticasAtendimento = createServerFn({ method: 'GET' }).han
   const { data, error } = await publicClient().rpc('estatisticas_atendimentos');
   if (error) throw new Error('Não foi possível carregar as estatísticas.');
   return (data ?? []).map((r) => ({ canal: r.canal, status: r.status, total: Number(r.total) }));
+});
+
+export const readConfiguracoes = createServerFn({ method: 'GET' }).handler(async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (publicClient() as any).from('configuracoes_site').select('chave,valor');
+  if (error) return {} as Record<string, string>;
+  return Object.fromEntries((data as { chave: string; valor: string | null }[]).map((r) => [r.chave, r.valor ?? ''])) as Record<string, string>;
+});
+
+export const readEstatisticasServicos = createServerFn({ method: 'GET' }).handler(async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (publicClient() as any).rpc('estatisticas_servicos');
+  if (error) return [] as { servico_id: string; avaliacoes: number; media: number; uteis: number }[];
+  return data as { servico_id: string; avaliacoes: number; media: number; uteis: number }[];
 });

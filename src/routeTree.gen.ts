@@ -27,10 +27,12 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
+import { Route as ServicosFichaRouteImport } from './routes/servicos_.ficha'
 import { Route as TransparenciaIndexRouteImport } from './routes/transparencia.index'
 import { Route as TransparenciaModuleRouteImport } from './routes/transparencia.$module'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminModuleRouteImport } from './routes/_authenticated/admin.$module'
+import { Route as AuthenticatedAdminAparenciaRouteImport } from './routes/_authenticated/admin.aparencia'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
 import { Route as AuthenticatedAdminMelhoriasRouteImport } from './routes/_authenticated/admin.melhorias'
 import { Route as AuthenticatedAdminPendenciasRouteImport } from './routes/_authenticated/admin.pendencias'
@@ -125,6 +127,11 @@ const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
   path: '/noticias/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicosFichaRoute = ServicosFichaRouteImport.update({
+  id: '/servicos_/ficha',
+  path: '/servicos/ficha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TransparenciaIndexRoute = TransparenciaIndexRouteImport.update({
   id: '/transparencia/',
   path: '/transparencia/',
@@ -144,6 +151,12 @@ const AuthenticatedAdminModuleRoute =
   AuthenticatedAdminModuleRouteImport.update({
     id: '/$module',
     path: '/$module',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminAparenciaRoute =
+  AuthenticatedAdminAparenciaRouteImport.update({
+    id: '/aparencia',
+    path: '/aparencia',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminAuditoriaRoute =
@@ -188,10 +201,12 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/servicos/ficha': typeof ServicosFichaRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/transparencia/': typeof TransparenciaIndexRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
@@ -214,10 +229,12 @@ export interface FileRoutesByTo {
   '/sobre': typeof SobreRoute
   '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/servicos/ficha': typeof ServicosFichaRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
   '/noticias': typeof NoticiasIndexRoute
   '/transparencia': typeof TransparenciaIndexRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
@@ -243,10 +260,12 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/servicos_/ficha': typeof ServicosFichaRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/transparencia/': typeof TransparenciaIndexRoute
   '/_authenticated/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/_authenticated/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/_authenticated/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/_authenticated/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
@@ -272,10 +291,12 @@ export interface FileRouteTypes {
     | '/admin'
     | '/conta'
     | '/noticias/$slug'
+    | '/servicos/ficha'
     | '/transparencia/$module'
     | '/noticias/'
     | '/transparencia/'
     | '/admin/$module'
+    | '/admin/aparencia'
     | '/admin/auditoria'
     | '/admin/melhorias'
     | '/admin/pendencias'
@@ -298,10 +319,12 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/conta'
     | '/noticias/$slug'
+    | '/servicos/ficha'
     | '/transparencia/$module'
     | '/noticias'
     | '/transparencia'
     | '/admin/$module'
+    | '/admin/aparencia'
     | '/admin/auditoria'
     | '/admin/melhorias'
     | '/admin/pendencias'
@@ -326,10 +349,12 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/conta'
     | '/noticias/$slug'
+    | '/servicos_/ficha'
     | '/transparencia/$module'
     | '/noticias/'
     | '/transparencia/'
     | '/_authenticated/admin/$module'
+    | '/_authenticated/admin/aparencia'
     | '/_authenticated/admin/auditoria'
     | '/_authenticated/admin/melhorias'
     | '/_authenticated/admin/pendencias'
@@ -353,6 +378,7 @@ export interface RootRouteChildren {
   ServicosRoute: typeof ServicosRoute
   SobreRoute: typeof SobreRoute
   NoticiasSlugRoute: typeof NoticiasSlugRoute
+  ServicosFichaRoute: typeof ServicosFichaRoute
   TransparenciaModuleRoute: typeof TransparenciaModuleRoute
   NoticiasIndexRoute: typeof NoticiasIndexRoute
   TransparenciaIndexRoute: typeof TransparenciaIndexRoute
@@ -486,6 +512,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoticiasSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/servicos_/ficha': {
+      id: '/servicos_/ficha'
+      path: '/servicos/ficha'
+      fullPath: '/servicos/ficha'
+      preLoaderRoute: typeof ServicosFichaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/transparencia/': {
       id: '/transparencia/'
       path: '/transparencia'
@@ -512,6 +545,13 @@ declare module '@tanstack/react-router' {
       path: '/$module'
       fullPath: '/admin/$module'
       preLoaderRoute: typeof AuthenticatedAdminModuleRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/aparencia': {
+      id: '/_authenticated/admin/aparencia'
+      path: '/aparencia'
+      fullPath: '/admin/aparencia'
+      preLoaderRoute: typeof AuthenticatedAdminAparenciaRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/auditoria': {
@@ -547,6 +587,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminModuleRoute: typeof AuthenticatedAdminModuleRoute
+  AuthenticatedAdminAparenciaRoute: typeof AuthenticatedAdminAparenciaRoute
   AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
   AuthenticatedAdminMelhoriasRoute: typeof AuthenticatedAdminMelhoriasRoute
   AuthenticatedAdminPendenciasRoute: typeof AuthenticatedAdminPendenciasRoute
@@ -556,6 +597,7 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminModuleRoute: AuthenticatedAdminModuleRoute,
+  AuthenticatedAdminAparenciaRoute: AuthenticatedAdminAparenciaRoute,
   AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
   AuthenticatedAdminMelhoriasRoute: AuthenticatedAdminMelhoriasRoute,
   AuthenticatedAdminPendenciasRoute: AuthenticatedAdminPendenciasRoute,
@@ -595,6 +637,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicosRoute: ServicosRoute,
   SobreRoute: SobreRoute,
   NoticiasSlugRoute: NoticiasSlugRoute,
+  ServicosFichaRoute: ServicosFichaRoute,
   TransparenciaModuleRoute: TransparenciaModuleRoute,
   NoticiasIndexRoute: NoticiasIndexRoute,
   TransparenciaIndexRoute: TransparenciaIndexRoute,
