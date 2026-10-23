@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { resumoFinanceiroConvenio, pendenciasConvenio } from "../lib/convenios/validacao";
 import { prazoEsic, validarProrrogacaoEsic } from "../lib/atendimento/prazos";
+import { avaliarPendencias } from "../lib/criticas";
 
 describe("Sprint 5 — convênios M04", () => {
   it("calcula programado, recebido e saldo sem parcelas canceladas", () => {
@@ -27,5 +28,16 @@ describe("Sprint 5 — e-SIC M05", () => {
   it("rejeita prorrogação sem justificativa", () => {
     expect(()=>validarProrrogacaoEsic(true,"")).toThrow();
     expect(validarProrrogacaoEsic(true,"Justificativa pertinente")).toBe(true);
+  });
+});
+
+describe("Sprint 5 — críticas de convênios", () => {
+  it("sinaliza obrigação e parcela vencidas sem alterar dados", () => {
+    const pendencias = avaliarPendencias({
+      "convenio-obrigacoes": [{id: "o-1", titulo: "Prestação de contas", situacao: "Pendente", vencimento: "2026-10-01"}],
+      "convenio-parcelas": [{id: "p-1", numero: 1, status: "Programada", vencimento: "2026-10-01"}],
+    }, "2026-10-23");
+    expect(pendencias.map(p => p.problema)).toContain("Obrigação de convênio vencida");
+    expect(pendencias.map(p => p.problema)).toContain("Parcela de convênio vencida");
   });
 });
