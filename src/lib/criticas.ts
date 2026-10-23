@@ -13,6 +13,13 @@ export const REGRAS: Regra[] = [
     { problema: "Notícia sem imagem de capa", gravidade: "baixa", falha: (r) => vazio(r.capa_url) },
     { problema: "Notícia sem resumo", gravidade: "baixa", falha: (r) => vazio(r.resumo) },
   ] },
+  { modulo: "banners", nome: (r) => String(r.titulo ?? ""), testes: [
+    { problema: "Banner vencido ainda ativo", gravidade: "baixa", falha: (r, h) => r.ativo === true && vencido(r.fim, h) },
+    { problema: "Banner sem imagem", gravidade: "media", falha: (r) => vazio(r.imagem_url) },
+  ] },
+  { modulo: "documentos", nome: (r) => String(r.titulo ?? ""), testes: [
+    { problema: "Documento sem arquivo", gravidade: "alta", falha: (r) => vazio(r.arquivo_url) },
+  ] },
   { modulo: "agentes-politicos", nome: (r) => String(r.nome ?? ""), testes: [
     { problema: "Agente político sem foto", gravidade: "media", falha: (r) => vazio(r.foto_url) },
   ] },
@@ -23,6 +30,9 @@ export const REGRAS: Regra[] = [
   { modulo: "servicos", nome: (r) => String(r.nome ?? ""), testes: [
     { problema: "Serviço sem setor responsável", gravidade: "alta", falha: (r) => vazio(r.secretaria) },
     { problema: "Serviço sem prazo de atendimento", gravidade: "media", falha: (r) => vazio(r.prazo) },
+    { problema: "Serviço sem etapas", gravidade: "media", falha: (r) => vazio(r.etapas) },
+    { problema: "Serviço sem link de acesso", gravidade: "baixa", falha: (r) => vazio(r.link) },
+    { problema: "Serviço sem parecer do Ouvidor", gravidade: "media", falha: (r) => vazio(r.parecer_status) },
   ] },
   { modulo: "licitacoes", nome: (r) => String(r.numero ?? ""), testes: [
     { problema: "Licitação sem edital anexado", gravidade: "alta", falha: (r) => vazio(r.arquivo_url) },

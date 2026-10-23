@@ -31,6 +31,7 @@ import { Route as TransparenciaIndexRouteImport } from './routes/transparencia.i
 import { Route as TransparenciaModuleRouteImport } from './routes/transparencia.$module'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminModuleRouteImport } from './routes/_authenticated/admin.$module'
+import { Route as AuthenticatedAdminAparenciaRouteImport } from './routes/_authenticated/admin.aparencia'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
 import { Route as AuthenticatedAdminMelhoriasRouteImport } from './routes/_authenticated/admin.melhorias'
 import { Route as AuthenticatedAdminPendenciasRouteImport } from './routes/_authenticated/admin.pendencias'
@@ -146,6 +147,12 @@ const AuthenticatedAdminModuleRoute =
     path: '/$module',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminAparenciaRoute =
+  AuthenticatedAdminAparenciaRouteImport.update({
+    id: '/aparencia',
+    path: '/aparencia',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminAuditoriaRoute =
   AuthenticatedAdminAuditoriaRouteImport.update({
     id: '/auditoria',
@@ -192,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/noticias/': typeof NoticiasIndexRoute
   '/transparencia/': typeof TransparenciaIndexRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
@@ -218,6 +226,7 @@ export interface FileRoutesByTo {
   '/noticias': typeof NoticiasIndexRoute
   '/transparencia': typeof TransparenciaIndexRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
@@ -247,6 +256,7 @@ export interface FileRoutesById {
   '/noticias/': typeof NoticiasIndexRoute
   '/transparencia/': typeof TransparenciaIndexRoute
   '/_authenticated/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/_authenticated/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/_authenticated/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
   '/_authenticated/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
@@ -276,6 +286,7 @@ export interface FileRouteTypes {
     | '/noticias/'
     | '/transparencia/'
     | '/admin/$module'
+    | '/admin/aparencia'
     | '/admin/auditoria'
     | '/admin/melhorias'
     | '/admin/pendencias'
@@ -302,6 +313,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/transparencia'
     | '/admin/$module'
+    | '/admin/aparencia'
     | '/admin/auditoria'
     | '/admin/melhorias'
     | '/admin/pendencias'
@@ -330,6 +342,7 @@ export interface FileRouteTypes {
     | '/noticias/'
     | '/transparencia/'
     | '/_authenticated/admin/$module'
+    | '/_authenticated/admin/aparencia'
     | '/_authenticated/admin/auditoria'
     | '/_authenticated/admin/melhorias'
     | '/_authenticated/admin/pendencias'
@@ -514,6 +527,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminModuleRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/aparencia': {
+      id: '/_authenticated/admin/aparencia'
+      path: '/aparencia'
+      fullPath: '/admin/aparencia'
+      preLoaderRoute: typeof AuthenticatedAdminAparenciaRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/auditoria': {
       id: '/_authenticated/admin/auditoria'
       path: '/auditoria'
@@ -547,6 +567,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminModuleRoute: typeof AuthenticatedAdminModuleRoute
+  AuthenticatedAdminAparenciaRoute: typeof AuthenticatedAdminAparenciaRoute
   AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
   AuthenticatedAdminMelhoriasRoute: typeof AuthenticatedAdminMelhoriasRoute
   AuthenticatedAdminPendenciasRoute: typeof AuthenticatedAdminPendenciasRoute
@@ -556,6 +577,7 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminModuleRoute: AuthenticatedAdminModuleRoute,
+  AuthenticatedAdminAparenciaRoute: AuthenticatedAdminAparenciaRoute,
   AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
   AuthenticatedAdminMelhoriasRoute: AuthenticatedAdminMelhoriasRoute,
   AuthenticatedAdminPendenciasRoute: AuthenticatedAdminPendenciasRoute,
