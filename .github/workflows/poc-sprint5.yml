@@ -2,6 +2,8 @@ name: PoC Sprint 5 - qualidade
 on:
   push:
     branches: [Vette]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
