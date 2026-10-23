@@ -198,8 +198,10 @@ export type Database = {
         Row: {
           ativo: boolean | null
           created_at: string
+          fim: string | null
           id: string
           imagem_url: string | null
+          inicio: string | null
           link: string | null
           ordem: number | null
           titulo: string
@@ -208,8 +210,10 @@ export type Database = {
         Insert: {
           ativo?: boolean | null
           created_at?: string
+          fim?: string | null
           id?: string
           imagem_url?: string | null
+          inicio?: string | null
           link?: string | null
           ordem?: number | null
           titulo: string
@@ -218,12 +222,32 @@ export type Database = {
         Update: {
           ativo?: boolean | null
           created_at?: string
+          fim?: string | null
           id?: string
           imagem_url?: string | null
+          inicio?: string | null
           link?: string | null
           ordem?: number | null
           titulo?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      configuracoes_site: {
+        Row: {
+          chave: string
+          updated_at: string
+          valor: string | null
+        }
+        Insert: {
+          chave: string
+          updated_at?: string
+          valor?: string | null
+        }
+        Update: {
+          chave?: string
+          updated_at?: string
+          valor?: string | null
         }
         Relationships: []
       }
@@ -452,6 +476,39 @@ export type Database = {
         }
         Relationships: []
       }
+      documentos: {
+        Row: {
+          arquivo_url: string | null
+          created_at: string
+          data: string | null
+          descricao: string | null
+          id: string
+          tipo: string
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          arquivo_url?: string | null
+          created_at?: string
+          data?: string | null
+          descricao?: string | null
+          id?: string
+          tipo?: string
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          arquivo_url?: string | null
+          created_at?: string
+          data?: string | null
+          descricao?: string | null
+          id?: string
+          tipo?: string
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       empresas_inidoneas: {
         Row: {
           cnpj: string | null
@@ -533,6 +590,39 @@ export type Database = {
           tipo?: string | null
           updated_at?: string
           valor_estimado?: number | null
+        }
+        Relationships: []
+      }
+      links_uteis: {
+        Row: {
+          ativo: boolean | null
+          created_at: string
+          icone: string | null
+          id: string
+          ordem: number | null
+          titulo: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string
+          icone?: string | null
+          id?: string
+          ordem?: number | null
+          titulo: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string
+          icone?: string | null
+          id?: string
+          ordem?: number | null
+          titulo?: string
+          updated_at?: string
+          url?: string
         }
         Relationships: []
       }
@@ -842,48 +932,101 @@ export type Database = {
         }
         Relationships: []
       }
+      servico_avaliacoes: {
+        Row: {
+          comentario: string | null
+          created_at: string
+          id: string
+          nota: number
+          servico_id: string
+          util: boolean | null
+        }
+        Insert: {
+          comentario?: string | null
+          created_at?: string
+          id?: string
+          nota: number
+          servico_id: string
+          util?: boolean | null
+        }
+        Update: {
+          comentario?: string | null
+          created_at?: string
+          id?: string
+          nota?: number
+          servico_id?: string
+          util?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "servico_avaliacoes_servico_id_fkey"
+            columns: ["servico_id"]
+            isOneToOne: false
+            referencedRelation: "servicos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       servicos: {
         Row: {
+          anexo_url: string | null
           created_at: string
           custo: string | null
           descricao: string | null
+          etapas: string | null
           id: string
           link: string | null
           nome: string
+          parecer_ouvidor: string | null
+          parecer_status: string | null
+          perfil_atendimento: string | null
           prazo: string | null
           publico: string | null
           requisitos: string | null
           secretaria: string | null
           tags: string[] | null
           updated_at: string
+          visualizacoes: number
         }
         Insert: {
+          anexo_url?: string | null
           created_at?: string
           custo?: string | null
           descricao?: string | null
+          etapas?: string | null
           id?: string
           link?: string | null
           nome: string
+          parecer_ouvidor?: string | null
+          parecer_status?: string | null
+          perfil_atendimento?: string | null
           prazo?: string | null
           publico?: string | null
           requisitos?: string | null
           secretaria?: string | null
           tags?: string[] | null
           updated_at?: string
+          visualizacoes?: number
         }
         Update: {
+          anexo_url?: string | null
           created_at?: string
           custo?: string | null
           descricao?: string | null
+          etapas?: string | null
           id?: string
           link?: string | null
           nome?: string
+          parecer_ouvidor?: string | null
+          parecer_status?: string | null
+          perfil_atendimento?: string | null
           prazo?: string | null
           publico?: string | null
           requisitos?: string | null
           secretaria?: string | null
           tags?: string[] | null
           updated_at?: string
+          visualizacoes?: number
         }
         Relationships: []
       }
@@ -968,6 +1111,42 @@ export type Database = {
         }
         Relationships: []
       }
+      unidades_gestoras: {
+        Row: {
+          cnpj: string | null
+          codigo: string | null
+          created_at: string
+          id: string
+          nome: string
+          responsavel: string | null
+          secretaria: string | null
+          tipo: string | null
+          updated_at: string
+        }
+        Insert: {
+          cnpj?: string | null
+          codigo?: string | null
+          created_at?: string
+          id?: string
+          nome: string
+          responsavel?: string | null
+          secretaria?: string | null
+          tipo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cnpj?: string | null
+          codigo?: string | null
+          created_at?: string
+          id?: string
+          nome?: string
+          responsavel?: string | null
+          secretaria?: string | null
+          tipo?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -1040,6 +1219,15 @@ export type Database = {
           roles: string[]
         }[]
       }
+      avaliar_servico: {
+        Args: {
+          _comentario: string
+          _nota: number
+          _servico: string
+          _util: boolean
+        }
+        Returns: undefined
+      }
       consultar_protocolo: {
         Args: { _protocolo: string }
         Returns: {
@@ -1058,6 +1246,15 @@ export type Database = {
           canal: string
           status: string
           total: number
+        }[]
+      }
+      estatisticas_servicos: {
+        Args: never
+        Returns: {
+          avaliacoes: number
+          media: number
+          servico_id: string
+          uteis: number
         }[]
       }
       has_role: {
@@ -1087,6 +1284,10 @@ export type Database = {
         Returns: string
       }
       registrar_visualizacao: { Args: { _slug: string }; Returns: undefined }
+      registrar_visualizacao_servico: {
+        Args: { _id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "editor"
