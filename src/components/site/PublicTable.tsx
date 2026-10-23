@@ -9,13 +9,22 @@ import { formatCell, toCSV, type ModuleDef } from "@/lib/modules";
 export function PublicTable({ mod }: { mod: ModuleDef }) {
   const { data } = useSuspenseQuery(moduleQuery(mod.key));
   const [q, setQ] = useState("");
+  const [numero, setNumero] = useState("");
+  const [ano, setAno] = useState("");
+  const [ementa, setEmenta] = useState("");
+  const legislacao = ["lei", "decreto", "portaria", "resolucao", "edital", "lrf"].includes(mod.key);
   const cols = mod.fields.filter((f) => !f.hideInTable);
 
   const rows = useMemo(() => {
     const s = q.trim().toLowerCase();
-    if (!s) return data;
-    return data.filter((r) => mod.fields.some((f) => String(r[f.name] ?? "").toLowerCase().includes(s)));
-  }, [data, q, mod.fields]);
+    return data.filter((r) => {
+      if (s && !mod.fields.some((f) => String(r[f.name] ?? "").toLowerCase().includes(s))) return false;
+      if (legislacao && numero.trim() && !String(r.numero ?? "").toLowerCase().includes(numero.trim().toLowerCase())) return false;
+      if (legislacao && ano.trim() && String(r.ano ?? "").trim() !== ano.trim()) return false;
+      if (legislacao && ementa.trim() && !String(r.ementa ?? "").toLowerCase().includes(ementa.trim().toLowerCase())) return false;
+      return true;
+    });
+  }, [data, q, mod.fields, legislacao, numero, ano, ementa]);
 
   const exportar = (tipo: "csv" | "json") => {
     const content = tipo === "csv" ? "\uFEFF" + toCSV(mod.fields, rows) : JSON.stringify(rows, null, 2);
@@ -39,6 +48,11 @@ export function PublicTable({ mod }: { mod: ModuleDef }) {
         <Button variant="outline" size="sm" onClick={() => exportar("json")}><Download className="size-4" />JSON</Button>
         <Button variant="outline" size="sm" onClick={() => window.print()}>Imprimir</Button>
       </div>
+      {legislacao && <div className="grid gap-3 border-b p-4 sm:grid-cols-3">
+        <Input aria-label="Número do documento" placeholder="Filtrar por número" value={numero} onChange={e => setNumero(e.target.value)} />
+        <Input aria-label="Ano do documento" placeholder="Ano (ex.: 2026)" inputMode="numeric" value={ano} onChange={e => setAno(e.target.value)} />
+        <Input aria-label="Ementa do documento" placeholder="Palavras da ementa" value={ementa} onChange={e => setEmenta(e.target.value)} />
+      </div>}
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-secondary text-left text-secondary-foreground">
