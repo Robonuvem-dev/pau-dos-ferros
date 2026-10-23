@@ -61,6 +61,10 @@ export const MODULES: ModuleDef[] = [
       { name: "video_url", label: "Vídeo (link do YouTube)", hideInTable: true },
       { name: "audio_url", label: "Áudio", type: "file", hideInTable: true },
       { name: "tags", label: "Tags", type: "tags", hideInTable: true },
+      { name: "agendar_para", label: "Publicar a partir de (agendamento)", type: "date", hideInTable: true },
+      { name: "evento", label: "Evento relacionado", hideInTable: true },
+      { name: "evento_data", label: "Data do evento", type: "date", hideInTable: true },
+      { name: "evento_local", label: "Local do evento", hideInTable: true },
       { name: "publicado", label: "Publicado", type: "bool" },
     ],
   },
@@ -120,6 +124,7 @@ export const MODULES: ModuleDef[] = [
       { name: "descricao", label: "Descrição", type: "textarea", hideInTable: true },
       { name: "capa_url", label: "Capa", type: "file", hideInTable: true },
       { name: "fotos", label: "Fotos do álbum", type: "files", hideInTable: true },
+      { name: "legendas", label: "Legendas das fotos (uma por linha, na ordem das fotos)", type: "textarea", hideInTable: true },
     ],
   },
   {
@@ -139,6 +144,8 @@ export const MODULES: ModuleDef[] = [
     fields: [
       { name: "nome", label: "Nome", required: true },
       { name: "cargo", label: "Cargo", required: true },
+      { name: "partido", label: "Partido" },
+      { name: "mandato", label: "Mandato", hideInTable: true },
       { name: "email", label: "E-mail" },
       { name: "telefone", label: "Telefone" },
       { name: "foto_url", label: "Foto", type: "file", hideInTable: true },
@@ -302,7 +309,10 @@ export const MODULES: ModuleDef[] = [
   pub("portaria", "Portarias", "Portarias e atos de pessoal."),
   pub("rreo", "RREO", "Relatório Resumido da Execução Orçamentária."),
   pub("rgf", "RGF", "Relatório de Gestão Fiscal."),
-  pub("concurso", "Concursos e seletivos", "Concursos públicos e processos seletivos."),
+  pub("concurso", "Concursos e seletivos", "Concursos públicos e processos seletivos.", [
+    { name: "situacao", label: "Situação", type: "select", options: ["Inscrições abertas", "Em andamento", "Homologado", "Encerrado"] },
+    { name: "etapas", label: "Etapas (uma por linha: data — etapa)", type: "textarea", hideInTable: true },
+  ]),
   pub("covid", "COVID-19", "Ações, contratações e despesas emergenciais."),
   pub("conselho-doc", "Documentos dos conselhos", "Atas, resoluções e documentos dos conselhos."),
   {

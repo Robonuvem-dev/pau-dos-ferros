@@ -59,6 +59,7 @@ function AdminLayout() {
           {isAdmin && <Link to="/admin/usuarios" className={item}>Usuários e perfis</Link>}
           {isAdmin && <Link to="/admin/auditoria" className={item}>Auditoria</Link>}
           {isAdmin && <Link to="/admin/aparencia" className={item}>Aparência do site</Link>}
+          <Link to="/admin/servicos-estatisticas" className={item}>Estatísticas dos serviços</Link>
           <Link to="/admin/pendencias" className={item}>Críticas e pendências</Link>
           <Link to="/admin/melhorias" className={item}>Pedidos de melhoria</Link>
           <Link to="/sobre" className={item}>Sobre o sistema (v{VERSAO})</Link>

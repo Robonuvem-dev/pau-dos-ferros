@@ -29,6 +29,7 @@ function Prefeitura() {
                 <div>
                   <div className="text-xs font-bold uppercase text-accent">{String(a.cargo)}</div>
                   <div className="font-display text-lg font-bold">{String(a.nome)}</div>
+                  {a.partido || a.mandato ? <div className="text-sm text-muted-foreground">{[a.partido, a.mandato].filter(Boolean).map(String).join(" · ")}</div> : null}
                   {a.biografia ? <p className="mt-1 text-sm text-muted-foreground">{String(a.biografia)}</p> : null}
                   <div className="mt-2 space-y-1 text-sm">
                     {a.email ? <div className="flex items-center gap-1"><Mail className="size-4" />{String(a.email)}</div> : null}

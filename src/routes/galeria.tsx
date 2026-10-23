@@ -55,7 +55,7 @@ function Galeria() {
       <Dialog open={!!aberto} onOpenChange={(o) => !o && setAberto(null)}>
         <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
           <DialogHeader><DialogTitle>{String(aberto?.titulo ?? "")}</DialogTitle></DialogHeader>
-          <div className="grid gap-3 sm:grid-cols-2">{(Array.isArray(aberto?.fotos) ? aberto.fotos : []).map((f) => <img key={f} src={f} alt="" className="w-full rounded" />)}</div>
+          <div className="grid gap-3 sm:grid-cols-2">{(Array.isArray(aberto?.fotos) ? aberto.fotos : []).map((f, i) => { const leg = String(aberto?.legendas ?? "").split("\n")[i]?.trim(); return <figure key={f}><img src={f} alt={leg || `Foto ${i + 1} do álbum`} className="w-full rounded" />{leg ? <figcaption className="mt-1 text-sm text-muted-foreground">{leg}</figcaption> : null}</figure>; })}</div>
         </DialogContent>
       </Dialog>
     </>
