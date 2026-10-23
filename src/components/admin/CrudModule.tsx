@@ -202,14 +202,19 @@ function FieldInput({ field: f, value, onChange }: { field: Field; value: unknow
 function RelationInput({ field: f, value, onChange, label, id }: { field: Field; value: unknown; onChange: (v: unknown) => void; label: React.ReactNode; id: string }) {
   const ref = f.ref!;
   const { data = [] } = useQuery({ ...adminModuleQuery(ref.module) });
-  const opts = Array.from(new Set(data.map((r) => String(r[ref.column] ?? "")).filter(Boolean))).sort();
+  const opts = Array.from(
+    new Map(data.filter((r) => r[ref.column] != null).map((r) => [
+      String(r[ref.column]),
+      { value: String(r[ref.column]), label: String(r[ref.displayColumn ?? ref.column] ?? r[ref.column]) },
+    ])).values(),
+  ).sort((a, b) => a.label.localeCompare(b.label, "pt-BR"));
   const cur = String(value ?? "");
   return (
     <div className="grid gap-1.5">{label}
       <select id={id} className="h-9 rounded-md border border-input bg-background px-3 text-sm" value={cur} onChange={(e) => onChange(e.target.value)}>
         <option value="">Selecione...</option>
-        {cur && !opts.includes(cur) && <option value={cur}>{cur} (não cadastrado)</option>}
-        {opts.map((o) => <option key={o} value={o}>{o}</option>)}
+        {cur && !opts.some((o) => o.value === cur) && <option value={cur}>{cur} (não cadastrado)</option>}
+        {opts.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     </div>
   );
