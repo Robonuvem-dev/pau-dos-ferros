@@ -50,7 +50,9 @@ begin
   execute format('create policy "insercao autorizada" on public.%I for insert to authenticated with check (public.pode_editar(auth.uid(), %L))',t,'convenios');
   execute format('create policy "atualizacao autorizada" on public.%I for update to authenticated using (public.pode_editar(auth.uid(), %L)) with check (public.pode_editar(auth.uid(), %L))',t,'convenios','convenios');
   execute format('create policy "exclusao autorizada" on public.%I for delete to authenticated using (public.pode_editar(auth.uid(), %L))',t,'convenios');
+  execute format('drop trigger if exists touch_%1$s on public.%1$I',t);
   execute format('create trigger touch_%1$s before update on public.%1$I for each row execute function public.touch_updated_at()',t);
+  execute format('drop trigger if exists auditoria_%1$s on public.%1$I',t);
   execute format('create trigger auditoria_%1$s after insert or update or delete on public.%1$I for each row execute function public.registrar_auditoria()',t);
  end loop;
 end $$;
