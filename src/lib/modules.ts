@@ -9,7 +9,7 @@ export interface Field {
   required?: boolean;
   hideInTable?: boolean;
   /** Para type "relation": módulo de origem e coluna gravada/exibida. */
-  ref?: { module: string; column: string };
+  ref?: { module: string; column: string; displayColumn?: string };
 }
 
 export interface ModuleDef {
@@ -336,7 +336,7 @@ export const MODULES: ModuleDef[] = [
     key: "convenio-parcelas", table: "convenio_parcelas", label: "Parcelas de convênios", grupo: "Licitações e Contratos", orderBy: "numero", publico: true,
     descricao: "Cronograma de parcelas, valores e recebimentos de convênios.",
     fields: [
-      { name: "convenio_id", label: "Convênio", type: "relation", ref: { module: "convenios", column: "numero" }, required: true },
+      { name: "convenio_id", label: "Convênio", type: "relation", ref: { module: "convenios", column: "id", displayColumn: "numero" }, required: true },
       { name: "numero", label: "Número da parcela", type: "int", required: true },
       { name: "valor", label: "Valor", type: "money", required: true },
       { name: "vencimento", label: "Vencimento", type: "date" },
@@ -349,7 +349,7 @@ export const MODULES: ModuleDef[] = [
     key: "convenio-obrigacoes", table: "convenio_obrigacoes", label: "Obrigações de convênios", grupo: "Licitações e Contratos", orderBy: "vencimento", publico: true,
     descricao: "Obrigações, prazos e situação da prestação de contas dos convênios.",
     fields: [
-      { name: "convenio_id", label: "Convênio", type: "relation", ref: { module: "convenios", column: "numero" }, required: true },
+      { name: "convenio_id", label: "Convênio", type: "relation", ref: { module: "convenios", column: "id", displayColumn: "numero" }, required: true },
       { name: "titulo", label: "Obrigação", required: true },
       { name: "vencimento", label: "Vencimento", type: "date" },
       { name: "cumprida_em", label: "Cumprida em", type: "date" },
