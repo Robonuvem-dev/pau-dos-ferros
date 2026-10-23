@@ -1,0 +1,78 @@
+import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { adminModuleQuery } from "@/lib/admin-queries";
+import { moduleQuery } from "@/lib/queries";
+import { resumoFinanceiroConvenio, type Parcela } from "@/lib/convenios/validacao";
+import { brl } from "@/lib/modules";
+import type { Row } from "@/lib/data";
+
+/** M04 — consolidado por convênio, compartilhado pelo painel e pela consulta pública. */
+export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
+  const convenios = useQuery(publico ? moduleQuery("convenios") : adminModuleQuery("convenios"));
+  const parcelas = useQuery(publico ? moduleQuery("convenio-parcelas") : adminModuleQuery("convenio-parcelas"));
+  const obrigacoes = useQuery(publico ? moduleQuery("convenio-obrigacoes") : adminModuleQuery("convenio-obrigacoes"));
+
+  const erro = convenios.error || parcelas.error || obrigacoes.error;
+  if (erro) return <p role="alert" className="rounded border border-destructive p-3 text-sm">Não foi possível carregar o consolidado de convênios. Confirme se a migração 0009 já foi aplicada ao ambiente.</p>;
+  if (convenios.isPending || parcelas.isPending || obrigacoes.isPending)
+    return <p className="rounded border p-3 text-sm text-muted-foreground">Carregando saldos e obrigações dos convênios...</p>;
+
+  const lista = (convenios.data ?? []) as Row[];
+  const cronograma = (parcelas.data ?? []) as Row[];
+  const deveres = (obrigacoes.data ?? []) as Row[];
+  const hoje = new Date().toISOString().slice(0, 10);
+
+  return (
+    <section className="my-6 rounded-lg border bg-card p-4">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <h2 className="font-display text-xl font-bold">Acompanhamento de convênios</h2>
+          <p className="text-sm text-muted-foreground">Parcelas, saldo a programar e obrigações vinculadas ao convênio.</p>
+        </div>
+        {!publico && <div className="flex gap-3 text-sm">
+          <Link to="/admin/$module" params={{ module: "convenio-parcelas" }} className="text-primary underline">Gerenciar parcelas</Link>
+          <Link to="/admin/$module" params={{ module: "convenio-obrigacoes" }} className="text-primary underline">Gerenciar obrigações</Link>
+        </div>}
+      </div>
+      {lista.length === 0 ? <p className="mt-4 text-sm text-muted-foreground">Nenhum convênio cadastrado.</p> : (
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-secondary"><tr>
+              <th className="p-2">Convênio</th><th className="p-2">Valor global</th>
+              <th className="p-2">Parcelas programadas</th><th className="p-2">Recebido</th>
+              <th className="p-2">Saldo a programar</th><th className="p-2">Obrigações</th>
+            </tr></thead>
+            <tbody>
+              {lista.map((c) => {
+                const itens: Parcela[] = cronograma.filter(p => p.convenio_id === c.id).map(p => ({
+                  valor: Number(p.valor ?? 0),
+                  status: (["Programada", "Recebida", "Cancelada"].includes(String(p.status))
+                    ? String(p.status) : "Programada") as Parcela["status"],
+                }));
+                const valor = Number(c.valor_global ?? c.valor ?? 0);
+                const resumo = resumoFinanceiroConvenio(valor, Number(c.contrapartida ?? 0), itens);
+                const pendentes = deveres.filter(o => o.convenio_id === c.id && o.situacao === "Pendente");
+                const atrasadas = pendentes.filter(o => o.vencimento && String(o.vencimento) < hoje);
+                return <tr key={c.id} className="border-t align-top">
+                  <td className="p-2 font-medium">{String(c.numero ?? "Sem número")}</td>
+                  <td className="p-2">{brl(valor)}</td>
+                  <td className="p-2">{brl(resumo.programado)}</td>
+                  <td className="p-2">{brl(resumo.recebido)}</td>
+                  <td className="p-2">
+                    <span className={resumo.excedido ? "font-bold text-destructive" : ""}>{brl(resumo.saldo)}</span>
+                    {resumo.excedido && <span className="block text-xs text-destructive">Parcelas excedem valor global</span>}
+                  </td>
+                  <td className="p-2">
+                    {pendentes.length} pendente(s)
+                    {atrasadas.length > 0 && <span className="block font-semibold text-destructive">{atrasadas.length} vencida(s)</span>}
+                  </td>
+                </tr>;
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <p className="mt-3 text-xs text-muted-foreground">Saldo a programar = valor global − parcelas não canceladas. Valores de demonstração dependem da origem e da integridade dos cadastros.</p>
+    </section>
+  );
+}
