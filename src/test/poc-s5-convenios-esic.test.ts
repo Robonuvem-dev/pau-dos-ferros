@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { resumoFinanceiroConvenio, pendenciasConvenio } from "../lib/convenios/validacao";
-import { prazoEsic, validarProrrogacaoEsic } from "../lib/atendimento/prazos";
+import { prazoAtendimento, prazoEsic, validarProrrogacaoEsic } from "../lib/atendimento/prazos";
 import { avaliarPendencias } from "../lib/criticas";
 
 describe("Sprint 5 — convênios M04", () => {
@@ -48,5 +48,18 @@ describe("M05 — regras de prorrogação", () => {
   });
   it("impede datas inválidas", () => {
     expect(() => prazoEsic(new Date("invalid"), false)).toThrow();
+  });
+});
+
+describe("M05 — prazos consistentes por canal e fuso", () => {
+  it("não altera a data municipal ao receber timestamp UTC de madrugada", () => {
+    const recebido = new Date("2026-10-02T01:00:00.000Z"); // 01/10 em Fortaleza
+    expect(prazoAtendimento(recebido, "esic", false).toISOString().slice(0,10)).toBe("2026-10-21");
+    expect(prazoAtendimento(recebido, "ouvidoria", false).toISOString().slice(0,10)).toBe("2026-10-31");
+  });
+  it("aplica dez dias extras apenas ao e-SIC", () => {
+    const recebido = new Date("2026-10-01T12:00:00.000Z");
+    expect(prazoAtendimento(recebido, "esic", true).toISOString().slice(0,10)).toBe("2026-10-31");
+    expect(prazoAtendimento(recebido, "ouvidoria", true).toISOString().slice(0,10)).toBe("2026-10-31");
   });
 });
