@@ -18,7 +18,7 @@ export const REGRAS: Regra[] = [
   ] },
   { modulo: "secretarias", nome: (r) => String(r.nome ?? ""), testes: [
     { problema: "Secretaria sem horário de atendimento", gravidade: "media", falha: (r) => vazio(r.horario) },
-    { problema: "Secretaria sem responsável", gravidade: "media", falha: (r) => vazio(r.responsavel) },
+    { problema: "Secretaria sem responsável", gravidade: "media", falha: (r) => vazio(r.secretario) },
   ] },
   { modulo: "servicos", nome: (r) => String(r.nome ?? ""), testes: [
     { problema: "Serviço sem setor responsável", gravidade: "alta", falha: (r) => vazio(r.secretaria) },
