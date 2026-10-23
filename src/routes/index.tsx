@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Building2, ClipboardList, FileSearch, Gavel, Hammer, Headphones, Landmark, Search, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { moduleQuery } from "@/lib/queries";
+import { configQuery, moduleQuery } from "@/lib/queries";
+import { Facebook, ExternalLink } from "lucide-react";
 import { dataBR } from "@/lib/modules";
 import { pageHead } from "@/lib/seo";
 import { QueryError, QueryNotFound } from "@/components/site/RouteStates";
@@ -16,6 +17,8 @@ export const Route = createFileRoute("/")({
     context.queryClient.ensureQueryData(moduleQuery("noticias")),
     context.queryClient.ensureQueryData(moduleQuery("banners")),
     context.queryClient.ensureQueryData(moduleQuery("servicos")),
+    context.queryClient.ensureQueryData(moduleQuery("links-uteis")),
+    context.queryClient.ensureQueryData(configQuery),
   ]),
   component: Home,
   errorComponent: QueryError,
@@ -39,7 +42,17 @@ function Home() {
   const { data: servicos } = useSuspenseQuery(moduleQuery("servicos"));
   const [q, setQ] = useState("");
   const navigate = useNavigate();
-  const banner = banners.find((b) => b.imagem_url);
+  const { data: links } = useSuspenseQuery(moduleQuery("links-uteis"));
+  const { data: config } = useSuspenseQuery(configQuery);
+  const hoje = new Date().toISOString().slice(0, 10);
+  const vigentes = banners.filter((b) => b.imagem_url && (!b.inicio || String(b.inicio) <= hoje) && (!b.fim || String(b.fim) >= hoje));
+  const [slide, setSlide] = useState(0);
+  useEffect(() => {
+    if (vigentes.length < 2) return;
+    const t = setInterval(() => setSlide((s) => (s + 1) % vigentes.length), 6000);
+    return () => clearInterval(t);
+  }, [vigentes.length]);
+  const banner = vigentes[slide % Math.max(vigentes.length, 1)];
   const [destaque, ...outras] = noticias;
 
   return (
@@ -84,6 +97,11 @@ function Home() {
         ) : <p className="text-muted-foreground">Nenhuma notícia publicada ainda.</p>}
       </section>
 
+      {vigentes.length > 1 && (
+        <div className="mx-auto mt-4 flex max-w-6xl justify-center gap-2 px-4" aria-label="Banners">
+          {vigentes.map((b, i) => <button key={b.id} aria-label={`Banner ${i + 1}: ${String(b.titulo)}`} aria-current={i === slide % vigentes.length} onClick={() => setSlide(i)} className={`h-2 w-8 rounded-full ${i === slide % vigentes.length ? "bg-primary" : "bg-border"}`} />)}
+        </div>
+      )}
       <section className="bg-secondary">
         <div className="mx-auto max-w-6xl px-4 py-14">
           <div className="mb-6 flex items-end justify-between">
@@ -100,6 +118,27 @@ function Home() {
             {servicos.length === 0 && <p className="text-muted-foreground">A carta de serviços será publicada em breve.</p>}
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto grid max-w-6xl gap-8 px-4 py-14 lg:grid-cols-[1fr_360px]">
+        <div>
+          <h2 className="section-title mb-6">Links úteis</h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {links.map((l) => (
+              <a key={l.id} href={String(l.url)} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-lg border bg-card p-4 font-semibold transition hover:border-primary">
+                {String(l.titulo)}<ExternalLink className="size-4 text-accent" />
+              </a>
+            ))}
+            {links.length === 0 && <p className="text-muted-foreground">Nenhum link cadastrado.</p>}
+          </div>
+        </div>
+        {config.facebook_url ? (
+          <div>
+            <h2 className="section-title mb-6 flex items-center gap-2"><Facebook className="size-6" />Facebook</h2>
+            <iframe title="Página oficial da Prefeitura no Facebook" className="h-[500px] w-full rounded-lg border bg-card"
+              src={`https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(config.facebook_url)}&tabs=timeline&width=360&height=500&small_header=true&hide_cover=false`} />
+          </div>
+        ) : null}
       </section>
     </>
   );
