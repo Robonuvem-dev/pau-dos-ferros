@@ -1,5 +1,5 @@
 // Configuração central dos módulos: dirige o Portal da Transparência e o painel administrativo.
-export type FieldType = "text" | "textarea" | "number" | "money" | "date" | "bool" | "file" | "tags" | "select" | "int" | "files";
+export type FieldType = "text" | "textarea" | "number" | "money" | "date" | "bool" | "file" | "tags" | "select" | "int" | "files" | "relation";
 
 export interface Field {
   name: string;
@@ -8,6 +8,8 @@ export interface Field {
   options?: string[];
   required?: boolean;
   hideInTable?: boolean;
+  /** Para type "relation": módulo de origem e coluna gravada/exibida. */
+  ref?: { module: string; column: string };
 }
 
 export interface ModuleDef {

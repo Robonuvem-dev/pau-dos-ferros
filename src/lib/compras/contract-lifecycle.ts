@@ -202,7 +202,7 @@ export function assertInstrumentAggregateTotalWithinCurrentValue(
     const normalized = typeof value === "number" ? value.toFixed(2) : value.toString();
     const match = normalized.match(/^(\d+)(?:\.(\d{1,2}))?$/);
     if (!match) throw new ContractLifecycleError("Não foi possível validar o valor atual do instrumento.");
-    return BigInt(match[1]) * BigInt(100) + BigInt((match[2] ?? "").padEnd(2, "0"));
+    return BigInt(match[1] ?? "0") * BigInt(100) + BigInt((match[2] ?? "").padEnd(2, "0"));
   };
   if (cents(aggregateTotal) > cents(currentValue)) {
     throw new ContractLifecycleError(`O total de ${label} não pode exceder o valor atual do instrumento.`);
