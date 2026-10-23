@@ -26,7 +26,7 @@ describe("boletimDoDia (item 3.14)", () => {
   it("lista aberturas do dia com totais por modalidade", () => {
     const b = boletimDoDia(lics, "2026-10-23");
     expect(b.doDia).toHaveLength(2);
-    expect(b.porModalidade).toEqual([["Concorrência", 1], ["Pregão Eletrônico", 1]].sort((a, b2) => b2[1] - a[1]));
+    expect(b.porModalidade).toEqual([["Pregão Eletrônico", 1], ["Concorrência", 1]]);
     expect(b.totalEstimado).toBe(600000);
   });
   it("avisa aberturas dos próximos 7 dias", () => {

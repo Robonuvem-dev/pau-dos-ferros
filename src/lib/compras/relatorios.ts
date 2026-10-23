@@ -29,11 +29,11 @@ export function addDias(iso: string, n: number): string {
 }
 
 export interface FiltrosMapa {
-  modalidade?: string;
-  situacao?: string;
-  secretaria?: string;
-  de?: string;
-  ate?: string;
+  modalidade?: string | undefined;
+  situacao?: string | undefined;
+  secretaria?: string | undefined;
+  de?: string | undefined;
+  ate?: string | undefined;
 }
 
 /** Mapa de licitações com filtros avançados (item 3.16). */
