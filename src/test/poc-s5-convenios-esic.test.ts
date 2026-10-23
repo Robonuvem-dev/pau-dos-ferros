@@ -22,8 +22,8 @@ describe("Sprint 5 — convênios M04", () => {
 });
 describe("Sprint 5 — e-SIC M05", () => {
   it("calcula prazos de 20 e 30 dias", () => {
-    expect(prazoEsic(new Date("2026-10-01T00:00:00.000Z"),false).toISOString().slice(0,10)).toBe("2026-10-21");
-    expect(prazoEsic(new Date("2026-10-01T00:00:00.000Z"),true).toISOString().slice(0,10)).toBe("2026-10-31");
+    expect(prazoEsic(new Date("2026-10-01T12:00:00.000Z"),false).toISOString().slice(0,10)).toBe("2026-10-21");
+    expect(prazoEsic(new Date("2026-10-01T12:00:00.000Z"),true).toISOString().slice(0,10)).toBe("2026-10-31");
   });
   it("rejeita prorrogação sem justificativa", () => {
     expect(()=>validarProrrogacaoEsic(true,"")).toThrow();
