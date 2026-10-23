@@ -13,6 +13,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        id: checkout
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -25,4 +26,5 @@ jobs:
       - name: Lint
         run: bun run lint
       - name: Build
+        if: always() && steps.checkout.outcome != 'failure'
         run: bun run build
