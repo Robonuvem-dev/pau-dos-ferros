@@ -27,7 +27,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
-import { Route as ServicosFichaRouteImport } from './routes/servicos.ficha'
+import { Route as ServicosFichaRouteImport } from './routes/servicos_.ficha'
 import { Route as TransparenciaIndexRouteImport } from './routes/transparencia.index'
 import { Route as TransparenciaModuleRouteImport } from './routes/transparencia.$module'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
@@ -128,9 +128,9 @@ const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicosFichaRoute = ServicosFichaRouteImport.update({
-  id: '/ficha',
-  path: '/ficha',
-  getParentRoute: () => ServicosRoute,
+  id: '/servicos_/ficha',
+  path: '/servicos/ficha',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const TransparenciaIndexRoute = TransparenciaIndexRouteImport.update({
   id: '/transparencia/',
@@ -196,7 +196,7 @@ export interface FileRoutesByFullPath {
   '/prefeitura': typeof PrefeituraRoute
   '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
-  '/servicos': typeof ServicosRouteWithChildren
+  '/servicos': typeof ServicosRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
@@ -225,7 +225,7 @@ export interface FileRoutesByTo {
   '/prefeitura': typeof PrefeituraRoute
   '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
-  '/servicos': typeof ServicosRouteWithChildren
+  '/servicos': typeof ServicosRoute
   '/sobre': typeof SobreRoute
   '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
@@ -255,12 +255,12 @@ export interface FileRoutesById {
   '/prefeitura': typeof PrefeituraRoute
   '/reset-password': typeof ResetPasswordRoute
   '/secretarias': typeof SecretariasRoute
-  '/servicos': typeof ServicosRouteWithChildren
+  '/servicos': typeof ServicosRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
-  '/servicos/ficha': typeof ServicosFichaRoute
+  '/servicos_/ficha': typeof ServicosFichaRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/transparencia/': typeof TransparenciaIndexRoute
@@ -349,7 +349,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/conta'
     | '/noticias/$slug'
-    | '/servicos/ficha'
+    | '/servicos_/ficha'
     | '/transparencia/$module'
     | '/noticias/'
     | '/transparencia/'
@@ -375,9 +375,10 @@ export interface RootRouteChildren {
   PrefeituraRoute: typeof PrefeituraRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SecretariasRoute: typeof SecretariasRoute
-  ServicosRoute: typeof ServicosRouteWithChildren
+  ServicosRoute: typeof ServicosRoute
   SobreRoute: typeof SobreRoute
   NoticiasSlugRoute: typeof NoticiasSlugRoute
+  ServicosFichaRoute: typeof ServicosFichaRoute
   TransparenciaModuleRoute: typeof TransparenciaModuleRoute
   NoticiasIndexRoute: typeof NoticiasIndexRoute
   TransparenciaIndexRoute: typeof TransparenciaIndexRoute
@@ -511,12 +512,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoticiasSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/servicos/ficha': {
-      id: '/servicos/ficha'
-      path: '/ficha'
+    '/servicos_/ficha': {
+      id: '/servicos_/ficha'
+      path: '/servicos/ficha'
       fullPath: '/servicos/ficha'
       preLoaderRoute: typeof ServicosFichaRouteImport
-      parentRoute: typeof ServicosRoute
+      parentRoute: typeof rootRouteImport
     }
     '/transparencia/': {
       id: '/transparencia/'
@@ -620,18 +621,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface ServicosRouteChildren {
-  ServicosFichaRoute: typeof ServicosFichaRoute
-}
-
-const ServicosRouteChildren: ServicosRouteChildren = {
-  ServicosFichaRoute: ServicosFichaRoute,
-}
-
-const ServicosRouteWithChildren = ServicosRoute._addFileChildren(
-  ServicosRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -645,9 +634,10 @@ const rootRouteChildren: RootRouteChildren = {
   PrefeituraRoute: PrefeituraRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SecretariasRoute: SecretariasRoute,
-  ServicosRoute: ServicosRouteWithChildren,
+  ServicosRoute: ServicosRoute,
   SobreRoute: SobreRoute,
   NoticiasSlugRoute: NoticiasSlugRoute,
+  ServicosFichaRoute: ServicosFichaRoute,
   TransparenciaModuleRoute: TransparenciaModuleRoute,
   NoticiasIndexRoute: NoticiasIndexRoute,
   TransparenciaIndexRoute: TransparenciaIndexRoute,

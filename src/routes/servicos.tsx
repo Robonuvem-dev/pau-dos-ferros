@@ -89,9 +89,9 @@ function Avaliar({ id }: { id: string }) {
   const [enviado, setEnviado] = useState(false);
   if (enviado) return <p className="font-semibold text-primary">Obrigado pela avaliação!</p>;
   const enviar = async (util: boolean) => {
-    if (!nota) return toast.error("Escolha uma nota de 1 a 5.");
+    if (!nota) { toast.error("Escolha uma nota de 1 a 5."); return; }
     const { error } = await supabase.rpc("avaliar_servico", { _servico: id, _nota: nota, _util: util, _comentario: "" });
-    if (error) return toast.error("Não foi possível registrar a avaliação.");
+    if (error) { toast.error("Não foi possível registrar a avaliação."); return; }
     setEnviado(true);
     void qc.invalidateQueries({ queryKey: servicosStatsQuery.queryKey });
   };
