@@ -27,12 +27,17 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
+import { Route as ServicosFichaRouteImport } from './routes/servicos_.ficha'
 import { Route as TransparenciaIndexRouteImport } from './routes/transparencia.index'
 import { Route as TransparenciaModuleRouteImport } from './routes/transparencia.$module'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminModuleRouteImport } from './routes/_authenticated/admin.$module'
+import { Route as AuthenticatedAdminAparenciaRouteImport } from './routes/_authenticated/admin.aparencia'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
+import { Route as AuthenticatedAdminLicitacoesRelatoriosRouteImport } from './routes/_authenticated/admin.licitacoes-relatorios'
 import { Route as AuthenticatedAdminMelhoriasRouteImport } from './routes/_authenticated/admin.melhorias'
+import { Route as AuthenticatedAdminPendenciasRouteImport } from './routes/_authenticated/admin.pendencias'
+import { Route as AuthenticatedAdminServicosEstatisticasRouteImport } from './routes/_authenticated/admin.servicos-estatisticas'
 import { Route as AuthenticatedAdminUsuariosRouteImport } from './routes/_authenticated/admin.usuarios'
 
 const IndexRoute = IndexRouteImport.update({
@@ -124,6 +129,11 @@ const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
   path: '/noticias/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicosFichaRoute = ServicosFichaRouteImport.update({
+  id: '/servicos_/ficha',
+  path: '/servicos/ficha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TransparenciaIndexRoute = TransparenciaIndexRouteImport.update({
   id: '/transparencia/',
   path: '/transparencia/',
@@ -145,16 +155,40 @@ const AuthenticatedAdminModuleRoute =
     path: '/$module',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminAparenciaRoute =
+  AuthenticatedAdminAparenciaRouteImport.update({
+    id: '/aparencia',
+    path: '/aparencia',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminAuditoriaRoute =
   AuthenticatedAdminAuditoriaRouteImport.update({
     id: '/auditoria',
     path: '/auditoria',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminLicitacoesRelatoriosRoute =
+  AuthenticatedAdminLicitacoesRelatoriosRouteImport.update({
+    id: '/licitacoes-relatorios',
+    path: '/licitacoes-relatorios',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminMelhoriasRoute =
   AuthenticatedAdminMelhoriasRouteImport.update({
     id: '/melhorias',
     path: '/melhorias',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPendenciasRoute =
+  AuthenticatedAdminPendenciasRouteImport.update({
+    id: '/pendencias',
+    path: '/pendencias',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminServicosEstatisticasRoute =
+  AuthenticatedAdminServicosEstatisticasRouteImport.update({
+    id: '/servicos-estatisticas',
+    path: '/servicos-estatisticas',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminUsuariosRoute =
@@ -181,12 +215,17 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/servicos/ficha': typeof ServicosFichaRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/transparencia/': typeof TransparenciaIndexRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/licitacoes-relatorios': typeof AuthenticatedAdminLicitacoesRelatoriosRoute
   '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
+  '/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
+  '/admin/servicos-estatisticas': typeof AuthenticatedAdminServicosEstatisticasRoute
   '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -206,12 +245,17 @@ export interface FileRoutesByTo {
   '/sobre': typeof SobreRoute
   '/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/servicos/ficha': typeof ServicosFichaRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
   '/noticias': typeof NoticiasIndexRoute
   '/transparencia': typeof TransparenciaIndexRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/licitacoes-relatorios': typeof AuthenticatedAdminLicitacoesRelatoriosRoute
   '/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
+  '/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
+  '/admin/servicos-estatisticas': typeof AuthenticatedAdminServicosEstatisticasRoute
   '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
@@ -234,12 +278,17 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/servicos_/ficha': typeof ServicosFichaRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/transparencia/': typeof TransparenciaIndexRoute
   '/_authenticated/admin/$module': typeof AuthenticatedAdminModuleRoute
+  '/_authenticated/admin/aparencia': typeof AuthenticatedAdminAparenciaRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/_authenticated/admin/licitacoes-relatorios': typeof AuthenticatedAdminLicitacoesRelatoriosRoute
   '/_authenticated/admin/melhorias': typeof AuthenticatedAdminMelhoriasRoute
+  '/_authenticated/admin/pendencias': typeof AuthenticatedAdminPendenciasRoute
+  '/_authenticated/admin/servicos-estatisticas': typeof AuthenticatedAdminServicosEstatisticasRoute
   '/_authenticated/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -262,12 +311,17 @@ export interface FileRouteTypes {
     | '/admin'
     | '/conta'
     | '/noticias/$slug'
+    | '/servicos/ficha'
     | '/transparencia/$module'
     | '/noticias/'
     | '/transparencia/'
     | '/admin/$module'
+    | '/admin/aparencia'
     | '/admin/auditoria'
+    | '/admin/licitacoes-relatorios'
     | '/admin/melhorias'
+    | '/admin/pendencias'
+    | '/admin/servicos-estatisticas'
     | '/admin/usuarios'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -287,12 +341,17 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/conta'
     | '/noticias/$slug'
+    | '/servicos/ficha'
     | '/transparencia/$module'
     | '/noticias'
     | '/transparencia'
     | '/admin/$module'
+    | '/admin/aparencia'
     | '/admin/auditoria'
+    | '/admin/licitacoes-relatorios'
     | '/admin/melhorias'
+    | '/admin/pendencias'
+    | '/admin/servicos-estatisticas'
     | '/admin/usuarios'
     | '/admin'
   id:
@@ -314,12 +373,17 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/conta'
     | '/noticias/$slug'
+    | '/servicos_/ficha'
     | '/transparencia/$module'
     | '/noticias/'
     | '/transparencia/'
     | '/_authenticated/admin/$module'
+    | '/_authenticated/admin/aparencia'
     | '/_authenticated/admin/auditoria'
+    | '/_authenticated/admin/licitacoes-relatorios'
     | '/_authenticated/admin/melhorias'
+    | '/_authenticated/admin/pendencias'
+    | '/_authenticated/admin/servicos-estatisticas'
     | '/_authenticated/admin/usuarios'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
@@ -340,6 +404,7 @@ export interface RootRouteChildren {
   ServicosRoute: typeof ServicosRoute
   SobreRoute: typeof SobreRoute
   NoticiasSlugRoute: typeof NoticiasSlugRoute
+  ServicosFichaRoute: typeof ServicosFichaRoute
   TransparenciaModuleRoute: typeof TransparenciaModuleRoute
   NoticiasIndexRoute: typeof NoticiasIndexRoute
   TransparenciaIndexRoute: typeof TransparenciaIndexRoute
@@ -473,6 +538,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoticiasSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/servicos_/ficha': {
+      id: '/servicos_/ficha'
+      path: '/servicos/ficha'
+      fullPath: '/servicos/ficha'
+      preLoaderRoute: typeof ServicosFichaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/transparencia/': {
       id: '/transparencia/'
       path: '/transparencia'
@@ -501,6 +573,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminModuleRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/aparencia': {
+      id: '/_authenticated/admin/aparencia'
+      path: '/aparencia'
+      fullPath: '/admin/aparencia'
+      preLoaderRoute: typeof AuthenticatedAdminAparenciaRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/auditoria': {
       id: '/_authenticated/admin/auditoria'
       path: '/auditoria'
@@ -508,11 +587,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAuditoriaRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/licitacoes-relatorios': {
+      id: '/_authenticated/admin/licitacoes-relatorios'
+      path: '/licitacoes-relatorios'
+      fullPath: '/admin/licitacoes-relatorios'
+      preLoaderRoute: typeof AuthenticatedAdminLicitacoesRelatoriosRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/melhorias': {
       id: '/_authenticated/admin/melhorias'
       path: '/melhorias'
       fullPath: '/admin/melhorias'
       preLoaderRoute: typeof AuthenticatedAdminMelhoriasRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/pendencias': {
+      id: '/_authenticated/admin/pendencias'
+      path: '/pendencias'
+      fullPath: '/admin/pendencias'
+      preLoaderRoute: typeof AuthenticatedAdminPendenciasRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/servicos-estatisticas': {
+      id: '/_authenticated/admin/servicos-estatisticas'
+      path: '/servicos-estatisticas'
+      fullPath: '/admin/servicos-estatisticas'
+      preLoaderRoute: typeof AuthenticatedAdminServicosEstatisticasRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/usuarios': {
@@ -527,16 +627,26 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminModuleRoute: typeof AuthenticatedAdminModuleRoute
+  AuthenticatedAdminAparenciaRoute: typeof AuthenticatedAdminAparenciaRoute
   AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
+  AuthenticatedAdminLicitacoesRelatoriosRoute: typeof AuthenticatedAdminLicitacoesRelatoriosRoute
   AuthenticatedAdminMelhoriasRoute: typeof AuthenticatedAdminMelhoriasRoute
+  AuthenticatedAdminPendenciasRoute: typeof AuthenticatedAdminPendenciasRoute
+  AuthenticatedAdminServicosEstatisticasRoute: typeof AuthenticatedAdminServicosEstatisticasRoute
   AuthenticatedAdminUsuariosRoute: typeof AuthenticatedAdminUsuariosRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminModuleRoute: AuthenticatedAdminModuleRoute,
+  AuthenticatedAdminAparenciaRoute: AuthenticatedAdminAparenciaRoute,
   AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
+  AuthenticatedAdminLicitacoesRelatoriosRoute:
+    AuthenticatedAdminLicitacoesRelatoriosRoute,
   AuthenticatedAdminMelhoriasRoute: AuthenticatedAdminMelhoriasRoute,
+  AuthenticatedAdminPendenciasRoute: AuthenticatedAdminPendenciasRoute,
+  AuthenticatedAdminServicosEstatisticasRoute:
+    AuthenticatedAdminServicosEstatisticasRoute,
   AuthenticatedAdminUsuariosRoute: AuthenticatedAdminUsuariosRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
@@ -573,6 +683,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicosRoute: ServicosRoute,
   SobreRoute: SobreRoute,
   NoticiasSlugRoute: NoticiasSlugRoute,
+  ServicosFichaRoute: ServicosFichaRoute,
   TransparenciaModuleRoute: TransparenciaModuleRoute,
   NoticiasIndexRoute: NoticiasIndexRoute,
   TransparenciaIndexRoute: TransparenciaIndexRoute,

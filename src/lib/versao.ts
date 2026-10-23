@@ -1,7 +1,17 @@
 /** Versão e histórico do sistema, exibidos na página "Sobre" e no aviso de atualização do painel. */
-export const VERSAO = "1.1.0";
+export const VERSAO = "1.2.0";
 
 export const HISTORICO: { versao: string; data: string; itens: string[] }[] = [
+  {
+    versao: "1.2.0",
+    data: "2026-10-23",
+    itens: [
+      "Licitações com modalidades da Lei 14.133 e linha do tempo pública dos processos.",
+      "Aditivos e adesões vinculados ao contrato de origem, com valor e vigência recalculados automaticamente.",
+      "Cadastros de comissões de contratação, membros de equipes, parcerias e termos de fomento com OSC.",
+      "Relatórios de boletim do dia, mapa de licitações com filtros e contratos a vencer, com exportação CSV.",
+    ],
+  },
   {
     versao: "1.1.0",
     data: "2026-10-22",

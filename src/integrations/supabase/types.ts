@@ -22,8 +22,10 @@ export type Database = {
           email: string | null
           foto_url: string | null
           id: string
+          mandato: string | null
           nome: string
           ordem: number | null
+          partido: string | null
           telefone: string | null
           updated_at: string
         }
@@ -34,8 +36,10 @@ export type Database = {
           email?: string | null
           foto_url?: string | null
           id?: string
+          mandato?: string | null
           nome: string
           ordem?: number | null
+          partido?: string | null
           telefone?: string | null
           updated_at?: string
         }
@@ -46,8 +50,10 @@ export type Database = {
           email?: string | null
           foto_url?: string | null
           id?: string
+          mandato?: string | null
           nome?: string
           ordem?: number | null
+          partido?: string | null
           telefone?: string | null
           updated_at?: string
         }
@@ -61,6 +67,7 @@ export type Database = {
           descricao: string | null
           fotos: string[] | null
           id: string
+          legendas: string | null
           titulo: string
           updated_at: string
         }
@@ -71,6 +78,7 @@ export type Database = {
           descricao?: string | null
           fotos?: string[] | null
           id?: string
+          legendas?: string | null
           titulo: string
           updated_at?: string
         }
@@ -81,6 +89,7 @@ export type Database = {
           descricao?: string | null
           fotos?: string[] | null
           id?: string
+          legendas?: string | null
           titulo?: string
           updated_at?: string
         }
@@ -198,8 +207,10 @@ export type Database = {
         Row: {
           ativo: boolean | null
           created_at: string
+          fim: string | null
           id: string
           imagem_url: string | null
+          inicio: string | null
           link: string | null
           ordem: number | null
           titulo: string
@@ -208,8 +219,10 @@ export type Database = {
         Insert: {
           ativo?: boolean | null
           created_at?: string
+          fim?: string | null
           id?: string
           imagem_url?: string | null
+          inicio?: string | null
           link?: string | null
           ordem?: number | null
           titulo: string
@@ -218,12 +231,65 @@ export type Database = {
         Update: {
           ativo?: boolean | null
           created_at?: string
+          fim?: string | null
           id?: string
           imagem_url?: string | null
+          inicio?: string | null
           link?: string | null
           ordem?: number | null
           titulo?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      comissoes: {
+        Row: {
+          created_at: string
+          data_fim: string | null
+          data_inicio: string | null
+          id: string
+          nome: string
+          portaria: string | null
+          tipo: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          nome: string
+          portaria?: string | null
+          tipo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          nome?: string
+          portaria?: string | null
+          tipo?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      configuracoes_site: {
+        Row: {
+          chave: string
+          updated_at: string
+          valor: string | null
+        }
+        Insert: {
+          chave: string
+          updated_at?: string
+          valor?: string | null
+        }
+        Update: {
+          chave?: string
+          updated_at?: string
+          valor?: string | null
         }
         Relationships: []
       }
@@ -270,8 +336,10 @@ export type Database = {
         Row: {
           arquivo_url: string | null
           cnpj: string | null
+          contrato_origem: string | null
           created_at: string
           data_fim: string | null
+          data_fim_atualizada: string | null
           data_inicio: string | null
           fornecedor: string
           id: string
@@ -282,12 +350,15 @@ export type Database = {
           tipo: string | null
           updated_at: string
           valor: number | null
+          valor_atualizado: number | null
         }
         Insert: {
           arquivo_url?: string | null
           cnpj?: string | null
+          contrato_origem?: string | null
           created_at?: string
           data_fim?: string | null
+          data_fim_atualizada?: string | null
           data_inicio?: string | null
           fornecedor: string
           id?: string
@@ -298,12 +369,15 @@ export type Database = {
           tipo?: string | null
           updated_at?: string
           valor?: number | null
+          valor_atualizado?: number | null
         }
         Update: {
           arquivo_url?: string | null
           cnpj?: string | null
+          contrato_origem?: string | null
           created_at?: string
           data_fim?: string | null
+          data_fim_atualizada?: string | null
           data_inicio?: string | null
           fornecedor?: string
           id?: string
@@ -314,6 +388,7 @@ export type Database = {
           tipo?: string | null
           updated_at?: string
           valor?: number | null
+          valor_atualizado?: number | null
         }
         Relationships: []
       }
@@ -452,6 +527,39 @@ export type Database = {
         }
         Relationships: []
       }
+      documentos: {
+        Row: {
+          arquivo_url: string | null
+          created_at: string
+          data: string | null
+          descricao: string | null
+          id: string
+          tipo: string
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          arquivo_url?: string | null
+          created_at?: string
+          data?: string | null
+          descricao?: string | null
+          id?: string
+          tipo?: string
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          arquivo_url?: string | null
+          created_at?: string
+          data?: string | null
+          descricao?: string | null
+          id?: string
+          tipo?: string
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       empresas_inidoneas: {
         Row: {
           cnpj: string | null
@@ -484,6 +592,39 @@ export type Database = {
           motivo?: string | null
           razao_social?: string
           sancao?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      licitacao_andamentos: {
+        Row: {
+          arquivo_url: string | null
+          created_at: string
+          data: string | null
+          descricao: string | null
+          fase: string
+          id: string
+          licitacao_numero: string
+          updated_at: string
+        }
+        Insert: {
+          arquivo_url?: string | null
+          created_at?: string
+          data?: string | null
+          descricao?: string | null
+          fase: string
+          id?: string
+          licitacao_numero: string
+          updated_at?: string
+        }
+        Update: {
+          arquivo_url?: string | null
+          created_at?: string
+          data?: string | null
+          descricao?: string | null
+          fase?: string
+          id?: string
+          licitacao_numero?: string
           updated_at?: string
         }
         Relationships: []
@@ -536,6 +677,69 @@ export type Database = {
         }
         Relationships: []
       }
+      links_uteis: {
+        Row: {
+          ativo: boolean | null
+          created_at: string
+          icone: string | null
+          id: string
+          ordem: number | null
+          titulo: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string
+          icone?: string | null
+          id?: string
+          ordem?: number | null
+          titulo: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string
+          icone?: string | null
+          id?: string
+          ordem?: number | null
+          titulo?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      membros_equipe: {
+        Row: {
+          comissao: string | null
+          created_at: string
+          funcao: string | null
+          id: string
+          nome: string
+          tipo_equipe: string | null
+          updated_at: string
+        }
+        Insert: {
+          comissao?: string | null
+          created_at?: string
+          funcao?: string | null
+          id?: string
+          nome: string
+          tipo_equipe?: string | null
+          updated_at?: string
+        }
+        Update: {
+          comissao?: string | null
+          created_at?: string
+          funcao?: string | null
+          id?: string
+          nome?: string
+          tipo_equipe?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       midias: {
         Row: {
           created_at: string
@@ -571,11 +775,15 @@ export type Database = {
       }
       noticias: {
         Row: {
+          agendar_para: string | null
           audio_url: string | null
           capa_url: string | null
           categoria: string | null
           conteudo: string | null
           created_at: string
+          evento: string | null
+          evento_data: string | null
+          evento_local: string | null
           id: string
           publicado: boolean
           publicado_em: string
@@ -588,11 +796,15 @@ export type Database = {
           visualizacoes: number
         }
         Insert: {
+          agendar_para?: string | null
           audio_url?: string | null
           capa_url?: string | null
           categoria?: string | null
           conteudo?: string | null
           created_at?: string
+          evento?: string | null
+          evento_data?: string | null
+          evento_local?: string | null
           id?: string
           publicado?: boolean
           publicado_em?: string
@@ -605,11 +817,15 @@ export type Database = {
           visualizacoes?: number
         }
         Update: {
+          agendar_para?: string | null
           audio_url?: string | null
           capa_url?: string | null
           categoria?: string | null
           conteudo?: string | null
           created_at?: string
+          evento?: string | null
+          evento_data?: string | null
+          evento_local?: string | null
           id?: string
           publicado?: boolean
           publicado_em?: string
@@ -674,6 +890,48 @@ export type Database = {
         }
         Relationships: []
       }
+      parcerias: {
+        Row: {
+          arquivo_url: string | null
+          created_at: string
+          data_fim: string | null
+          data_inicio: string | null
+          entidade: string | null
+          id: string
+          nome: string
+          objeto: string | null
+          tipo: string | null
+          updated_at: string
+          valor: number | null
+        }
+        Insert: {
+          arquivo_url?: string | null
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          entidade?: string | null
+          id?: string
+          nome: string
+          objeto?: string | null
+          tipo?: string | null
+          updated_at?: string
+          valor?: number | null
+        }
+        Update: {
+          arquivo_url?: string | null
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          entidade?: string | null
+          id?: string
+          nome?: string
+          objeto?: string | null
+          tipo?: string | null
+          updated_at?: string
+          valor?: number | null
+        }
+        Relationships: []
+      }
       permissoes_modulo: {
         Row: {
           created_at: string
@@ -727,9 +985,11 @@ export type Database = {
           created_at: string
           data: string | null
           ementa: string | null
+          etapas: string | null
           id: string
           numero: string | null
           orgao: string | null
+          situacao: string | null
           titulo: string
           updated_at: string
           valor: number | null
@@ -741,9 +1001,11 @@ export type Database = {
           created_at?: string
           data?: string | null
           ementa?: string | null
+          etapas?: string | null
           id?: string
           numero?: string | null
           orgao?: string | null
+          situacao?: string | null
           titulo: string
           updated_at?: string
           valor?: number | null
@@ -755,9 +1017,11 @@ export type Database = {
           created_at?: string
           data?: string | null
           ementa?: string | null
+          etapas?: string | null
           id?: string
           numero?: string | null
           orgao?: string | null
+          situacao?: string | null
           titulo?: string
           updated_at?: string
           valor?: number | null
@@ -842,48 +1106,101 @@ export type Database = {
         }
         Relationships: []
       }
+      servico_avaliacoes: {
+        Row: {
+          comentario: string | null
+          created_at: string
+          id: string
+          nota: number
+          servico_id: string
+          util: boolean | null
+        }
+        Insert: {
+          comentario?: string | null
+          created_at?: string
+          id?: string
+          nota: number
+          servico_id: string
+          util?: boolean | null
+        }
+        Update: {
+          comentario?: string | null
+          created_at?: string
+          id?: string
+          nota?: number
+          servico_id?: string
+          util?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "servico_avaliacoes_servico_id_fkey"
+            columns: ["servico_id"]
+            isOneToOne: false
+            referencedRelation: "servicos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       servicos: {
         Row: {
+          anexo_url: string | null
           created_at: string
           custo: string | null
           descricao: string | null
+          etapas: string | null
           id: string
           link: string | null
           nome: string
+          parecer_ouvidor: string | null
+          parecer_status: string | null
+          perfil_atendimento: string | null
           prazo: string | null
           publico: string | null
           requisitos: string | null
           secretaria: string | null
           tags: string[] | null
           updated_at: string
+          visualizacoes: number
         }
         Insert: {
+          anexo_url?: string | null
           created_at?: string
           custo?: string | null
           descricao?: string | null
+          etapas?: string | null
           id?: string
           link?: string | null
           nome: string
+          parecer_ouvidor?: string | null
+          parecer_status?: string | null
+          perfil_atendimento?: string | null
           prazo?: string | null
           publico?: string | null
           requisitos?: string | null
           secretaria?: string | null
           tags?: string[] | null
           updated_at?: string
+          visualizacoes?: number
         }
         Update: {
+          anexo_url?: string | null
           created_at?: string
           custo?: string | null
           descricao?: string | null
+          etapas?: string | null
           id?: string
           link?: string | null
           nome?: string
+          parecer_ouvidor?: string | null
+          parecer_status?: string | null
+          perfil_atendimento?: string | null
           prazo?: string | null
           publico?: string | null
           requisitos?: string | null
           secretaria?: string | null
           tags?: string[] | null
           updated_at?: string
+          visualizacoes?: number
         }
         Relationships: []
       }
@@ -968,6 +1285,84 @@ export type Database = {
         }
         Relationships: []
       }
+      termos_fomento: {
+        Row: {
+          arquivo_url: string | null
+          cnpj: string | null
+          created_at: string
+          data_fim: string | null
+          data_inicio: string | null
+          id: string
+          numero: string
+          objeto: string | null
+          osc: string
+          updated_at: string
+          valor: number | null
+        }
+        Insert: {
+          arquivo_url?: string | null
+          cnpj?: string | null
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          numero: string
+          objeto?: string | null
+          osc: string
+          updated_at?: string
+          valor?: number | null
+        }
+        Update: {
+          arquivo_url?: string | null
+          cnpj?: string | null
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          numero?: string
+          objeto?: string | null
+          osc?: string
+          updated_at?: string
+          valor?: number | null
+        }
+        Relationships: []
+      }
+      unidades_gestoras: {
+        Row: {
+          cnpj: string | null
+          codigo: string | null
+          created_at: string
+          id: string
+          nome: string
+          responsavel: string | null
+          secretaria: string | null
+          tipo: string | null
+          updated_at: string
+        }
+        Insert: {
+          cnpj?: string | null
+          codigo?: string | null
+          created_at?: string
+          id?: string
+          nome: string
+          responsavel?: string | null
+          secretaria?: string | null
+          tipo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cnpj?: string | null
+          codigo?: string | null
+          created_at?: string
+          id?: string
+          nome?: string
+          responsavel?: string | null
+          secretaria?: string | null
+          tipo?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -1040,6 +1435,15 @@ export type Database = {
           roles: string[]
         }[]
       }
+      avaliar_servico: {
+        Args: {
+          _comentario: string
+          _nota: number
+          _servico: string
+          _util: boolean
+        }
+        Returns: undefined
+      }
       consultar_protocolo: {
         Args: { _protocolo: string }
         Returns: {
@@ -1060,6 +1464,15 @@ export type Database = {
           total: number
         }[]
       }
+      estatisticas_servicos: {
+        Args: never
+        Returns: {
+          avaliacoes: number
+          media: number
+          servico_id: string
+          uteis: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1072,6 +1485,7 @@ export type Database = {
         Args: { _tabela: string; _user_id: string }
         Returns: boolean
       }
+      recalcular_contrato: { Args: { _numero: string }; Returns: undefined }
       registrar_acesso: { Args: { _evento: string }; Returns: undefined }
       registrar_atendimento: {
         Args: {
@@ -1087,6 +1501,10 @@ export type Database = {
         Returns: string
       }
       registrar_visualizacao: { Args: { _slug: string }; Returns: undefined }
+      registrar_visualizacao_servico: {
+        Args: { _id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "editor"

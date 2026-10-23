@@ -1,5 +1,5 @@
 // Configuração central dos módulos: dirige o Portal da Transparência e o painel administrativo.
-export type FieldType = "text" | "textarea" | "number" | "money" | "date" | "bool" | "file" | "tags" | "select" | "int" | "files";
+export type FieldType = "text" | "textarea" | "number" | "money" | "date" | "bool" | "file" | "tags" | "select" | "int" | "files" | "relation";
 
 export interface Field {
   name: string;
@@ -8,6 +8,8 @@ export interface Field {
   options?: string[];
   required?: boolean;
   hideInTable?: boolean;
+  /** Para type "relation": módulo de origem e coluna gravada/exibida. */
+  ref?: { module: string; column: string };
 }
 
 export interface ModuleDef {
@@ -59,6 +61,10 @@ export const MODULES: ModuleDef[] = [
       { name: "video_url", label: "Vídeo (link do YouTube)", hideInTable: true },
       { name: "audio_url", label: "Áudio", type: "file", hideInTable: true },
       { name: "tags", label: "Tags", type: "tags", hideInTable: true },
+      { name: "agendar_para", label: "Publicar a partir de (agendamento)", type: "date", hideInTable: true },
+      { name: "evento", label: "Evento relacionado", hideInTable: true },
+      { name: "evento_data", label: "Data do evento", type: "date", hideInTable: true },
+      { name: "evento_local", label: "Local do evento", hideInTable: true },
       { name: "publicado", label: "Publicado", type: "bool" },
     ],
   },
@@ -70,7 +76,43 @@ export const MODULES: ModuleDef[] = [
       { name: "imagem_url", label: "Imagem", type: "file" },
       { name: "link", label: "Link" },
       { name: "ordem", label: "Ordem", type: "int" },
+      { name: "inicio", label: "Exibir a partir de", type: "date", hideInTable: true },
+      { name: "fim", label: "Exibir até", type: "date" },
       { name: "ativo", label: "Ativo", type: "bool" },
+    ],
+  },
+  {
+    key: "links-uteis", table: "links_uteis", label: "Links úteis", grupo: "Site Oficial", orderBy: "ordem",
+    descricao: "Atalhos para sites externos exibidos na página inicial.",
+    fields: [
+      { name: "titulo", label: "Título", required: true },
+      { name: "url", label: "Endereço (URL)", required: true },
+      { name: "icone", label: "Ícone", type: "select", options: ["Link", "Governo", "Saúde", "Educação", "Documento", "Dinheiro"] },
+      { name: "ordem", label: "Ordem", type: "int" },
+      { name: "ativo", label: "Ativo", type: "bool" },
+    ],
+  },
+  {
+    key: "documentos", table: "documentos", label: "Documentos digitais", grupo: "Site Oficial", orderBy: "data", publico: true,
+    descricao: "Biblioteca de documentos em PDF e JPG de qualquer tipo.",
+    fields: [
+      { name: "titulo", label: "Título", required: true },
+      { name: "tipo", label: "Tipo", type: "select", options: ["Edital", "Relatório", "Plano", "Manual", "Formulário", "Ofício", "Outros"], required: true },
+      { name: "data", label: "Data", type: "date" },
+      { name: "descricao", label: "Descrição", type: "textarea", hideInTable: true },
+      { name: "arquivo_url", label: "Arquivo (PDF/JPG)", type: "file" },
+    ],
+  },
+  {
+    key: "unidades-gestoras", table: "unidades_gestoras", label: "Unidades gestoras", grupo: "Site Oficial", orderBy: "nome", publico: true,
+    descricao: "Unidades gestoras e executoras do município.",
+    fields: [
+      { name: "nome", label: "Unidade", required: true },
+      { name: "codigo", label: "Código" },
+      { name: "cnpj", label: "CNPJ" },
+      { name: "tipo", label: "Tipo", type: "select", options: ["Gestora", "Executora", "Gestora e executora"] },
+      { name: "responsavel", label: "Responsável" },
+      { name: "secretaria", label: "Secretaria", type: "relation", ref: { module: "secretarias", column: "nome" } },
     ],
   },
   {
@@ -82,6 +124,7 @@ export const MODULES: ModuleDef[] = [
       { name: "descricao", label: "Descrição", type: "textarea", hideInTable: true },
       { name: "capa_url", label: "Capa", type: "file", hideInTable: true },
       { name: "fotos", label: "Fotos do álbum", type: "files", hideInTable: true },
+      { name: "legendas", label: "Legendas das fotos (uma por linha, na ordem das fotos)", type: "textarea", hideInTable: true },
     ],
   },
   {
@@ -101,6 +144,8 @@ export const MODULES: ModuleDef[] = [
     fields: [
       { name: "nome", label: "Nome", required: true },
       { name: "cargo", label: "Cargo", required: true },
+      { name: "partido", label: "Partido" },
+      { name: "mandato", label: "Mandato", hideInTable: true },
       { name: "email", label: "E-mail" },
       { name: "telefone", label: "Telefone" },
       { name: "foto_url", label: "Foto", type: "file", hideInTable: true },
@@ -127,13 +172,18 @@ export const MODULES: ModuleDef[] = [
     descricao: "Serviços oferecidos ao cidadão.",
     fields: [
       { name: "nome", label: "Serviço", required: true },
-      { name: "secretaria", label: "Secretaria" },
-      { name: "publico", label: "Público" },
+      { name: "secretaria", label: "Setor responsável", type: "relation", ref: { module: "secretarias", column: "nome" } },
+      { name: "publico", label: "Público-alvo" },
       { name: "prazo", label: "Prazo" },
       { name: "custo", label: "Custo", hideInTable: true },
       { name: "descricao", label: "Descrição", type: "textarea", hideInTable: true },
       { name: "requisitos", label: "Requisitos", type: "textarea", hideInTable: true },
       { name: "link", label: "Link de acesso online", hideInTable: true },
+      { name: "etapas", label: "Etapas (uma por linha)", type: "textarea", hideInTable: true },
+      { name: "perfil_atendimento", label: "Perfil responsável pelo atendimento", hideInTable: true },
+      { name: "anexo_url", label: "Formulário / anexo", type: "file", hideInTable: true },
+      { name: "parecer_status", label: "Parecer do Ouvidor", type: "select", options: ["Aprovado", "Aprovado com ajustes", "Reprovado"] },
+      { name: "parecer_ouvidor", label: "Parecer técnico do Ouvidor Geral", type: "textarea", hideInTable: true },
       { name: "tags", label: "Tags", type: "tags", hideInTable: true },
     ],
   },
@@ -142,10 +192,10 @@ export const MODULES: ModuleDef[] = [
     descricao: "Processos licitatórios, dispensas e inexigibilidades.",
     fields: [
       { name: "numero", label: "Número", required: true },
-      { name: "modalidade", label: "Modalidade", type: "select", options: ["Pregão Eletrônico", "Pregão Presencial", "Concorrência", "Dispensa", "Inexigibilidade", "Credenciamento", "Leilão"] },
+      { name: "modalidade", label: "Modalidade", type: "select", options: ["Pregão Eletrônico", "Pregão Presencial", "Concorrência", "Concurso", "Leilão", "Diálogo Competitivo", "Dispensa", "Inexigibilidade", "Credenciamento", "Pré-qualificação", "Manifestação de Interesse"] },
       { name: "tipo", label: "Tipo", type: "select", options: ["Licitação", "Dispensa", "Inexigibilidade"], hideInTable: true },
       { name: "objeto", label: "Objeto", type: "textarea", required: true },
-      { name: "situacao", label: "Situação", type: "select", options: ["Aberta", "Em andamento", "Homologada", "Concluída", "Deserta", "Fracassada", "Revogada", "Suspensa"] },
+      { name: "situacao", label: "Situação", type: "select", options: ["Em Elaboração", "Publicado", "Aberto", "Em Julgamento", "Homologado", "Concluída", "Suspensa", "Anulada", "Cancelada", "Deserta", "Fracassada", "Revogada", "Inativa"] },
       { name: "data_abertura", label: "Abertura", type: "date" },
       { name: "valor_estimado", label: "Valor estimado", type: "money" },
       { name: "secretaria", label: "Secretaria", hideInTable: true },
@@ -158,16 +208,79 @@ export const MODULES: ModuleDef[] = [
     descricao: "Contratos firmados, aditivos e vigências.",
     fields: [
       { name: "numero", label: "Número", required: true },
-      { name: "tipo", label: "Tipo", type: "select", options: ["Contrato", "Aditivo", "Ata de Registro de Preços"] },
-      { name: "fornecedor", label: "Fornecedor", required: true },
+      { name: "tipo", label: "Tipo", type: "select", options: ["Contrato", "Aditivo", "Ata de Registro de Preços", "Adesão (Carona)"] },
+      { name: "fornecedor", label: "Fornecedor (credor)", type: "relation", ref: { module: "credores", column: "nome" }, required: true },
       { name: "cnpj", label: "CNPJ/CPF" },
       { name: "objeto", label: "Objeto", type: "textarea", required: true },
-      { name: "valor", label: "Valor", type: "money" },
+      { name: "valor", label: "Valor (no aditivo, apenas a diferença)", type: "money" },
       { name: "data_inicio", label: "Início", type: "date" },
       { name: "data_fim", label: "Fim da vigência", type: "date" },
-      { name: "licitacao_numero", label: "Licitação de origem", hideInTable: true },
+      { name: "contrato_origem", label: "Contrato/ata de origem (aditivos e adesões)", type: "relation", ref: { module: "contratos", column: "numero" }, hideInTable: true },
+      { name: "valor_atualizado", label: "Valor atualizado (automático)", type: "money" },
+      { name: "data_fim_atualizada", label: "Vigência atualizada (automática)", type: "date", hideInTable: true },
+      { name: "licitacao_numero", label: "Licitação de origem", type: "relation", ref: { module: "licitacoes", column: "numero" }, hideInTable: true },
       { name: "secretaria", label: "Secretaria", hideInTable: true },
       { name: "arquivo_url", label: "Documento", type: "file" },
+    ],
+  },
+  {
+    key: "andamentos-licitacao", table: "licitacao_andamentos", label: "Andamentos das licitações", grupo: "Licitações e Contratos", orderBy: "data", publico: true,
+    descricao: "Fases, cronograma e linha do tempo de cada processo licitatório.",
+    fields: [
+      { name: "licitacao_numero", label: "Licitação", type: "relation", ref: { module: "licitacoes", column: "numero" }, required: true },
+      { name: "fase", label: "Fase", type: "select", options: ["Preparação", "Publicação", "Abertura", "Julgamento", "Homologação", "Conclusão"], required: true },
+      { name: "data", label: "Data", type: "date" },
+      { name: "descricao", label: "Descrição", type: "textarea", hideInTable: true },
+      { name: "arquivo_url", label: "Anexo", type: "file", hideInTable: true },
+    ],
+  },
+  {
+    key: "comissoes", table: "comissoes", label: "Comissões de contratação", grupo: "Licitações e Contratos", orderBy: "nome", publico: true,
+    descricao: "Comissões de contratação e equipes técnicas permanentes ou especiais.",
+    fields: [
+      { name: "nome", label: "Nome da comissão/equipe", required: true },
+      { name: "tipo", label: "Tipo", type: "select", options: ["Comissão Permanente", "Comissão Especial", "Equipe de Planejamento", "Equipe de Apoio", "Agente de Contratação"] },
+      { name: "portaria", label: "Portaria de designação" },
+      { name: "data_inicio", label: "Início do mandato", type: "date" },
+      { name: "data_fim", label: "Fim do mandato", type: "date" },
+    ],
+  },
+  {
+    key: "membros-equipe", table: "membros_equipe", label: "Membros das equipes", grupo: "Licitações e Contratos", orderBy: "nome", publico: true,
+    descricao: "Membros das comissões e das equipes de apoio e de contratação.",
+    fields: [
+      { name: "comissao", label: "Comissão/equipe", type: "relation", ref: { module: "comissoes", column: "nome" } },
+      { name: "nome", label: "Nome", required: true },
+      { name: "funcao", label: "Função", type: "select", options: ["Presidente", "Membro", "Suplente", "Apoio técnico", "Fiscal de contrato"] },
+      { name: "tipo_equipe", label: "Tipo de equipe", type: "select", options: ["Contratação", "Apoio", "Técnica"], hideInTable: true },
+    ],
+  },
+  {
+    key: "parcerias", table: "parcerias", label: "Parcerias e acordos", grupo: "Licitações e Contratos", orderBy: "data_inicio", publico: true,
+    descricao: "Parcerias e acordos celebrados pelo município.",
+    fields: [
+      { name: "nome", label: "Nome/identificação", required: true },
+      { name: "tipo", label: "Tipo", type: "select", options: ["Parceria", "Acordo", "Protocolo de intenções", "Termo de cooperação"] },
+      { name: "entidade", label: "Entidade/órgão parceiro" },
+      { name: "objeto", label: "Objeto", type: "textarea", hideInTable: true },
+      { name: "valor", label: "Valor", type: "money", hideInTable: true },
+      { name: "data_inicio", label: "Início", type: "date" },
+      { name: "data_fim", label: "Fim", type: "date", hideInTable: true },
+      { name: "arquivo_url", label: "Documento", type: "file", hideInTable: true },
+    ],
+  },
+  {
+    key: "termos-fomento", table: "termos_fomento", label: "Termos de fomento (OSC)", grupo: "Licitações e Contratos", orderBy: "data_inicio", publico: true,
+    descricao: "Termos de fomento celebrados com Organizações da Sociedade Civil.",
+    fields: [
+      { name: "numero", label: "Número", required: true },
+      { name: "osc", label: "Organização da Sociedade Civil", required: true },
+      { name: "cnpj", label: "CNPJ" },
+      { name: "objeto", label: "Objeto", type: "textarea", hideInTable: true },
+      { name: "valor", label: "Valor", type: "money" },
+      { name: "data_inicio", label: "Início", type: "date" },
+      { name: "data_fim", label: "Fim", type: "date", hideInTable: true },
+      { name: "arquivo_url", label: "Documento", type: "file", hideInTable: true },
     ],
   },
   {
@@ -232,7 +345,7 @@ export const MODULES: ModuleDef[] = [
       { name: "orgao", label: "Órgão", required: true },
       { name: "funcao", label: "Função", hideInTable: true },
       { name: "elemento", label: "Elemento", hideInTable: true },
-      { name: "credor", label: "Credor" },
+      { name: "credor", label: "Credor", type: "relation", ref: { module: "credores", column: "nome" } },
       { name: "empenho", label: "Empenho" },
       { name: "empenhado", label: "Empenhado", type: "money" },
       { name: "liquidado", label: "Liquidado", type: "money" },
@@ -259,7 +372,10 @@ export const MODULES: ModuleDef[] = [
   pub("portaria", "Portarias", "Portarias e atos de pessoal."),
   pub("rreo", "RREO", "Relatório Resumido da Execução Orçamentária."),
   pub("rgf", "RGF", "Relatório de Gestão Fiscal."),
-  pub("concurso", "Concursos e seletivos", "Concursos públicos e processos seletivos."),
+  pub("concurso", "Concursos e seletivos", "Concursos públicos e processos seletivos.", [
+    { name: "situacao", label: "Situação", type: "select", options: ["Inscrições abertas", "Em andamento", "Homologado", "Encerrado"] },
+    { name: "etapas", label: "Etapas (uma por linha: data — etapa)", type: "textarea", hideInTable: true },
+  ]),
   pub("covid", "COVID-19", "Ações, contratações e despesas emergenciais."),
   pub("conselho-doc", "Documentos dos conselhos", "Atas, resoluções e documentos dos conselhos."),
   {
