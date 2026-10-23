@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { estatisticasQuery } from "@/lib/queries";
 import { dataBR } from "@/lib/modules";
 import { pageHead } from "@/lib/seo";
+import { db } from "@/lib/data";
 
 export const Route = createFileRoute("/esic")({
   head: () => pageHead("Ouvidoria e e-SIC", "Faça pedidos de informação, reclamações, sugestões e elogios, e acompanhe pelo número de protocolo."),
@@ -143,31 +144,58 @@ export function NovoPedido({ canalFixo }: { canalFixo?: keyof typeof TIPOS }) {
   );
 }
 
-type Resultado = { protocolo: string; canal: string; assunto: string; status: string; resposta: string | null; created_at: string; respondido_em: string | null };
+type Resultado = { protocolo: string; canal: string; assunto: string; status: string; resposta: string | null; created_at: string; respondido_em: string | null; prorrogado: boolean; prazo_final: string | null; justificativa_prorrogacao: string | null; setor_destino: string | null; protocolo_origem: string | null };
 
 function Consulta() {
   const [protocolo, setProtocolo] = useState("");
   const [res, setRes] = useState<Resultado | null | undefined>(undefined);
+  const [email, setEmail] = useState("");
+  const [recurso, setRecurso] = useState("");
+  const [recorrendo, setRecorrendo] = useState(false);
+  const [protocoloRecurso, setProtocoloRecurso] = useState("");
   const buscar = async (e: FormEvent) => {
     e.preventDefault();
-    const { data, error } = await supabase.rpc("consultar_protocolo", { _protocolo: protocolo });
+    const { data, error } = await db.rpc("consultar_protocolo_seguro", { _protocolo: protocolo, _email: email });
     if (error) { toast.error("Não foi possível consultar agora."); return; }
     setRes((data as Resultado[])[0] ?? null);
   };
   return (
     <div className="mt-4 rounded-lg border bg-card p-6">
-      <form onSubmit={buscar} className="flex gap-2">
+      <form onSubmit={buscar} className="flex flex-wrap gap-2">
         <Label htmlFor="protocolo" className="sr-only">Protocolo</Label>
         <Input id="protocolo" placeholder="Ex.: PF2026123456" value={protocolo} onChange={(e) => setProtocolo(e.target.value)} />
+        <Input type="email" aria-label="E-mail cadastrado no pedido" placeholder="E-mail cadastrado (pedidos identificados)" value={email} onChange={(e) => setEmail(e.target.value)} className="min-w-52 flex-1" />
         <Button type="submit">Consultar</Button>
       </form>
-      {res === null && <p className="mt-4 text-muted-foreground">Protocolo não encontrado.</p>}
+      {res === null && <p className="mt-4 text-muted-foreground">Protocolo não encontrado ou dados de consulta não conferem.</p>}
       {res && (
         <dl className="mt-5 grid gap-2 text-sm">
           <div><dt className="font-semibold">Assunto</dt><dd>{res.assunto}</dd></div>
           <div><dt className="font-semibold">Registrado em</dt><dd>{dataBR(res.created_at)}</dd></div>
           <div><dt className="font-semibold">Situação</dt><dd><span className="rounded bg-secondary px-2 py-0.5 font-semibold text-secondary-foreground">{res.status}</span></dd></div>
+          {res.prazo_final && <div><dt className="font-semibold">Prazo previsto</dt><dd>{dataBR(res.prazo_final)}{res.prorrogado ? " (prorrogado)" : ""}</dd></div>}
+          {res.justificativa_prorrogacao && <div><dt className="font-semibold">Justificativa da prorrogação</dt><dd>{res.justificativa_prorrogacao}</dd></div>}
+          {res.setor_destino && <div><dt className="font-semibold">Encaminhado ao setor</dt><dd>{res.setor_destino}</dd></div>}
+          {res.protocolo_origem && <div><dt className="font-semibold">Recurso referente ao protocolo</dt><dd>{res.protocolo_origem}</dd></div>}
           {res.resposta && <div><dt className="font-semibold">Resposta ({dataBR(res.respondido_em)})</dt><dd className="whitespace-pre-line rounded bg-muted p-3">{res.resposta}</dd></div>}
+          {res.canal === "esic" && res.status === "Respondido" && res.respondido_em && Date.now() <= new Date(res.respondido_em).getTime() + 10 * 86400000 && (
+            <div className="mt-3 space-y-2">
+              <dt className="font-semibold">Interpor recurso (até 10 dias após a resposta)</dt>
+              <Textarea aria-label="Justificativa do recurso" placeholder="Descreva o motivo do recurso (mínimo 10 caracteres)" value={recurso} onChange={e => setRecurso(e.target.value)} />
+              <Button type="button" disabled={recorrendo || recurso.trim().length < 10} onClick={async () => {
+                setRecorrendo(true);
+                try {
+                  const {data, error} = await db.rpc("registrar_recurso_esic", {_protocolo: protocolo, _email: email, _mensagem: recurso});
+                  if (error) throw error;
+                  setProtocoloRecurso(String(data));
+                  setRecurso("");
+                  toast.success("Recurso protocolado.");
+                } catch (e) { toast.error((e as Error).message); }
+                finally { setRecorrendo(false); }
+              }}>Registrar recurso</Button>
+              {protocoloRecurso && <p role="status">Protocolo do recurso: <strong>{protocoloRecurso}</strong></p>}
+            </div>
+          )}}
         </dl>
       )}
     </div>
