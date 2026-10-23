@@ -1,3 +1,4 @@
+import { GestaoEsic } from "@/components/admin/GestaoEsic";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { countsQuery, noticiasStatsQuery } from "@/lib/admin-queries";
@@ -26,6 +27,7 @@ function Painel() {
         <h2 className="mb-3 font-bold">Notícias mais lidas (atualiza a cada 15 s)</h2>
         <ul className="divide-y rounded-lg border bg-card">{stats.top.map((n) => <li key={n.id} className="flex justify-between p-3 text-sm"><span>{n.titulo}</span><strong>{n.visualizacoes}</strong></li>)}</ul>
       </section>
+      <GestaoEsic />
       <section>
         <h2 className="mb-3 font-bold">Cadastros</h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
