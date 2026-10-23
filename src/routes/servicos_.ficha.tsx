@@ -3,7 +3,7 @@ import { Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/servicos/ficha")({
+export const Route = createFileRoute("/servicos_/ficha")({
   head: () => pageHead("Ficha técnica de serviço em branco", "Modelo em branco para cadastro de serviços da Carta de Serviços ao Usuário."),
   component: Ficha,
 });

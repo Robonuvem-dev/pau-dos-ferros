@@ -27,7 +27,7 @@ function Aparencia() {
   const salvar = async () => {
     const rows = CHAVES.map((chave) => ({ chave, valor: v[chave] ?? "" }));
     const { error } = await db.from("configuracoes_site").upsert(rows);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Aparência salva. Os visitantes verão a mudança em instantes.");
     await qc.invalidateQueries({ queryKey: configQuery.queryKey });
   };
