@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchModule, type Row } from "@/lib/data";
-import { getModule, dataBR, moeda } from "@/lib/modules";
+import { getModule, dataBR, brl } from "@/lib/modules";
 import { boletimDoDia, contratosAVencer, mapaLicitacoes, type ContratoLike, type LicitacaoLike } from "@/lib/compras/relatorios";
 import { BIDDING_MODALITIES, BIDDING_STATUS } from "@/lib/compras/bidding-workflow";
 import { baixar, toCSV } from "@/lib/versao";
@@ -76,7 +76,7 @@ function Boletim({ licitacoes }: { licitacoes: LicitacaoLike[] }) {
               {b.doDia.map((l) => (
                 <tr key={l.numero} className="border-t">
                   <td className="p-2">{l.numero}</td><td className="p-2">{l.modalidade}</td>
-                  <td className="p-2 line-clamp-2">{l.objeto}</td><td className="p-2 text-right">{moeda(l.valor_estimado)}</td>
+                  <td className="p-2 line-clamp-2">{l.objeto}</td><td className="p-2 text-right">{brl(l.valor_estimado)}</td>
                 </tr>
               ))}
             </tbody>
@@ -84,7 +84,7 @@ function Boletim({ licitacoes }: { licitacoes: LicitacaoLike[] }) {
         ) : <p className="mt-2 text-sm text-muted-foreground">Nenhuma abertura nesta data.</p>}
         <div className="mt-3 flex flex-wrap gap-4 text-sm">
           {b.porModalidade.map(([m, n]) => <span key={m} className="rounded bg-secondary px-2 py-1">{m}: <strong>{n}</strong></span>)}
-          <span className="rounded bg-secondary px-2 py-1">Total estimado: <strong>{moeda(b.totalEstimado)}</strong></span>
+          <span className="rounded bg-secondary px-2 py-1">Total estimado: <strong>{brl(b.totalEstimado)}</strong></span>
         </div>
         <h3 className="mt-5 font-semibold">Avisos — aberturas nos próximos 7 dias ({b.proximas.length})</h3>
         <ul className="mt-2 space-y-1 text-sm">
@@ -128,7 +128,7 @@ function Mapa({ licitacoes }: { licitacoes: LicitacaoLike[] }) {
         <div className="grid gap-1.5"><Label>até</Label><Input type="date" value={f.ate} onChange={(e) => setF({ ...f, ate: e.target.value })} /></div>
         <Button variant="outline" onClick={exportar}><Download className="size-4" /> Exportar CSV</Button>
       </div>
-      <p className="mt-4 text-sm"><strong>{rows.length}</strong> processo(s) · valor estimado total: <strong>{moeda(total)}</strong></p>
+      <p className="mt-4 text-sm"><strong>{rows.length}</strong> processo(s) · valor estimado total: <strong>{brl(total)}</strong></p>
       <div className="mt-2 overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-secondary text-left"><tr><th className="p-2">Número</th><th className="p-2">Modalidade</th><th className="p-2">Situação</th><th className="p-2">Abertura</th><th className="p-2">Secretaria</th><th className="p-2 text-right">Valor estimado</th></tr></thead>
@@ -137,7 +137,7 @@ function Mapa({ licitacoes }: { licitacoes: LicitacaoLike[] }) {
               <tr key={r.numero} className="border-t">
                 <td className="p-2">{r.numero}</td><td className="p-2">{r.modalidade}</td><td className="p-2">{r.situacao}</td>
                 <td className="p-2">{r.data_abertura ? dataBR(r.data_abertura) : "—"}</td><td className="p-2">{r.secretaria}</td>
-                <td className="p-2 text-right">{moeda(r.valor_estimado)}</td>
+                <td className="p-2 text-right">{brl(r.valor_estimado)}</td>
               </tr>
             ))}
             {!rows.length && <tr><td colSpan={6} className="p-4 text-center text-muted-foreground">Nenhum processo com esses filtros.</td></tr>}
@@ -178,7 +178,7 @@ function AVencer({ contratos }: { contratos: ContratoLike[] }) {
                 </td>
                 <td className="p-2">{r.numero}</td><td className="p-2">{r.fornecedor}</td>
                 <td className="p-2">{dataBR(r.fim)}</td>
-                <td className="p-2 text-right">{moeda(r.valor_atualizado ?? r.valor)}</td>
+                <td className="p-2 text-right">{brl(r.valor_atualizado ?? r.valor)}</td>
               </tr>
             ))}
             {!rows.length && <tr><td colSpan={5} className="p-4 text-center text-muted-foreground">Nenhum contrato vencendo no período.</td></tr>}
