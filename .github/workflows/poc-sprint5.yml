@@ -1,0 +1,26 @@
+name: PoC Sprint 5 - qualidade
+on:
+  push:
+    branches: [Vette]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Instalar dependencias (lockfile)
+        run: bun install --frozen-lockfile
+      - name: Testes unitarios
+        run: bun run test
+      - name: Verificacao TypeScript
+        run: bunx tsc --noEmit
+      - name: Lint
+        run: bun run lint
+      - name: Build
+        run: bun run build
