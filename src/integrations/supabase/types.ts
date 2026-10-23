@@ -22,8 +22,10 @@ export type Database = {
           email: string | null
           foto_url: string | null
           id: string
+          mandato: string | null
           nome: string
           ordem: number | null
+          partido: string | null
           telefone: string | null
           updated_at: string
         }
@@ -34,8 +36,10 @@ export type Database = {
           email?: string | null
           foto_url?: string | null
           id?: string
+          mandato?: string | null
           nome: string
           ordem?: number | null
+          partido?: string | null
           telefone?: string | null
           updated_at?: string
         }
@@ -46,8 +50,10 @@ export type Database = {
           email?: string | null
           foto_url?: string | null
           id?: string
+          mandato?: string | null
           nome?: string
           ordem?: number | null
+          partido?: string | null
           telefone?: string | null
           updated_at?: string
         }
@@ -61,6 +67,7 @@ export type Database = {
           descricao: string | null
           fotos: string[] | null
           id: string
+          legendas: string | null
           titulo: string
           updated_at: string
         }
@@ -71,6 +78,7 @@ export type Database = {
           descricao?: string | null
           fotos?: string[] | null
           id?: string
+          legendas?: string | null
           titulo: string
           updated_at?: string
         }
@@ -81,6 +89,7 @@ export type Database = {
           descricao?: string | null
           fotos?: string[] | null
           id?: string
+          legendas?: string | null
           titulo?: string
           updated_at?: string
         }
@@ -661,11 +670,15 @@ export type Database = {
       }
       noticias: {
         Row: {
+          agendar_para: string | null
           audio_url: string | null
           capa_url: string | null
           categoria: string | null
           conteudo: string | null
           created_at: string
+          evento: string | null
+          evento_data: string | null
+          evento_local: string | null
           id: string
           publicado: boolean
           publicado_em: string
@@ -678,11 +691,15 @@ export type Database = {
           visualizacoes: number
         }
         Insert: {
+          agendar_para?: string | null
           audio_url?: string | null
           capa_url?: string | null
           categoria?: string | null
           conteudo?: string | null
           created_at?: string
+          evento?: string | null
+          evento_data?: string | null
+          evento_local?: string | null
           id?: string
           publicado?: boolean
           publicado_em?: string
@@ -695,11 +712,15 @@ export type Database = {
           visualizacoes?: number
         }
         Update: {
+          agendar_para?: string | null
           audio_url?: string | null
           capa_url?: string | null
           categoria?: string | null
           conteudo?: string | null
           created_at?: string
+          evento?: string | null
+          evento_data?: string | null
+          evento_local?: string | null
           id?: string
           publicado?: boolean
           publicado_em?: string
@@ -817,9 +838,11 @@ export type Database = {
           created_at: string
           data: string | null
           ementa: string | null
+          etapas: string | null
           id: string
           numero: string | null
           orgao: string | null
+          situacao: string | null
           titulo: string
           updated_at: string
           valor: number | null
@@ -831,9 +854,11 @@ export type Database = {
           created_at?: string
           data?: string | null
           ementa?: string | null
+          etapas?: string | null
           id?: string
           numero?: string | null
           orgao?: string | null
+          situacao?: string | null
           titulo: string
           updated_at?: string
           valor?: number | null
@@ -845,9 +870,11 @@ export type Database = {
           created_at?: string
           data?: string | null
           ementa?: string | null
+          etapas?: string | null
           id?: string
           numero?: string | null
           orgao?: string | null
+          situacao?: string | null
           titulo?: string
           updated_at?: string
           valor?: number | null

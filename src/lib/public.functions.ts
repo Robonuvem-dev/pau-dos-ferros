@@ -27,7 +27,7 @@ export const readPublicModule = createServerFn({ method: 'GET' })
     const columns = [...new Set(['id', ...mod.fields.map(f => f.name), ...(mod.key === 'servicos' ? ['visualizacoes'] : []), ...(mod.key === 'noticias' ? ['publicado_em'] : [])])].join(',');
     let query = client.from(mod.table).select(columns);
     if (mod.filtro) query = query.eq(mod.filtro.column, mod.filtro.value);
-    if (mod.key === 'noticias') query = query.eq('publicado', true);
+    if (mod.key === 'noticias') query = query.eq('publicado', true).or(`agendar_para.is.null,agendar_para.lte.${new Date().toISOString().slice(0, 10)}`);
     if (mod.key === 'banners') query = query.eq('ativo', true);
     if (mod.key === 'links-uteis') query = query.eq('ativo', true);
     if (mod.orderBy) query = query.order(mod.orderBy, { ascending: ['nome','ordem','placa'].includes(mod.orderBy) });

@@ -39,6 +39,7 @@ function Noticia() {
       <h1 className="mt-2 font-display text-3xl font-black leading-tight md:text-4xl">{String(n.titulo)}</h1>
       {n.resumo ? <p className="mt-3 text-lg text-muted-foreground">{String(n.resumo)}</p> : null}
       {n.capa_url ? <img src={String(n.capa_url)} alt="" className="mt-6 w-full rounded-lg" /> : null}
+      {n.evento ? <aside className="mt-6 rounded-lg border-l-4 border-accent bg-secondary p-4"><div className="text-xs font-bold uppercase text-accent">Evento</div><div className="font-semibold">{String(n.evento)}</div><div className="text-sm">{[n.evento_data ? dataBR(n.evento_data) : "", n.evento_local ? String(n.evento_local) : ""].filter(Boolean).join(" · ")}</div></aside> : null}
       <div className="mt-6 whitespace-pre-line text-lg leading-relaxed">{String(n.conteudo ?? "")}</div>
       {yt && <div className="mt-6 aspect-video"><iframe className="h-full w-full rounded-lg" src={`https://www.youtube.com/embed/${yt}`} title="Vídeo da notícia" allowFullScreen /></div>}
       {n.audio_url ? <audio controls src={String(n.audio_url)} className="mt-6 w-full" /> : null}
