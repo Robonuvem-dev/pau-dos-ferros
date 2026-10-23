@@ -41,3 +41,12 @@ describe("Sprint 5 — críticas de convênios", () => {
     expect(pendencias.map(p => p.problema)).toContain("Parcela de convênio vencida");
   });
 });
+
+describe("M05 — regras de prorrogação", () => {
+  it("não exige justificativa para pedido sem prorrogação", () => {
+    expect(validarProrrogacaoEsic(false, "")).toBe(true);
+  });
+  it("impede datas inválidas", () => {
+    expect(() => prazoEsic(new Date("invalid"), false)).toThrow();
+  });
+});
