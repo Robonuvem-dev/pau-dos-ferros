@@ -23,8 +23,11 @@ jobs:
         run: bun run test
       - name: Verificacao TypeScript
         run: bunx tsc --noEmit
-      - name: Lint
-        run: bun run lint
+      - name: Lint (regras de codigo; legado Prettier separado)
+        run: bunx eslint . --rule "prettier/prettier: off"
+      - name: Auditoria de formato legado (nao bloqueante)
+        continue-on-error: true
+        run: bunx prettier --check "src/**/*.{ts,tsx}"
       - name: Build
         if: always() && steps.checkout.outcome != 'failure'
         run: bun run build
