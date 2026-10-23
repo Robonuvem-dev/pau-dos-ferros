@@ -5,7 +5,7 @@ Plano aprovado: .lovable/plan/novo-plano-de-sprints-entrega-completa-do-edital-s
 - [ ] Sprint 2 — Auditoria dos 145 itens, fechamento M01, vínculos entre cadastros, motor de críticas
   - [x] Vínculos entre cadastros; motor e tela de críticas; classificação por módulo (docs/poc/04)
   - [ ] Evidência M01 e teste autenticado (bloqueio: conta de administrador do Eduardo)
-- [ ] Sprint 3 — M02 Site oficial + M15 Carta de Serviços
+- [x] Sprint 3 — M02 Site oficial + M15 Carta de Serviços
   - [x] Temas/cores ao vivo, Facebook, links úteis, banners com período e rotação, documentos, unidades gestoras
   - [x] Serviços: etapas, setor, perfil, anexo, parecer do Ouvidor, avaliação 1–5, visualizações, ficha em branco, críticas
   - [x] Notícias com agendamento/evento, álbuns com legenda por foto, agentes políticos em página pública, concursos com etapas, estatísticas de serviços no painel
