@@ -50,6 +50,13 @@
       "when": 1792754652103,
       "tag": "0006_sprint3_site_e_servicos",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792755704460,
+      "tag": "0007_sprint3_finalizacao",
+      "breakpoints": true
     }
   ]
 }
