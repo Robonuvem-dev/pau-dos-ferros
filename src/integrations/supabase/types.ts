@@ -242,6 +242,39 @@ export type Database = {
         }
         Relationships: []
       }
+      comissoes: {
+        Row: {
+          created_at: string
+          data_fim: string | null
+          data_inicio: string | null
+          id: string
+          nome: string
+          portaria: string | null
+          tipo: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          nome: string
+          portaria?: string | null
+          tipo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          nome?: string
+          portaria?: string | null
+          tipo?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       configuracoes_site: {
         Row: {
           chave: string
@@ -303,8 +336,10 @@ export type Database = {
         Row: {
           arquivo_url: string | null
           cnpj: string | null
+          contrato_origem: string | null
           created_at: string
           data_fim: string | null
+          data_fim_atualizada: string | null
           data_inicio: string | null
           fornecedor: string
           id: string
@@ -315,12 +350,15 @@ export type Database = {
           tipo: string | null
           updated_at: string
           valor: number | null
+          valor_atualizado: number | null
         }
         Insert: {
           arquivo_url?: string | null
           cnpj?: string | null
+          contrato_origem?: string | null
           created_at?: string
           data_fim?: string | null
+          data_fim_atualizada?: string | null
           data_inicio?: string | null
           fornecedor: string
           id?: string
@@ -331,12 +369,15 @@ export type Database = {
           tipo?: string | null
           updated_at?: string
           valor?: number | null
+          valor_atualizado?: number | null
         }
         Update: {
           arquivo_url?: string | null
           cnpj?: string | null
+          contrato_origem?: string | null
           created_at?: string
           data_fim?: string | null
+          data_fim_atualizada?: string | null
           data_inicio?: string | null
           fornecedor?: string
           id?: string
@@ -347,6 +388,7 @@ export type Database = {
           tipo?: string | null
           updated_at?: string
           valor?: number | null
+          valor_atualizado?: number | null
         }
         Relationships: []
       }
@@ -554,6 +596,39 @@ export type Database = {
         }
         Relationships: []
       }
+      licitacao_andamentos: {
+        Row: {
+          arquivo_url: string | null
+          created_at: string
+          data: string | null
+          descricao: string | null
+          fase: string
+          id: string
+          licitacao_numero: string
+          updated_at: string
+        }
+        Insert: {
+          arquivo_url?: string | null
+          created_at?: string
+          data?: string | null
+          descricao?: string | null
+          fase: string
+          id?: string
+          licitacao_numero: string
+          updated_at?: string
+        }
+        Update: {
+          arquivo_url?: string | null
+          created_at?: string
+          data?: string | null
+          descricao?: string | null
+          fase?: string
+          id?: string
+          licitacao_numero?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       licitacoes: {
         Row: {
           arquivo_url: string | null
@@ -632,6 +707,36 @@ export type Database = {
           titulo?: string
           updated_at?: string
           url?: string
+        }
+        Relationships: []
+      }
+      membros_equipe: {
+        Row: {
+          comissao: string | null
+          created_at: string
+          funcao: string | null
+          id: string
+          nome: string
+          tipo_equipe: string | null
+          updated_at: string
+        }
+        Insert: {
+          comissao?: string | null
+          created_at?: string
+          funcao?: string | null
+          id?: string
+          nome: string
+          tipo_equipe?: string | null
+          updated_at?: string
+        }
+        Update: {
+          comissao?: string | null
+          created_at?: string
+          funcao?: string | null
+          id?: string
+          nome?: string
+          tipo_equipe?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -780,6 +885,48 @@ export type Database = {
           percentual?: number | null
           previsao_fim?: string | null
           situacao?: string | null
+          updated_at?: string
+          valor?: number | null
+        }
+        Relationships: []
+      }
+      parcerias: {
+        Row: {
+          arquivo_url: string | null
+          created_at: string
+          data_fim: string | null
+          data_inicio: string | null
+          entidade: string | null
+          id: string
+          nome: string
+          objeto: string | null
+          tipo: string | null
+          updated_at: string
+          valor: number | null
+        }
+        Insert: {
+          arquivo_url?: string | null
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          entidade?: string | null
+          id?: string
+          nome: string
+          objeto?: string | null
+          tipo?: string | null
+          updated_at?: string
+          valor?: number | null
+        }
+        Update: {
+          arquivo_url?: string | null
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          entidade?: string | null
+          id?: string
+          nome?: string
+          objeto?: string | null
+          tipo?: string | null
           updated_at?: string
           valor?: number | null
         }
@@ -1138,6 +1285,48 @@ export type Database = {
         }
         Relationships: []
       }
+      termos_fomento: {
+        Row: {
+          arquivo_url: string | null
+          cnpj: string | null
+          created_at: string
+          data_fim: string | null
+          data_inicio: string | null
+          id: string
+          numero: string
+          objeto: string | null
+          osc: string
+          updated_at: string
+          valor: number | null
+        }
+        Insert: {
+          arquivo_url?: string | null
+          cnpj?: string | null
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          numero: string
+          objeto?: string | null
+          osc: string
+          updated_at?: string
+          valor?: number | null
+        }
+        Update: {
+          arquivo_url?: string | null
+          cnpj?: string | null
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          numero?: string
+          objeto?: string | null
+          osc?: string
+          updated_at?: string
+          valor?: number | null
+        }
+        Relationships: []
+      }
       unidades_gestoras: {
         Row: {
           cnpj: string | null
@@ -1296,6 +1485,7 @@ export type Database = {
         Args: { _tabela: string; _user_id: string }
         Returns: boolean
       }
+      recalcular_contrato: { Args: { _numero: string }; Returns: undefined }
       registrar_acesso: { Args: { _evento: string }; Returns: undefined }
       registrar_atendimento: {
         Args: {

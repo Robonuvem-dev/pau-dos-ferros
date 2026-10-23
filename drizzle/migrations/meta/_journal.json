@@ -57,6 +57,13 @@
       "when": 1792755704460,
       "tag": "0007_sprint3_finalizacao",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792756802313,
+      "tag": "0008_sprint4_m03_licitacoes",
+      "breakpoints": true
     }
   ]
 }
