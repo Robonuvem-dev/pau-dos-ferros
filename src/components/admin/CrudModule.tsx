@@ -205,10 +205,12 @@ function RelationInput({ field: f, value, onChange, label, id }: { field: Field;
   const ref = f.ref!;
   const { data = [] } = useQuery({ ...adminModuleQuery(ref.module) });
   const opts = Array.from(
-    new Map(data.filter((r) => r[ref.column] != null).map((r) => [
-      String(r[ref.column]),
-      { value: String(r[ref.column]), label: String(r[ref.displayColumn ?? ref.column] ?? r[ref.column]) },
-    ])).values(),
+    new Map<string, { value: string; label: string }>(
+      data.filter((r) => r[ref.column] != null).map((r) => [
+        String(r[ref.column]),
+        { value: String(r[ref.column]), label: String(r[ref.displayColumn ?? ref.column] ?? r[ref.column]) },
+      ] as const),
+    ).values(),
   ).sort((a, b) => a.label.localeCompare(b.label, "pt-BR"));
   const cur = String(value ?? "");
   return (
