@@ -190,6 +190,7 @@ function FieldInput({ field: f, value, onChange }: { field: Field; value: unknow
       </div>
     );
   }
+  if (f.type === "relation" && f.ref) return <RelationInput field={f} value={value} onChange={onChange} label={label} id={id} />;
   const type = f.type === "date" ? "date" : f.type === "int" || f.type === "number" || f.type === "money" ? "number" : "text";
   return (
     <div className="grid gap-1.5">{label}

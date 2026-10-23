@@ -58,6 +58,7 @@ function AdminLayout() {
           <Link to="/admin" className={item} activeOptions={{ exact: true }} activeProps={{ className: "bg-secondary font-semibold" }}>Visão geral</Link>
           {isAdmin && <Link to="/admin/usuarios" className={item}>Usuários e perfis</Link>}
           {isAdmin && <Link to="/admin/auditoria" className={item}>Auditoria</Link>}
+          <Link to="/admin/pendencias" className={item}>Críticas e pendências</Link>
           <Link to="/admin/melhorias" className={item}>Pedidos de melhoria</Link>
           <Link to="/sobre" className={item}>Sobre o sistema (v{VERSAO})</Link>
         </nav>
