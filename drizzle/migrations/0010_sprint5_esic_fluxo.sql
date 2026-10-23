@@ -9,6 +9,8 @@ ALTER TABLE public.atendimentos
 
 CREATE INDEX IF NOT EXISTS atendimentos_esic_prazo_idx
   ON public.atendimentos(canal, status, created_at);
+CREATE UNIQUE INDEX IF NOT EXISTS atendimentos_recurso_unico_idx
+  ON public.atendimentos(protocolo_origem) WHERE tipo = 'Recurso';
 CREATE INDEX IF NOT EXISTS atendimentos_recurso_origem_idx
   ON public.atendimentos(protocolo_origem);
 
@@ -59,7 +61,7 @@ BEGIN
  IF NOT FOUND OR a.canal <> 'esic' THEN RAISE EXCEPTION 'Pedido e-SIC não encontrado'; END IF;
  IF a.prorrogado THEN RAISE EXCEPTION 'O prazo já foi prorrogado'; END IF;
  IF a.respondido_em IS NOT NULL OR a.status = 'Respondido' THEN RAISE EXCEPTION 'Pedido já respondido'; END IF;
- IF current_date > (a.created_at AT TIME ZONE 'America/Fortaleza')::date + 20
+ IF (now() AT TIME ZONE 'America/Fortaleza')::date > (a.created_at AT TIME ZONE 'America/Fortaleza')::date + 20
     THEN RAISE EXCEPTION 'Prazo original vencido'; END IF;
  IF length(trim(coalesce(_justificativa,''))) < 10 THEN
    RAISE EXCEPTION 'Justificativa de prorrogação deve ter ao menos 10 caracteres';
