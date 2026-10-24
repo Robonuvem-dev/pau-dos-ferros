@@ -47,12 +47,12 @@ export function GestaoEsic() {
     {isPending && <p>Carregando atendimentos...</p>}
     {error && <p role="alert" className="text-destructive">{(error as Error).message}. Verifique a migração 0010.</p>}
     <div className="mt-4 space-y-4">{data.map(a => {
-      const prazo = prazoAtendimento(new Date(a.created_at), a.canal, a.prorrogado);
+      const prazo = prazoAtendimento(new Date(a.created_at), a.canal, a.prorrogado, a.tipo);
       const hojePartes = new Intl.DateTimeFormat("en-US", { timeZone: "America/Fortaleza", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
       const hoje = (key: string) => hojePartes.find(p => p.type === key)?.value ?? "";
       const now = `${hoje("year")}-${hoje("month")}-${hoje("day")}`;
       const vencido = !a.respondido_em && prazo.toISOString().slice(0, 10) < now;
-      const podeProrrogar = a.canal === "esic" && !a.prorrogado && !a.respondido_em
+      const podeProrrogar = a.canal === "esic" && a.tipo !== "Recurso" && !a.prorrogado && !a.respondido_em
         && prazo.toISOString().slice(0,10) >= now;
       return <article key={a.id} className="rounded border p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">

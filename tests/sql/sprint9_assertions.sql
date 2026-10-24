@@ -21,6 +21,15 @@ SELECT pg_temp.expect_error($q$INSERT INTO public.atricon_relatorios(modelo,text
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000042',true);
 SELECT pg_temp.assert_true((SELECT count(*)=0 FROM public.atricon_relatorios),'citizen cannot read staff reports');
 SELECT pg_temp.expect_error($q$INSERT INTO public.municipio_informacoes(categoria,titulo,descricao) VALUES('Escolas','Sem acesso','Sem acesso')$q$,'42501','citizen cannot edit municipality');
+RESET ROLE;
+INSERT INTO public.atendimentos(id,protocolo,canal,tipo,nome,email,assunto,mensagem,created_at)
+VALUES('70000000-0000-0000-0000-000000000001','PF-TESTE-RECURSO','esic','Recurso','Pessoa ficticia','recurso@poc.invalid','POC recurso','Mensagem ficticia','2026-10-24T01:00:00Z');
+SET LOCAL ROLE authenticated;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000041',true);
+SELECT pg_temp.expect_error($q$SELECT public.prorrogar_esic('70000000-0000-0000-0000-000000000001','Justificativa ficticia suficiente')$q$,'P0001','appeal cannot use initial request extension');
+SET LOCAL ROLE anon;
+SELECT pg_temp.assert_true((SELECT prazo_final='2026-10-28'::date FROM public.consultar_protocolo_seguro('PF-TESTE-RECURSO','recurso@poc.invalid')),'public appeal deadline is five days in municipal timezone');
+RESET ROLE;
 SET LOCAL ROLE anon;
 SELECT pg_temp.assert_true(EXISTS(SELECT 1 FROM public.municipio_informacoes WHERE titulo='POC Escola ficticia'),'municipality publicly readable');
 SELECT pg_temp.expect_error($q$SELECT * FROM public.atricon_relatorios$q$,'42501','anonymous report access denied');
