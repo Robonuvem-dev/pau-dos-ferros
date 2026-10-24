@@ -44,8 +44,7 @@ function Home() {
   const navigate = useNavigate();
   const { data: links } = useSuspenseQuery(moduleQuery("links-uteis"));
   const { data: config } = useSuspenseQuery(configQuery);
-  const hoje = new Date().toISOString().slice(0, 10);
-  const vigentes = banners.filter((b) => b.imagem_url && (!b.inicio || String(b.inicio) <= hoje) && (!b.fim || String(b.fim) >= hoje));
+  const vigentes = banners;
   const [slide, setSlide] = useState(0);
   useEffect(() => {
     if (vigentes.length < 2) return;
@@ -58,7 +57,7 @@ function Home() {
   return (
     <>
       <section className="relative overflow-hidden">
-        <img src={banner ? String(banner.imagem_url) : hero} alt="Vista da cidade de Pau dos Ferros" width={1600} height={768} className="absolute inset-0 h-full w-full object-cover" />
+        <img src={banner ? String(banner.imagem_url) : hero} alt={banner ? String(banner.titulo) : "Vista da cidade de Pau dos Ferros"} width={1600} height={768} className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary-deep/95 via-primary-deep/70 to-transparent" />
         <div className="relative mx-auto max-w-6xl px-4 py-20 text-primary-foreground md:py-28">
           <span className="inline-block rounded bg-highlight px-3 py-1 text-sm font-bold uppercase tracking-wide text-highlight-foreground">Avançando com você</span>
@@ -69,17 +68,21 @@ function Home() {
             <Input id="busca-home" value={q} onChange={(e) => setQ(e.target.value)} placeholder="O que você procura? Ex.: matrícula, licitação, IPTU" className="h-12 bg-card text-foreground" />
             <Button type="submit" size="lg" className="h-12 bg-accent text-accent-foreground hover:bg-accent/90"><Search />Buscar</Button>
           </form>
+          {banner?.link && <Button asChild variant="secondary" className="mt-4 max-w-full whitespace-normal"><a href={String(banner.link)}>{String(banner.titulo)}<ExternalLink /></a></Button>}
+          {vigentes.length > 1 && <div className="mt-6 flex gap-2" aria-label="Banners">
+            {vigentes.map((b, i) => <Button key={b.id} variant="ghost" size="icon" aria-label={`Banner ${i + 1}: ${String(b.titulo)}`} aria-current={i === slide % vigentes.length} onClick={() => setSlide(i)} className="size-8"><span className={`h-2 w-6 rounded-full ${i === slide % vigentes.length ? "bg-highlight" : "bg-primary-foreground"}`} /></Button>)}
+          </div>}
         </div>
       </section>
 
-      <section className="mx-auto -mt-10 max-w-6xl px-4">
+      <section className="relative z-10 mx-auto -mt-10 max-w-6xl px-4">
         <div className="grid grid-cols-2 gap-3 rounded-xl bg-card p-4 shadow-card md:grid-cols-4">
           {ATALHOS.map((a) => {
             const inner = <><a.icon className="size-7 text-accent" /><span className="text-sm font-semibold">{a.label}</span></>;
             const cls = "flex flex-col items-center gap-2 rounded-lg p-4 text-center transition hover:bg-secondary";
             return a.mod
               ? <Link key={a.label} to="/transparencia/$module" params={{ module: a.mod }} className={cls}>{inner}</Link>
-              : <Link key={a.label} to={a.to!} className={cls}>{inner}</Link>;
+               : a.to ? <Link key={a.label} to={a.to} className={cls}>{inner}</Link> : null;
           })}
         </div>
       </section>
@@ -97,11 +100,6 @@ function Home() {
         ) : <p className="text-muted-foreground">Nenhuma notícia publicada ainda.</p>}
       </section>
 
-      {vigentes.length > 1 && (
-        <div className="mx-auto mt-4 flex max-w-6xl justify-center gap-2 px-4" aria-label="Banners">
-          {vigentes.map((b, i) => <button key={b.id} aria-label={`Banner ${i + 1}: ${String(b.titulo)}`} aria-current={i === slide % vigentes.length} onClick={() => setSlide(i)} className={`h-2 w-8 rounded-full ${i === slide % vigentes.length ? "bg-primary" : "bg-border"}`} />)}
-        </div>
-      )}
       <section className="bg-secondary">
         <div className="mx-auto max-w-6xl px-4 py-14">
           <div className="mb-6 flex items-end justify-between">

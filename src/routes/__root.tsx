@@ -14,12 +14,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { SessionContext } from '@/hooks/use-session';
 import { SiteHeader, SiteFooter } from '@/components/site/SiteHeader';
 import { Toaster } from '@/components/ui/sonner';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { configQuery } from '@/lib/queries';
 import { temaCss } from '@/lib/temas';
 
 function TemaSite() {
-  const { data } = useQuery({ ...configQuery, refetchInterval: 15_000 });
+  const { data } = useSuspenseQuery(configQuery);
   const css = data ? temaCss(data) : '';
   return <>
     {css ? <style>{css}</style> : null}
@@ -93,6 +93,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: ({ context }) => context.queryClient.ensureQueryData(configQuery),
   head: () => ({
     meta: [
       { charSet: "utf-8" },

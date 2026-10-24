@@ -33,8 +33,10 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
   }, [data, q, mod.fields]);
 
   const refresh = () => {
-    void qc.invalidateQueries({ queryKey: ["admin-module", mod.key] });
-    void qc.invalidateQueries({ queryKey: ["public-module", mod.key] });
+    void qc.invalidateQueries({ queryKey: ["admin-module"] });
+    void qc.invalidateQueries({ queryKey: ["public-module"] });
+    void qc.invalidateQueries({ queryKey: ["public-config"] });
+    void qc.invalidateQueries({ queryKey: ["public-servicos-stats"] });
     void qc.invalidateQueries({ queryKey: ["admin-counts"] });
   };
 
