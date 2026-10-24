@@ -47,4 +47,23 @@ SELECT pg_temp.assert_true((SELECT count(*)=1 FROM public.conselho_membros),'pub
 SELECT pg_temp.expect_error($q$INSERT INTO public.planos_diretores(nome) VALUES('SEM-PERMISSAO')$q$,'42501','anonymous write denied');
 RESET ROLE;
 SELECT pg_temp.assert_true((SELECT count(*)>=8 FROM public.auditoria WHERE tabela IN ('obra_arts','obra_fotos','obra_medicoes','obra_andamentos','conselho_membros','conselho_acoes','plano_diretor_acoes','plano_diretor_equipe')),'child record actions audited');
+
+-- M10.1: persistencia, campos obrigatorios, FK e permissao herdada de obras.
+SET LOCAL ROLE authenticated;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000021',true);
+INSERT INTO public.contratos(id,numero,fornecedor,objeto,valor) VALUES('81000000-0000-0000-0000-000000000001','POC-ENG-1','POC Fornecedor','POC Contrato ficticio',1000);
+INSERT INTO public.processos_engenharia(id,numero,data_processo,valor_contrato_inicial,contrato_id,fonte_recurso) VALUES('81000000-0000-0000-0000-000000000002','POC Processo 1','2026-10-24',1000,'81000000-0000-0000-0000-000000000001','POC Recurso');
+UPDATE public.obras SET processo_engenharia_id='81000000-0000-0000-0000-000000000002' WHERE id='80000000-0000-0000-0000-000000000001';
+SELECT pg_temp.assert_true((SELECT count(*)=1 FROM public.processos_engenharia),'engineering process persists');
+SELECT pg_temp.expect_error($q$INSERT INTO public.processos_engenharia(numero,data_processo,valor_contrato_inicial,contrato_id,fonte_recurso) VALUES('POC','2026-10-24',1,'ffffffff-ffff-ffff-ffff-ffffffffffff','POC')$q$,'23503','engineering contract must exist');
+SELECT pg_temp.expect_error($q$INSERT INTO public.processos_engenharia(numero,data_processo,valor_contrato_inicial,contrato_id,fonte_recurso) VALUES('POC',NULL,1,'81000000-0000-0000-0000-000000000001','POC')$q$,'23502','engineering process date mandatory');
+SELECT pg_temp.expect_error($q$INSERT INTO public.processos_engenharia(numero,data_processo,valor_contrato_inicial,contrato_id,fonte_recurso) VALUES('POC','2026-10-24',-1,'81000000-0000-0000-0000-000000000001','POC')$q$,'23514','engineering initial value nonnegative');
+SELECT pg_temp.expect_error($q$INSERT INTO public.processos_engenharia(numero,data_processo,valor_contrato_inicial,contrato_id,fonte_recurso) VALUES('POC','2026-10-24',1,'81000000-0000-0000-0000-000000000001','   ')$q$,'23514','engineering resource mandatory');
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000022',true);
+UPDATE public.processos_engenharia SET numero='Sem permissao';
+SELECT pg_temp.assert_true((SELECT numero='POC Processo 1' FROM public.processos_engenharia LIMIT 1),'unpermitted editor cannot change engineering');
+SET LOCAL ROLE anon;
+SELECT pg_temp.assert_true((SELECT count(*)=1 FROM public.processos_engenharia),'engineering process publicly readable');
+RESET ROLE;
+
 ROLLBACK;
