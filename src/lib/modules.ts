@@ -73,7 +73,7 @@ export const MODULES: ModuleDef[] = [
       { name: "resumo", label: "Resumo", type: "textarea", hideInTable: true },
       { name: "conteudo", label: "Conteúdo", type: "textarea", hideInTable: true },
       { name: "capa_url", label: "Imagem de capa", type: "file", hideInTable: true },
-      { name: "video_url", label: "Vídeo (link do YouTube)", hideInTable: true },
+      { name: "video_url", label: "Vídeo (YouTube ou arquivo)", type: "file", hideInTable: true },
       { name: "audio_url", label: "Áudio", type: "file", hideInTable: true },
       { name: "tags", label: "Tags", type: "tags", hideInTable: true },
       { name: "agendar_para", label: "Publicar a partir de (agendamento)", type: "date", hideInTable: true },
