@@ -71,7 +71,7 @@ export const atriconQuery = queryOptions({
   queryFn: async () => {
     const { data, error } = await supabase.from("atricon_avaliacoes").select("*");
     if (error) throw error;
-    return Object.fromEntries(data.map((r) => [r.criterio, { status: r.status as AtriconStatus, observacao: r.observacao }]));
+    return Object.fromEntries(data.map((r) => [r.criterio, { status: r.status as AtriconStatus, observacao: r.observacao, link: r.link }]));
   },
 });
 
