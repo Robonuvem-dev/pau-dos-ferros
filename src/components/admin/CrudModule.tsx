@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { adminModuleQuery } from "@/lib/admin-queries";
 import { deleteRow, saveRow, uploadFile, type Row } from "@/lib/data";
 import { formatCell, type Field, type ModuleDef } from "@/lib/modules";
+import { ResumoConvenios } from "@/components/convenios/ResumoConvenios";
 
 type Values = Record<string, unknown>;
 
@@ -65,6 +66,7 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
         </div>
         <Button onClick={() => setEditing({ values: emptyValues(mod) })}><Plus />Novo registro</Button>
       </div>
+      {mod.key === "convenios" && <ResumoConvenios />}
       <div className="rounded-lg border bg-card">
         <div className="flex items-center gap-3 border-b p-3">
           <div className="relative flex-1">
@@ -202,14 +204,21 @@ function FieldInput({ field: f, value, onChange }: { field: Field; value: unknow
 function RelationInput({ field: f, value, onChange, label, id }: { field: Field; value: unknown; onChange: (v: unknown) => void; label: React.ReactNode; id: string }) {
   const ref = f.ref!;
   const { data = [] } = useQuery({ ...adminModuleQuery(ref.module) });
-  const opts = Array.from(new Set(data.map((r) => String(r[ref.column] ?? "")).filter(Boolean))).sort();
+  const opts = Array.from(
+    new Map<string, { value: string; label: string }>(
+      data.filter((r) => r[ref.column] != null).map((r) => [
+        String(r[ref.column]),
+        { value: String(r[ref.column]), label: String(r[ref.displayColumn ?? ref.column] ?? r[ref.column]) },
+      ] as const),
+    ).values(),
+  ).sort((a, b) => a.label.localeCompare(b.label, "pt-BR"));
   const cur = String(value ?? "");
   return (
     <div className="grid gap-1.5">{label}
       <select id={id} className="h-9 rounded-md border border-input bg-background px-3 text-sm" value={cur} onChange={(e) => onChange(e.target.value)}>
         <option value="">Selecione...</option>
-        {cur && !opts.includes(cur) && <option value={cur}>{cur} (não cadastrado)</option>}
-        {opts.map((o) => <option key={o} value={o}>{o}</option>)}
+        {cur && !opts.some((o) => o.value === cur) && <option value={cur}>{cur} (não cadastrado)</option>}
+        {opts.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     </div>
   );

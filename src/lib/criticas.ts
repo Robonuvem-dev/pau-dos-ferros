@@ -65,6 +65,16 @@ export const REGRAS: Regra[] = [
   { modulo: "convenios", nome: (r) => String(r.numero ?? ""), testes: [
     { problema: "Convênio vencido", gravidade: "media", falha: (r, h) => vencido(r.data_fim, h) },
     { problema: "Convênio sem documento anexado", gravidade: "media", falha: (r) => vazio(r.arquivo_url) },
+    { problema: "Convênio sem responsável concedente", gravidade: "media", falha: (r) => vazio(r.responsavel_concedente) },
+    { problema: "Convênio sem responsável convenente", gravidade: "media", falha: (r) => vazio(r.responsavel_convenente) },
+    { problema: "Convênio sem metas ou plano de aplicação", gravidade: "alta", falha: (r) => vazio(r.metas) || vazio(r.plano_aplicacao) },
+    { problema: "Convênio sem valor global", gravidade: "alta", falha: (r) => vazio(r.valor_global) },
+  ] },
+  { modulo: "convenio-obrigacoes", nome: (r) => String(r.titulo ?? ""), testes: [
+    { problema: "Obrigação de convênio vencida", gravidade: "alta", falha: (r, h) => r.situacao === "Pendente" && vencido(r.vencimento, h) },
+  ] },
+  { modulo: "convenio-parcelas", nome: (r) => String(r.numero ?? ""), testes: [
+    { problema: "Parcela de convênio vencida", gravidade: "alta", falha: (r, h) => r.status === "Programada" && vencido(r.vencimento, h) },
   ] },
   { modulo: "obras", nome: (r) => String(r.nome ?? ""), testes: [
     { problema: "Obra paralisada", gravidade: "alta", falha: (r) => r.situacao === "Paralisada" },

@@ -1,6 +1,6 @@
 // 88 pontos de avaliação de transparência (matriz ATRICON / PNTP), agrupados por dimensão.
-// "fonte": chave do módulo cujo preenchimento comprova o item; "portal" = recurso já existente no portal;
-// null = item comprovado manualmente pela equipe.
+// "fonte": módulo para orientar a busca de evidências; contagem não comprova conformidade.
+// Todos os resultados positivos exigem evidência registrada pela equipe.
 export type AtriconStatus = "atende" | "nao_atende" | "terceiro";
 export interface Criterio { id: string; dimensao: string; descricao: string; fonte: string | null }
 
@@ -97,15 +97,42 @@ const raw: [string, string, string | null][] = [
 
 export const CRITERIOS: Criterio[] = raw.map(([dimensao, descricao, fonte], i) => ({ id: String(i + 1).padStart(2, "0"), dimensao, descricao, fonte }));
 
-export interface Avaliacao extends Criterio { status: AtriconStatus; automatico: boolean; observacao?: string | null | undefined }
+export interface EvidenciaAtricon {
+  status: AtriconStatus;
+  observacao?: string | null | undefined;
+  link?: string | null | undefined;
+}
+export interface Avaliacao extends Criterio {
+  status: AtriconStatus;
+  automatico: boolean;
+  observacao?: string | null | undefined;
+  link?: string | null | undefined;
+}
 
-/** Avalia cada ponto: avaliação manual vence; senão, o preenchimento do módulo comprova o item. */
-export function avaliar(counts: Record<string, number>, manuais: Record<string, { status: AtriconStatus; observacao?: string | null | undefined }>): Avaliacao[] {
+function evidenciaValida(m: EvidenciaAtricon): boolean {
+  if ((m.observacao ?? "").trim().length < 10) return false;
+  try {
+    const url = new URL(m.link ?? "");
+    return ["https:", "http:"].includes(url.protocol) && !url.username && !url.password;
+  } catch { return false; }
+}
+
+/** Contagens localizam cadastros; jamais homologam um ponto ATRICON.
+ * Uma marcação positiva é declaração manual com URL e registro de verificação.
+ * A execução da matriz da PoC permanece uma etapa independente.
+ */
+export function avaliar(counts: Record<string, number>, manuais: Record<string, EvidenciaAtricon>): Avaliacao[] {
+  void counts;
   return CRITERIOS.map((c) => {
     const m = manuais[c.id];
-    if (m) return { ...c, status: m.status, observacao: m.observacao, automatico: false };
-    const ok = c.fonte === "portal" || (c.fonte !== null && (counts[c.fonte] ?? 0) > 0);
-    return { ...c, status: ok ? "atende" : "nao_atende", automatico: c.fonte !== null };
+    if (m?.status === "nao_atende") return { ...c, ...m, automatico: false };
+    if (m && evidenciaValida(m)) return { ...c, ...m, automatico: false };
+    return {
+      ...c,
+      status: "nao_atende",
+      automatico: false,
+      observacao: m ? "Marcação sem URL de evidência e registro suficiente de verificação." : "Sem evidência de execução registrada.",
+    };
   });
 }
 

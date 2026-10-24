@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageHeader } from "@/components/site/PageHeader";
+import { ResumoConvenios } from "@/components/convenios/ResumoConvenios";
 import { PublicTable } from "@/components/site/PublicTable";
 import { QueryError, QueryNotFound } from "@/components/site/RouteStates";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -30,6 +31,7 @@ function Consulta() {
       </PageHeader>
       <div className="mx-auto max-w-6xl px-4 py-8">
         <PublicTable mod={mod} />
+        {mod.key === "convenios" && <ResumoConvenios publico />}
         {mod.key === "concurso" && <EtapasConcursos />}
         {mod.key === "licitacoes" && <LinhaDoTempo />}
         <p className="mt-4 text-xs text-muted-foreground">Dados públicos disponibilizados em formato aberto, nos termos da Lei 12.527/2011 e da LC 131/2009.</p>

@@ -9,13 +9,23 @@ import { formatCell, toCSV, type ModuleDef } from "@/lib/modules";
 export function PublicTable({ mod }: { mod: ModuleDef }) {
   const { data } = useSuspenseQuery(moduleQuery(mod.key));
   const [q, setQ] = useState("");
+  const [numero, setNumero] = useState("");
+  const [ano, setAno] = useState("");
+  const [ementa, setEmenta] = useState("");
+  const legislacao = ["lei", "decreto", "portaria", "resolucao", "edital", "lrf"].includes(mod.key);
+  const detalhes = mod.fields.filter(f => f.hideInTable);
   const cols = mod.fields.filter((f) => !f.hideInTable);
 
   const rows = useMemo(() => {
     const s = q.trim().toLowerCase();
-    if (!s) return data;
-    return data.filter((r) => mod.fields.some((f) => String(r[f.name] ?? "").toLowerCase().includes(s)));
-  }, [data, q, mod.fields]);
+    return data.filter((r) => {
+      if (s && !mod.fields.some((f) => String(r[f.name] ?? "").toLowerCase().includes(s))) return false;
+      if (legislacao && numero.trim() && !String(r.numero ?? "").toLowerCase().includes(numero.trim().toLowerCase())) return false;
+      if (legislacao && ano.trim() && String(r.ano ?? "").trim() !== ano.trim()) return false;
+      if (legislacao && ementa.trim() && !String(r.ementa ?? "").toLowerCase().includes(ementa.trim().toLowerCase())) return false;
+      return true;
+    });
+  }, [data, q, mod.fields, legislacao, numero, ano, ementa]);
 
   const exportar = (tipo: "csv" | "json") => {
     const content = tipo === "csv" ? "\uFEFF" + toCSV(mod.fields, rows) : JSON.stringify(rows, null, 2);
@@ -39,13 +49,18 @@ export function PublicTable({ mod }: { mod: ModuleDef }) {
         <Button variant="outline" size="sm" onClick={() => exportar("json")}><Download className="size-4" />JSON</Button>
         <Button variant="outline" size="sm" onClick={() => window.print()}>Imprimir</Button>
       </div>
+      {legislacao && <div className="grid gap-3 border-b p-4 sm:grid-cols-3">
+        <Input aria-label="Número do documento" placeholder="Filtrar por número" value={numero} onChange={e => setNumero(e.target.value)} />
+        <Input aria-label="Ano do documento" placeholder="Ano (ex.: 2026)" inputMode="numeric" value={ano} onChange={e => setAno(e.target.value)} />
+        <Input aria-label="Ementa do documento" placeholder="Palavras da ementa" value={ementa} onChange={e => setEmenta(e.target.value)} />
+      </div>}
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-secondary text-left text-secondary-foreground">
-            <tr>{cols.map((c) => <th key={c.name} className="px-4 py-3 font-semibold">{c.label}</th>)}</tr>
+            <tr>{cols.map((c) => <th key={c.name} className="px-4 py-3 font-semibold">{c.label}</th>)}{detalhes.length > 0 && <th className="px-4 py-3">Detalhes</th>}</tr>
           </thead>
           <tbody>
-            {rows.length === 0 && <tr><td className="px-4 py-6 text-muted-foreground" colSpan={cols.length}>Nenhum registro encontrado.</td></tr>}
+            {rows.length === 0 && <tr><td className="px-4 py-6 text-muted-foreground" colSpan={cols.length + (detalhes.length ? 1 : 0)}>Nenhum registro encontrado.</td></tr>}
             {rows.map((r) => (
               <tr key={r.id} className="border-t align-top hover:bg-muted">
                 {cols.map((c) => (
@@ -59,6 +74,15 @@ export function PublicTable({ mod }: { mod: ModuleDef }) {
                     )}
                   </td>
                 ))}
+                {detalhes.length > 0 && <td className="px-4 py-3"><details>
+                  <summary className="cursor-pointer text-primary">Ver informações completas</summary>
+                  <dl className="mt-2 min-w-64 space-y-2">{detalhes.map(f => <div key={f.name}>
+                    <dt className="font-semibold">{f.label}</dt>
+                    <dd className="whitespace-pre-wrap">{f.type === "file" && r[f.name]
+                      ? <a href={String(r[f.name])} target="_blank" rel="noreferrer" className="text-primary underline">Abrir documento</a>
+                      : formatCell(f, r[f.name])}</dd>
+                  </div>)}</dl>
+                </details></td>}
               </tr>
             ))}
           </tbody>

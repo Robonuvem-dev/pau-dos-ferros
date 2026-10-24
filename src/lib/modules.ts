@@ -9,7 +9,7 @@ export interface Field {
   required?: boolean;
   hideInTable?: boolean;
   /** Para type "relation": módulo de origem e coluna gravada/exibida. */
-  ref?: { module: string; column: string };
+  ref?: { module: string; column: string; displayColumn?: string };
 }
 
 export interface ModuleDef {
@@ -21,6 +21,8 @@ export interface ModuleDef {
   filtro?: { column: string; value: string }; // para a tabela publicacoes
   orderBy?: string;
   fields: Field[];
+  /** Tabela cuja permissão governa este cadastro e suas regras RLS. */
+  permissionTable?: string;
   publico?: boolean; // aparece no Portal da Transparência
 }
 
@@ -218,6 +220,7 @@ export const MODULES: ModuleDef[] = [
       { name: "contrato_origem", label: "Contrato/ata de origem (aditivos e adesões)", type: "relation", ref: { module: "contratos", column: "numero" }, hideInTable: true },
       { name: "valor_atualizado", label: "Valor atualizado (automático)", type: "money" },
       { name: "data_fim_atualizada", label: "Vigência atualizada (automática)", type: "date", hideInTable: true },
+      { name: "convenio_id", label: "Convênio de origem", type: "relation", ref: { module: "convenios", column: "id", displayColumn: "numero" }, hideInTable: true },
       { name: "licitacao_numero", label: "Licitação de origem", type: "relation", ref: { module: "licitacoes", column: "numero" }, hideInTable: true },
       { name: "secretaria", label: "Secretaria", hideInTable: true },
       { name: "arquivo_url", label: "Documento", type: "file" },
@@ -307,21 +310,78 @@ export const MODULES: ModuleDef[] = [
       { name: "origem", label: "Origem", hideInTable: true },
     ],
   },
+
+  ...(["concedente", "convenente"] as const).map((papel): ModuleDef => ({
+    key: papel === "concedente" ? "concedentes" : "convenentes",
+    table: "convenio_entidades", permissionTable: "convenios", label: papel === "concedente" ? "Concedentes" : "Convenentes",
+    descricao: "Entidades e responsáveis dos convênios públicos.",
+    grupo: "Licitações e Contratos", publico: true, orderBy: "nome",
+    filtro: { column: "papel", value: papel },
+    fields: [
+      { name: "nome", label: "Entidade", required: true },
+      { name: "responsavel", label: "Responsável", required: true },
+      { name: "cnpj", label: "CNPJ" },
+    ],
+  })),
+  {
+    key: "tipos-convenio", table: "convenio_tipos", permissionTable: "convenios", label: "Tipos e categorias de convênio",
+    descricao: "Categorias configuráveis para classificação dos convênios.",
+    grupo: "Licitações e Contratos", publico: true, orderBy: "nome",
+    fields: [
+      { name: "nome", label: "Categoria", required: true },
+      { name: "descricao", label: "Descrição", type: "textarea" },
+    ],
+  },
   {
     key: "convenios", table: "convenios", label: "Convênios", grupo: "Licitações e Contratos", orderBy: "data_inicio", publico: true,
     descricao: "Convênios e transferências voluntárias.",
     fields: [
       { name: "numero", label: "Número", required: true },
       { name: "tipo", label: "Tipo", type: "select", options: ["Recebido", "Concedido"] },
-      { name: "concedente", label: "Concedente", required: true },
-      { name: "convenente", label: "Convenente", hideInTable: true },
+      { name: "concedente", label: "Concedente", type: "relation", ref: { module: "concedentes", column: "nome" }, required: true },
+      { name: "responsavel_concedente", label: "Responsável pelo concedente", required: true },
+      { name: "convenente", label: "Convenente", type: "relation", ref: { module: "convenentes", column: "nome" }, required: true },
+      { name: "responsavel_convenente", label: "Responsável pelo convenente", required: true },
       { name: "objeto", label: "Objeto", type: "textarea", required: true },
-      { name: "valor", label: "Valor", type: "money" },
+      { name: "valor", label: "Valor de referência", type: "money" },
+      { name: "valor_global", label: "Valor global do convênio", type: "money", required: true },
       { name: "contrapartida", label: "Contrapartida", type: "money", hideInTable: true },
+      { name: "categoria", label: "Categoria de convênio", type: "relation", ref: { module: "tipos-convenio", column: "nome" } },
+      { name: "especificacoes_tecnicas", label: "Especificações técnicas", type: "textarea", hideInTable: true },
+      { name: "metas", label: "Metas", type: "textarea", hideInTable: true },
+      { name: "plano_aplicacao", label: "Plano de aplicação", type: "textarea", hideInTable: true },
+      { name: "contrato_numero", label: "Contrato vinculado", type: "relation", ref: { module: "contratos", column: "numero" } },
+      { name: "periodicidade_prestacao", label: "Prestação de contas", hideInTable: true },
       { name: "data_inicio", label: "Início", type: "date" },
-      { name: "data_fim", label: "Fim", type: "date", hideInTable: true },
-      { name: "situacao", label: "Situação" },
+      { name: "data_fim", label: "Fim", type: "date" },
+      { name: "situacao", label: "Situação", type: "select", options: ["Planejado", "Em execução", "Concluído", "Suspenso", "Rescindido"] },
+      { name: "observacoes", label: "Observações", type: "textarea", hideInTable: true },
       { name: "arquivo_url", label: "Documento", type: "file", hideInTable: true },
+    ],
+  },
+  {
+    key: "convenio-parcelas", table: "convenio_parcelas", permissionTable: "convenios", label: "Parcelas de convênios", grupo: "Licitações e Contratos", orderBy: "numero", publico: true,
+    descricao: "Cronograma de parcelas, valores e recebimentos de convênios.",
+    fields: [
+      { name: "convenio_id", label: "Convênio", type: "relation", ref: { module: "convenios", column: "id", displayColumn: "numero" }, required: true },
+      { name: "numero", label: "Número da parcela", type: "int", required: true },
+      { name: "valor", label: "Valor", type: "money", required: true },
+      { name: "vencimento", label: "Vencimento", type: "date" },
+      { name: "recebido_em", label: "Recebido em", type: "date" },
+      { name: "status", label: "Situação", type: "select", options: ["Programada", "Recebida", "Cancelada"] },
+      { name: "descricao", label: "Descrição", type: "textarea", hideInTable: true },
+    ],
+  },
+  {
+    key: "convenio-obrigacoes", table: "convenio_obrigacoes", permissionTable: "convenios", label: "Obrigações de convênios", grupo: "Licitações e Contratos", orderBy: "vencimento", publico: true,
+    descricao: "Obrigações, prazos e situação da prestação de contas dos convênios.",
+    fields: [
+      { name: "convenio_id", label: "Convênio", type: "relation", ref: { module: "convenios", column: "id", displayColumn: "numero" }, required: true },
+      { name: "titulo", label: "Obrigação", required: true },
+      { name: "vencimento", label: "Vencimento", type: "date" },
+      { name: "cumprida_em", label: "Cumprida em", type: "date" },
+      { name: "situacao", label: "Situação", type: "select", options: ["Pendente", "Cumprida", "Cancelada"] },
+      { name: "descricao", label: "Detalhamento", type: "textarea", hideInTable: true },
     ],
   },
   {
@@ -366,7 +426,15 @@ export const MODULES: ModuleDef[] = [
       { name: "competencia", label: "Competência" },
     ],
   },
-  pub("diaria", "Diárias", "Diárias de viagem de agentes públicos.", [{ name: "valor", label: "Valor", type: "money" }]),
+  pub("diaria", "Diárias", "Diárias de viagem de agentes públicos.", [
+    { name: "beneficiario", label: "Beneficiário" },
+    { name: "destino", label: "Destino" },
+    { name: "justificativa", label: "Justificativa", type: "textarea" },
+    { name: "valor", label: "Valor", type: "money" },
+  ]),
+  pub("resolucao", "Resoluções", "Resoluções de conselhos e órgãos municipais."),
+  pub("edital", "Editais públicos", "Editais municipais, seleções e convocações."),
+  pub("lrf", "Lei de Responsabilidade Fiscal", "Legislação e documentos consolidados da responsabilidade fiscal."),
   pub("lei", "Leis", "Leis municipais, incluindo PPA, LDO e LOA."),
   pub("decreto", "Decretos", "Decretos executivos."),
   pub("portaria", "Portarias", "Portarias e atos de pessoal."),
@@ -421,6 +489,8 @@ export const MODULES: ModuleDef[] = [
     ],
   },
 ];
+
+export const modulePermissionTable = (mod: ModuleDef) => mod.permissionTable ?? mod.table;
 
 export const getModule = (key: string) => MODULES.find((m) => m.key === key);
 

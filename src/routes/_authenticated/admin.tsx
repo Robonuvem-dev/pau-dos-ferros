@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useSession } from "@/hooks/use-session";
 import { supabase } from "@/integrations/supabase/client";
-import { MODULES } from "@/lib/modules";
+import { MODULES, modulePermissionTable } from "@/lib/modules";
 import { HISTORICO, VERSAO } from "@/lib/versao";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -50,7 +50,7 @@ function AdminLayout() {
       <p className="mt-2 text-muted-foreground">Sua conta foi criada, mas ainda precisa ser liberada por um administrador do portal.</p>
     </div>
   );
-  const visiveis = MODULES.filter((m) => isAdmin || !perms?.length || perms.includes(m.table));
+  const visiveis = MODULES.filter((m) => isAdmin || !perms?.length || perms.includes(modulePermissionTable(m)));
   return (
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 md:grid-cols-[230px_1fr]">
       <aside className="space-y-4 rounded-lg border bg-card p-3 md:sticky md:top-4 md:max-h-[90vh] md:overflow-y-auto">
