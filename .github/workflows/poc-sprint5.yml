@@ -73,3 +73,6 @@ jobs:
 
       - name: Testar importacao atomica e classificacao fiscal
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/sprint6_assertions.sql
+
+      - name: Testar obras conselhos frota e emergencia
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/sprint8_assertions.sql

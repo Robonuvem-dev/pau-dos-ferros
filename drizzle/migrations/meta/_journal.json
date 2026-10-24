@@ -99,6 +99,13 @@
       "when": 1792800300000,
       "tag": "0013_sprint6_fiscal_folha_importacao",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792800400000,
+      "tag": "0014_sprint8_obras_frota_conselhos_covid",
+      "breakpoints": true
     }
   ]
 }

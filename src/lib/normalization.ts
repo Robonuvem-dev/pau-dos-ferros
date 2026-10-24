@@ -22,7 +22,7 @@ export function normalizeField(f: Field, v: unknown): NormalizedValue {
 export function initialValues(mod: ModuleDef): Record<string, unknown> {
  const v: Record<string, unknown> = {};
  for (const f of mod.fields) {
-  if(f.type==="bool")v[f.name]=true;
+  if(f.type==="bool")v[f.name]=!["aprovada","maquina_obra"].includes(f.name);
   else if(f.type==="files")v[f.name]=[];
   else if(f.name==="ano")v[f.name]=Number(new Intl.DateTimeFormat("en",{year:"numeric",timeZone:"America/Fortaleza"}).format(new Date()));
   else v[f.name]="";

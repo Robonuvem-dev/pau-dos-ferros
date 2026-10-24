@@ -91,13 +91,23 @@ export const REGRAS: Regra[] = [
   ] },
   { modulo: "obras", nome: (r) => String(r.nome ?? ""), testes: [
     { problema: "Obra paralisada", gravidade: "alta", falha: (r) => r.situacao === "Paralisada" },
+    { problema: "Obra sem processo administrativo", gravidade: "alta", falha: r => vazio(r.numero_processo) },
+    { problema: "Obra sem secretaria executora", gravidade: "media", falha: r => vazio(r.secretaria) },
+    { problema: "Obra sem origem do recurso", gravidade: "media", falha: r => vazio(r.origem_recurso) },
     { problema: "Obra sem ART", gravidade: "alta", falha: (r) => vazio(r.art) },
     { problema: "Obra com prazo vencido e não concluída", gravidade: "alta", falha: (r, h) => vencido(r.previsao_fim, h) && r.situacao !== "Concluída" },
   ] },
   { modulo: "veiculos", nome: (r) => String(r.placa ?? ""), testes: [
+    { problema: "Seguro do veículo vencido", gravidade: "alta", falha: (r,h) => r.situacao !== "Baixado" && vencido(r.seguro_vencimento,h) },
+    { problema: "IPVA do veículo vencido", gravidade: "alta", falha: (r,h) => r.situacao !== "Baixado" && vencido(r.ipva_vencimento,h) },
+    { problema: "Manutenção do veículo vencida", gravidade: "alta", falha: (r,h) => r.situacao !== "Baixado" && vencido(r.manutencao_prevista,h) },
+    { problema: "Veículo sem Renavam", gravidade: "media", falha: r => vazio(r.renavam) },
+    { problema: "Veículo sem finalidade de uso", gravidade: "media", falha: r => vazio(r.finalidade) },
     { problema: "Veículo sem secretaria", gravidade: "media", falha: (r) => vazio(r.secretaria) },
   ] },
   { modulo: "conselhos", nome: (r) => String(r.nome ?? ""), testes: [
+    { problema: "Conselho com vigência vencida", gravidade: "alta", falha: (r,h) => vencido(r.vigencia_fim,h) },
+    { problema: "Conselho sem competências", gravidade: "media", falha: r => vazio(r.competencias) },
     { problema: "Conselho sem lei de criação", gravidade: "media", falha: (r) => vazio(r.lei_criacao) },
   ] },
 ];
