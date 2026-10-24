@@ -154,6 +154,8 @@ export const MODULES: ModuleDef[] = [
       { name: "foto_url", label: "Foto", type: "file", hideInTable: true },
       { name: "biografia", label: "Biografia", type: "textarea", hideInTable: true },
       { name: "ordem", label: "Ordem", type: "int", hideInTable: true },
+      {"name":"origem","label":"Sistema de origem"},
+      {"name":"chave_externa","label":"Identificador na origem"},
     ],
   },
   {
@@ -310,6 +312,7 @@ export const MODULES: ModuleDef[] = [
       { name: "municipio", label: "Município" },
       { name: "uf", label: "UF" },
       { name: "origem", label: "Origem", hideInTable: true },
+      {"name":"chave_externa","label":"Identificador na origem"},
     ],
   },
 

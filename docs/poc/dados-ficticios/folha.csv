@@ -1,0 +1,5 @@
+nome;matricula;cargo;vinculo;lotacao;admissao;remuneracao;competencia;subsidio;vantagens;descontos;chave_externa
+POC FICTICIA - Pessoa Alfa;POC-M001;POC Professor;Efetivo;POC Educação;2025-01-02;4200;2026-10;4000;500;300;POC-S001-202610
+POC FICTICIA - Pessoa Beta;POC-M002;POC Enfermeiro;Contratado;POC Saúde;2026-01-02;3600;2026-10;3500;300;200;POC-S002-202610
+POC FICTICIA - Pessoa Gama;POC-M003;POC Professor;Comissionado;POC Educação;2026-02-02;3100;2026-10;3000;300;200;POC-S003-202610
+POC FICTICIA - Pessoa Alfa;POC-M001;POC Professor;Efetivo;POC Educação;2025-01-02;4100;2026-09;4000;400;300;POC-S001-202609

@@ -1,0 +1,3 @@
+nome;cargo;partido;mandato;email;telefone;biografia;ordem;chave_externa
+POC FICTICIO - Agente Alfa;POC Prefeito;POC SEM PARTIDO;2026-2026;agente-alfa@teste.invalid;;Pessoa inteiramente fictícia para demonstração sem validade administrativa;1;POC-A001
+POC FICTICIO - Agente Beta;POC Secretário;POC SEM PARTIDO;2026-2026;agente-beta@teste.invalid;;Pessoa inteiramente fictícia para demonstração sem validade administrativa;2;POC-A002

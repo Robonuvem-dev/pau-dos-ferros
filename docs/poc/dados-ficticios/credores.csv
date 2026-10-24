@@ -1,0 +1,3 @@
+nome;cpf_cnpj;tipo;municipio;uf;chave_externa
+POC FICTICIO - Fornecedor Alfa;POC-SEM-CNPJ-ALFA;Pessoa jurídica;Município fictício;RN;POC-C001
+POC FICTICIO - Fornecedor Beta;POC-SEM-CNPJ-BETA;Pessoa jurídica;Município fictício;RN;POC-C002

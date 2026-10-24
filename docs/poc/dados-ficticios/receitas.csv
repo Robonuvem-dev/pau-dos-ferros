@@ -1,0 +1,3 @@
+ano;mes;categoria;descricao;previsto;arrecadado;natureza;data_receita;codigo_receita;fonte_recurso;chave_externa
+2026;10;POC FICTICIA - Receita orçamentária;POC sem validade administrativa;20000;18000.50;Orçamentária;2026-10-23;POC-R001;POC Recursos próprios;POC-R001
+2026;10;POC FICTICIA - Receita extraorçamentária;POC sem validade administrativa;1000;950.25;Extraorçamentária;2026-10-23;POC-R002;POC Recursos de terceiros;POC-R002

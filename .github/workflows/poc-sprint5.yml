@@ -76,3 +76,6 @@ jobs:
 
       - name: Testar obras conselhos frota e emergencia
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/sprint8_assertions.sql
+
+      - name: Testar carga sintetica cadastral
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/carga_sintetica_assertions.sql
