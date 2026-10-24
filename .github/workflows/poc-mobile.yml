@@ -38,6 +38,9 @@ jobs:
           arch: x86_64
           target: google_apis
           disable-animations: true
+          disk-size: 2048M
+          ram-size: 2048M
+          emulator-boot-timeout: 240
           script: |
             adb install mobile/android/app/build/outputs/apk/debug/app-debug.apk
             adb shell am start -W -n org.robonuvem.paudosferrospoc/.MainActivity
