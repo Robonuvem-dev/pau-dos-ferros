@@ -1,13 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { PainelAtricon } from '@/components/admin/PainelAtricon';
-import { adminModuleQuery } from '@/lib/admin-queries';
+import { fetchModule } from '@/lib/data';
+import { getModule } from '@/lib/modules';
 import { avaliarPendencias, REGRAS } from '@/lib/criticas';
 import { pageHead } from '@/lib/seo';
 import { QueryError } from '@/components/site/RouteStates';
 import { queryOptions } from '@tanstack/react-query';
 const pendencias = queryOptions({ queryKey: ['atricon-pendencias'], queryFn: async () => {
-  const rows = await Promise.all(REGRAS.map(async r => [r.modulo, await adminModuleQuery(r.modulo).queryFn()] as const));
+  const rows = await Promise.all(REGRAS.map(async r => {
+    const mod = getModule(r.modulo);
+    if (!mod) throw new Error('Cadastro indisponível: ' + r.modulo);
+    return [r.modulo, await fetchModule(mod)] as const;
+  }));
   return avaliarPendencias(Object.fromEntries(rows));
 } });
 export const Route = createFileRoute('/_authenticated/admin/atricon')({
