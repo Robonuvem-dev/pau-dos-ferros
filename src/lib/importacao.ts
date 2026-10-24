@@ -4,6 +4,8 @@ import { normalizeField } from "./normalization";
 
 export const IMPORT_COLUNAS: Record<string, string[]> = {
  receitas: ["ano","mes","categoria","descricao","previsto","arrecadado","natureza","data_receita","codigo_receita","fonte_recurso","chave_externa"],
+ "agentes-politicos": ["nome","cargo","partido","mandato","email","telefone","biografia","ordem","chave_externa"],
+ credores: ["nome","cpf_cnpj","tipo","municipio","uf","chave_externa"],
  despesas: ["ano","mes","orgao","funcao","elemento","credor","empenho","empenhado","liquidado","pago","natureza","processo","data_empenho","liquidacao","data_liquidacao","ordem_bancaria","data_pagamento","fonte_recurso","chave_externa"],
  servidores: ["nome","matricula","cargo","vinculo","lotacao","admissao","remuneracao","competencia","subsidio","vantagens","descontos","chave_externa"],
 };
@@ -13,7 +15,7 @@ export function prepararImportacao(modulo: string, csv: string) {
  const [headers, ...rows] = parseCSV(csv);
  if (!headers?.length || rows.length < 1 || rows.length > 500) throw new Error("O arquivo deve conter cabeçalho e entre 1 e 500 registros.");
  if (new Set(headers).size !== headers.length || headers.some(h => !permitidas.includes(h))) throw new Error("Cabeçalho repetido ou coluna não permitida. Utilize o modelo CSV.");
- const required = modulo === "servidores" ? ["nome","competencia","chave_externa"] : ["ano","mes",modulo === "receitas" ? "categoria" : "orgao","chave_externa"];
+ const required = modulo === "servidores" ? ["nome","competencia","chave_externa"] : modulo === "credores" ? ["nome","chave_externa"] : modulo === "agentes-politicos" ? ["nome","cargo","chave_externa"] : ["ano","mes",modulo === "receitas" ? "categoria" : "orgao","chave_externa"];
  if (required.some(h => !headers.includes(h))) throw new Error("Faltam colunas obrigatórias: " + required.join(", "));
  const chaves = new Set<string>();
  return rows.map((cells, i) => {

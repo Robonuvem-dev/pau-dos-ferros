@@ -1,0 +1,3 @@
+ano;mes;orgao;funcao;elemento;credor;empenho;empenhado;liquidado;pago;natureza;processo;data_empenho;liquidacao;data_liquidacao;ordem_bancaria;data_pagamento;fonte_recurso;chave_externa
+2026;10;POC Secretaria fictícia de Saúde;POC Saúde;POC Material;POC FICTICIO - Fornecedor Alfa;POC-E001;10000;7000;5000;Orçamentária;POC-PROC-001;2026-10-20;POC-L001;2026-10-21;POC-OB001;2026-10-23;POC Recursos próprios;POC-D001
+2026;10;POC Secretaria fictícia de Educação;POC Educação;POC Restituição;POC FICTICIO - Fornecedor Beta;POC-E002;500;500;400;Extraorçamentária;POC-PROC-002;2026-10-20;POC-L002;2026-10-21;POC-OB002;2026-10-23;POC Recursos de terceiros;POC-D002

@@ -39,7 +39,7 @@ export function ImportarArquivo({ modulo, onDone }: { modulo: string; onDone: ()
   <Button variant="outline" onClick={modelo}>Baixar modelo CSV</Button>
   <div className="my-3 grid gap-3 sm:grid-cols-2">
    <Input aria-label="Sistema de origem do arquivo" placeholder="Sistema de origem" value={origem} maxLength={120} onChange={e=>setOrigem(e.target.value)} />
-   <Input aria-label="Arquivo CSV para importar" type="file" accept=".csv,text/csv" disabled={busy} onChange={e=>void ler(e.target.files?.[0])}/>
+   <Input aria-label="Arquivo CSV para importar" type="file" accept=".csv,text/csv" disabled={busy} onChange={e=>{void ler(e.target.files?.[0]);e.target.value="";}}/>
   </div>
   {erro && <p role="alert" className="my-2 text-destructive">{erro}</p>}
   {sucesso && <p role="status" className="my-2">{sucesso}</p>}
