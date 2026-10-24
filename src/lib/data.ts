@@ -1,5 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { Field, ModuleDef } from "./modules";
+import { normalizeField } from "./normalization";
+export { normalizeField } from "./normalization";
+import type { ModuleDef } from "./modules";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const db = supabase as any;
@@ -28,24 +30,6 @@ export function normalizeValues(mod: ModuleDef, values: Record<string, unknown>)
   return out;
 }
 
-export function normalizeField(f: Field, v: unknown): RowValue {
-  if (f.type === "bool") return Boolean(v);
-  if (f.type === "tags") return Array.isArray(v) ? v.map(String) : String(v ?? "").split(",").map((t) => t.trim()).filter(Boolean);
-  if (f.type === "files") return Array.isArray(v) ? v.map(String) : [];
-  if (v === undefined || v === null || String(v).trim() === "") return null;
-  if (f.type === "int") return Math.trunc(Number(String(v).replace(",", ".")));
-  if (f.type === "number" || f.type === "money") {
-    const s = String(v).trim();
-    const n = Number(s.includes(",") ? s.replace(/\./g, "").replace(",", ".") : s);
-    return Number.isFinite(n) ? n : null;
-  }
-  if (f.type === "date") {
-    const s = String(v).trim();
-    const br = s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-    return br ? `${br[3]}-${br[2]}-${br[1]}` : s.slice(0, 10);
-  }
-  return String(v);
-}
 
 export async function saveRow(mod: ModuleDef, values: Record<string, unknown>, id?: string) {
   const payload = normalizeValues(mod, values);

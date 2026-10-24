@@ -92,6 +92,13 @@
       "when": 1792800200000,
       "tag": "0012_sprint5_convenios_vinculos",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792800300000,
+      "tag": "0013_sprint6_fiscal_folha_importacao",
+      "breakpoints": true
     }
   ]
 }
