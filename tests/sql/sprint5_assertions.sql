@@ -142,7 +142,7 @@ SELECT pg_temp.expect_error(
  $$INSERT INTO public.contratos(numero,fornecedor,objeto,convenio_id) VALUES ('POC-ORFAO','Ficticio','Teste','99999999-0000-0000-0000-000000000099')$$,
  '23503','orphan contract-convenio link rejected');
 SELECT pg_temp.expect_error(
- $$DELETE FROM public.convenios WHERE id='10000000-0000-0000-0000-000000000001'$,
+ $$DELETE FROM public.convenios WHERE id='10000000-0000-0000-0000-000000000001'$$,
  '23503','convenio with contracts cannot be silently deleted');
 INSERT INTO public.convenio_entidades(papel,nome,responsavel) VALUES
  ('concedente','Entidade concedente ficticia','Responsavel ficticio'),
