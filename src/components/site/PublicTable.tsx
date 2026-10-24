@@ -66,7 +66,7 @@ export function PublicTable({ mod }: { mod: ModuleDef }) {
                 {cols.map((c) => (
                   <td key={c.name} className="px-4 py-3">
                     {c.type === "file" ? (
-                      r[c.name] ? <a href={String(r[c.name])} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary hover:underline"><FileText className="size-4" />Abrir</a> : "—"
+                      r[c.name] ? <a href={String(r[c.name])} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary hover:underline">{c.name === "foto_url" ? <img loading="lazy" src={String(r[c.name])} alt={String(r.modelo ?? r.legenda ?? "Foto do registro")} className="h-24 w-36 rounded object-cover" /> : <><FileText className="size-4" />Abrir</>}</a> : "—"
                     ) : c.name === "percentual" ? (
                       <div className="flex items-center gap-2"><div className="h-2 w-20 rounded bg-muted"><div className="h-2 rounded bg-teal" style={{ width: `${Number(r[c.name] ?? 0)}%` }} /></div>{String(r[c.name] ?? 0)}%</div>
                     ) : (

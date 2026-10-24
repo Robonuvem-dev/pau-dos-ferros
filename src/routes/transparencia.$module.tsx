@@ -1,5 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageHeader } from "@/components/site/PageHeader";
+import { CovidDetalhado } from "@/components/transparencia/CovidDetalhado";
+import { ObrasDetalhadas } from "@/components/transparencia/ObrasDetalhadas";
+import { ConselhosDetalhados } from "@/components/transparencia/ConselhosDetalhados";
 import { ResumoFiscal } from "@/components/transparencia/ResumoFiscal";
 import { ResumoPessoal } from "@/components/transparencia/ResumoPessoal";
 import { ResumoConvenios } from "@/components/convenios/ResumoConvenios";
@@ -11,6 +14,7 @@ import { moduleQuery } from "@/lib/queries";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/transparencia/$module")({
+  validateSearch: (s: Record<string, unknown>): { registro?: string } => typeof s.registro === "string" && /^[0-9a-f-]{36}$/i.test(s.registro) ? { registro: s.registro } : {},
   loader: async ({ context, params }) => {
     const mod = getModule(params.module);
     if (!mod || !mod.publico) throw notFound();
@@ -25,6 +29,7 @@ export const Route = createFileRoute("/transparencia/$module")({
 
 function Consulta() {
   const { module } = Route.useParams();
+  const { registro } = Route.useSearch();
   const mod = getModule(module)!;
   return (
     <>
@@ -35,6 +40,9 @@ function Consulta() {
         {["receitas","despesas"].includes(mod.key) && <ResumoFiscal />}
         {mod.key === "servidores" && <ResumoPessoal />}
         <PublicTable mod={mod} />
+        {mod.key === "covid" && <CovidDetalhado />}
+        {mod.key === "obras" && <ObrasDetalhadas />}
+        {mod.key === "conselhos" && <ConselhosDetalhados registro={registro} />}
         {mod.key === "convenios" && <ResumoConvenios publico />}
         {mod.key === "concurso" && <EtapasConcursos />}
         {mod.key === "licitacoes" && <LinhaDoTempo />}
