@@ -12,11 +12,6 @@ import { QueryError, QueryNotFound } from "@/components/site/RouteStates";
 import hero from "@/assets/hero-cidade.jpg";
 
 export const Route = createFileRoute("/")({
-  head: ({ loaderData }) => {
-    const head = pageHead("Início", "Portal oficial da Prefeitura de Pau dos Ferros/RN: notícias, serviços ao cidadão, transparência, licitações e ouvidoria.");
-    if (loaderData?.image.startsWith('https://')) head.meta.push({ property: 'og:image', content: loaderData.image }, { name: 'twitter:image', content: loaderData.image });
-    return head;
-  },
   loader: async ({ context }) => {
     const [, banners] = await Promise.all([
     context.queryClient.ensureQueryData(moduleQuery("noticias")),
@@ -26,6 +21,11 @@ export const Route = createFileRoute("/")({
     context.queryClient.ensureQueryData(configQuery),
     ]);
     return { image: String(banners[0]?.imagem_url ?? '') };
+  },
+  head: ({ loaderData }) => {
+    const head = pageHead("Início", "Portal oficial da Prefeitura de Pau dos Ferros/RN: notícias, serviços ao cidadão, transparência, licitações e ouvidoria.");
+    if (loaderData?.image.startsWith('https://')) head.meta.push({ property: 'og:image', content: loaderData.image }, { name: 'twitter:image', content: loaderData.image });
+    return head;
   },
   component: Home,
   errorComponent: QueryError,
