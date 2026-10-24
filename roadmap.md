@@ -1,6 +1,11 @@
 # Sistema municipal — entrega completa do edital (sem Webmail M16)
 Plano aprovado: .lovable/plan/novo-plano-de-sprints-entrega-completa-do-edital-sem-webmail-2026-10-23.md
 
+## Atualização de navegação da PoC
+- [ ] Organizar /admin em 16 módulos, mantendo visão geral abaixo e sem menu lateral nessa página.
+- [ ] Corrigir e verificar todos os endereços do anexo com sessão administrativa.
+- [ ] Vincular M16 ao webmail externo informado.
+
 - [x] Sprint 1 — Fundação, acesso, painel, auditoria, versão, melhorias
 - [ ] Sprint 2 — Auditoria dos 145 itens, fechamento M01, vínculos entre cadastros, motor de críticas
   - [x] Vínculos entre cadastros; motor e tela de críticas; classificação por módulo (docs/poc/04)
