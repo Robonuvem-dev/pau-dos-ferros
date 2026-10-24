@@ -14,3 +14,4 @@
 - Public route loaders prime TanStack Query through publishable-client server functions; private operations use authenticated functions and database RLS.
 - Store profile fields separately from protected user roles; never grant staff access automatically at signup.
 - Mount one session subscriber in the root and share it with the header and account screens to keep identity transitions consistent.
+- Keep PoC navigation grouped by tender module in a shared catalog; evaluation-sheet URL aliases resolve to canonical modules so they reuse existing fields, data and RLS.

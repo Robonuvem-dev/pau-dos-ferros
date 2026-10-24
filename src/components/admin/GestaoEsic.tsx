@@ -56,7 +56,7 @@ export function GestaoEsic() {
         && prazo.toISOString().slice(0,10) >= now;
       return <article key={a.id} className="rounded border p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <strong>{a.protocolo} · {a.canal.toUpperCase()} {a.tipo === "Recurso" ? "· Recurso" : ""}</strong>
+          <strong className="min-w-0 break-all">{a.protocolo} · {a.canal.toUpperCase()} {a.tipo === "Recurso" ? "· Recurso" : ""}</strong>
           <span className={vencido ? "font-semibold text-destructive" : "text-muted-foreground"}>
             {a.status} · Prazo previsto: {prazo.toLocaleDateString("pt-BR", {timeZone: "UTC"})}{vencido ? " · VENCIDO" : ""}
           </span>

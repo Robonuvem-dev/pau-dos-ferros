@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { moduleQuery, servicosStatsQuery } from "@/lib/queries";
+import { pageHead } from '@/lib/seo';
 
 export const Route = createFileRoute("/_authenticated/admin/servicos-estatisticas")({
-  head: () => ({ meta: [{ title: "Estatísticas dos serviços | Painel" }, { name: "robots", content: "noindex" }] }),
+  head: () => pageHead('Estatísticas dos serviços', 'Acessos e avaliações de satisfação da Carta de Serviços municipal.'),
   loader: ({ context }) => Promise.all([context.queryClient.ensureQueryData(moduleQuery("servicos")), context.queryClient.ensureQueryData(servicosStatsQuery)]),
   component: Estatisticas,
 });

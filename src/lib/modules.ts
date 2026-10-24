@@ -596,7 +596,13 @@ export const MODULES: ModuleDef[] = [
 
 export const modulePermissionTable = (mod: ModuleDef) => mod.permissionTable ?? mod.table;
 
-export const getModule = (key: string) => MODULES.find((m) => m.key === key);
+// Preserve the evaluation-sheet URLs while sharing the canonical schema and policies.
+export const MODULE_ALIASES: Record<string, string> = {
+  leis: 'lei', decretos: 'decreto', portarias: 'portaria', resolucoes: 'resolucao', diarias: 'diaria',
+  'categorias-convenio': 'tipos-convenio', 'metas-convenio': 'convenios',
+  'planos-aplicacao': 'convenios', 'boletim-epidemiologico': 'covid',
+};
+export const getModule = (key: string) => MODULES.find((m) => m.key === (MODULE_ALIASES[key] ?? key));
 
 export const brl = (v: unknown) =>
   v == null || v === "" ? "—" : Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });

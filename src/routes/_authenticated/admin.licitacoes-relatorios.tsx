@@ -11,9 +11,10 @@ import { getModule, dataBR, brl } from "@/lib/modules";
 import { boletimDoDia, contratosAVencer, mapaLicitacoes, type ContratoLike, type LicitacaoLike } from "@/lib/compras/relatorios";
 import { BIDDING_MODALITIES, BIDDING_STATUS } from "@/lib/compras/bidding-workflow";
 import { baixar, toCSV } from "@/lib/versao";
+import { pageHead } from '@/lib/seo';
 
 export const Route = createFileRoute("/_authenticated/admin/licitacoes-relatorios")({
-  head: () => ({ meta: [{ title: "Relatórios de licitações | Painel" }] }),
+  head: () => pageHead('Relatórios de licitações', 'Boletim diário, mapa de licitações e acompanhamento de contratos a vencer.'),
   component: Relatorios,
 });
 

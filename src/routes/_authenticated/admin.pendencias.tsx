@@ -4,9 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchModule } from "@/lib/data";
 import { getModule } from "@/lib/modules";
 import { avaliarPendencias, REGRAS } from "@/lib/criticas";
+import { pageHead } from '@/lib/seo';
 
 export const Route = createFileRoute("/_authenticated/admin/pendencias")({
-  head: () => ({ meta: [{ title: "Críticas e pendências | Painel" }] }),
+  head: () => pageHead('Críticas e pendências', 'Alertas e verificações dos cadastros municipais e critérios de transparência.'),
   component: Pendencias,
 });
 
