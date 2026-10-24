@@ -51,6 +51,18 @@ const pub = (key: string, label: string, descricao: string, extra: Field[] = [])
 });
 
 export const MODULES: ModuleDef[] = [
+ {
+ key:"processos-engenharia",table:"processos_engenharia",label:"Processos de engenharia",grupo:"Gestão",publico:true,permissionTable:"obras",orderBy:"data_processo",
+ descricao:"Processos de engenharia com data, contrato inicial e fonte de recurso.",
+ fields:[
+ {name:"numero",label:"Número do processo",required:true},
+ {name:"data_processo",label:"Data do processo",type:"date",required:true},
+ {name:"valor_contrato_inicial",label:"Valor do contrato inicial",type:"money",required:true},
+ {name:"contrato_id",label:"Contrato de origem",type:"relation",required:true,ref:{module:"contratos",column:"id",displayColumn:"numero"}},
+ {name:"fonte_recurso",label:"Fonte de recurso",required:true},
+ {name:"descricao",label:"Descrição",type:"textarea"}
+ ]
+ },
   {
    key:"municipio-informacoes",table:"municipio_informacoes",label:"O Município e agenda",grupo:"Site Oficial",publico:true,orderBy:"categoria",
    descricao:"História, localidades, equipamentos públicos, eventos e agenda institucional.",
@@ -505,6 +517,7 @@ export const MODULES: ModuleDef[] = [
     descricao: "Acompanhamento de obras, fotos e responsáveis técnicos.",
     fields: [
       { name: "nome", label: "Obra", required: true },
+      {name:"processo_engenharia_id",label:"Processo de engenharia",type:"relation",ref:{module:"processos-engenharia",column:"id",displayColumn:"numero"}},
       { name: "local", label: "Local" },
       { name: "empresa", label: "Empresa" },
       { name: "valor", label: "Valor", type: "money" },
