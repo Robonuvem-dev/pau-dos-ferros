@@ -37,6 +37,7 @@ export function GestaoEsic() {
       toast.success("Registro atualizado e auditado.");
       await qc.invalidateQueries({ queryKey: ["poc-m05-gestao-esic"] });
       await qc.invalidateQueries({ queryKey: ["admin-atendimentos"] });
+      await qc.invalidateQueries({ queryKey: ["public-estatisticas-atendimento"] });
     } catch (e) { toast.error((e as Error).message); }
     finally { setBusy(null); }
   };
