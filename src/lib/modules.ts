@@ -21,6 +21,8 @@ export interface ModuleDef {
   filtro?: { column: string; value: string }; // para a tabela publicacoes
   orderBy?: string;
   fields: Field[];
+  /** Tabela cuja permissão governa este cadastro e suas regras RLS. */
+  permissionTable?: string;
   publico?: boolean; // aparece no Portal da Transparência
 }
 
@@ -311,7 +313,7 @@ export const MODULES: ModuleDef[] = [
 
   ...(["concedente", "convenente"] as const).map((papel): ModuleDef => ({
     key: papel === "concedente" ? "concedentes" : "convenentes",
-    table: "convenio_entidades", label: papel === "concedente" ? "Concedentes" : "Convenentes",
+    table: "convenio_entidades", permissionTable: "convenios", label: papel === "concedente" ? "Concedentes" : "Convenentes",
     descricao: "Entidades e responsáveis dos convênios públicos.",
     grupo: "Licitações e Contratos", publico: true, orderBy: "nome",
     filtro: { column: "papel", value: papel },
@@ -322,7 +324,7 @@ export const MODULES: ModuleDef[] = [
     ],
   })),
   {
-    key: "tipos-convenio", table: "convenio_tipos", label: "Tipos e categorias de convênio",
+    key: "tipos-convenio", table: "convenio_tipos", permissionTable: "convenios", label: "Tipos e categorias de convênio",
     descricao: "Categorias configuráveis para classificação dos convênios.",
     grupo: "Licitações e Contratos", publico: true, orderBy: "nome",
     fields: [
@@ -358,7 +360,7 @@ export const MODULES: ModuleDef[] = [
     ],
   },
   {
-    key: "convenio-parcelas", table: "convenio_parcelas", label: "Parcelas de convênios", grupo: "Licitações e Contratos", orderBy: "numero", publico: true,
+    key: "convenio-parcelas", table: "convenio_parcelas", permissionTable: "convenios", label: "Parcelas de convênios", grupo: "Licitações e Contratos", orderBy: "numero", publico: true,
     descricao: "Cronograma de parcelas, valores e recebimentos de convênios.",
     fields: [
       { name: "convenio_id", label: "Convênio", type: "relation", ref: { module: "convenios", column: "id", displayColumn: "numero" }, required: true },
@@ -371,7 +373,7 @@ export const MODULES: ModuleDef[] = [
     ],
   },
   {
-    key: "convenio-obrigacoes", table: "convenio_obrigacoes", label: "Obrigações de convênios", grupo: "Licitações e Contratos", orderBy: "vencimento", publico: true,
+    key: "convenio-obrigacoes", table: "convenio_obrigacoes", permissionTable: "convenios", label: "Obrigações de convênios", grupo: "Licitações e Contratos", orderBy: "vencimento", publico: true,
     descricao: "Obrigações, prazos e situação da prestação de contas dos convênios.",
     fields: [
       { name: "convenio_id", label: "Convênio", type: "relation", ref: { module: "convenios", column: "id", displayColumn: "numero" }, required: true },
@@ -487,6 +489,8 @@ export const MODULES: ModuleDef[] = [
     ],
   },
 ];
+
+export const modulePermissionTable = (mod: ModuleDef) => mod.permissionTable ?? mod.table;
 
 export const getModule = (key: string) => MODULES.find((m) => m.key === key);
 

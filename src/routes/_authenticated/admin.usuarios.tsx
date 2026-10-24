@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/use-session";
 import { usuariosQuery } from "@/lib/admin-queries";
-import { dataBR, MODULES } from "@/lib/modules";
+import { dataBR, MODULES, modulePermissionTable } from "@/lib/modules";
 import { QueryError, QueryNotFound } from "@/components/site/RouteStates";
 
 const permissoesQuery = queryOptions({
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/_authenticated/admin/usuarios")({
   notFoundComponent: QueryNotFound,
 });
 
-const TABELAS = [...new Map(MODULES.map((m) => [m.table, m.table === "publicacoes" ? "Publicações oficiais (todas)" : m.label])).entries()];
+const TABELAS = [...new Map(MODULES.map((m) => [modulePermissionTable(m), modulePermissionTable(m) === "convenios" ? "Convênios, parcelas, obrigações e entidades" : m.table === "publicacoes" ? "Publicações oficiais (todas)" : m.label])).entries()];
 
 function Usuarios() {
   const { data } = useSuspenseQuery(usuariosQuery);
