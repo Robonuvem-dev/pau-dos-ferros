@@ -22,7 +22,7 @@ export function prepararImportacao(modulo: string, csv: string) {
   const out: Record<string, unknown> = {};
   headers.forEach((h,j) => {
    const f = mod.fields.find(x => x.name === h)!;
-   const raw = cells[j].trim();
+   const raw = (cells[j] ?? "").trim();
    if (required.includes(h) && !raw) throw new Error("Linha " + linha + ": preencha " + h + ".");
    if (f.options && raw && !f.options.includes(raw)) throw new Error("Linha " + linha + ": opção inválida em " + h + ".");
    const v = normalizeField(f,raw);

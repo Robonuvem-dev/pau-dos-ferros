@@ -14,6 +14,7 @@ INSERT INTO auth.users(id,email) VALUES
 INSERT INTO public.user_roles(user_id,role) VALUES
  ('00000000-0000-0000-0000-000000000011','admin'),
  ('00000000-0000-0000-0000-000000000012','editor');
+INSERT INTO public.permissoes_modulo(user_id,tabela) VALUES ('00000000-0000-0000-0000-000000000012','noticias');
 SET LOCAL ROLE anon;
 SELECT pg_temp.expect_error($q$SELECT public.importar_dados_poc('receitas','POC','[]')$q$,'42501','anon cannot import');
 RESET ROLE;

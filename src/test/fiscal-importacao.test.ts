@@ -35,8 +35,8 @@ describe("Relatórios fiscais e pessoal",()=>{
  it("agrupa pessoal por cargo, secretaria ou vínculo sem somar outra competência",()=>{
   const rows=[{cargo:"Cargo A",lotacao:"Saude",vinculo:"Efetivo",competencia:"2026-10",remuneracao:1200,subsidio:1000,vantagens:300,descontos:100},{cargo:"Cargo A",competencia:"2026-09",remuneracao:900}];
   expect(agruparPessoal(rows,"cargo","2026-10")[0]).toMatchObject({grupo:"Cargo A",pessoas:1,remuneracao:1200,subsidio:1000,vantagens:300,descontos:100});
-  expect(agruparPessoal(rows,"lotacao","2026-10")[0].grupo).toBe("Saude");
-  expect(agruparPessoal(rows,"vinculo","2026-10")[0].grupo).toBe("Efetivo");
+  expect(agruparPessoal(rows,"lotacao","2026-10")[0]?.grupo).toBe("Saude");
+  expect(agruparPessoal(rows,"vinculo","2026-10")[0]?.grupo).toBe("Efetivo");
  });
  it("não inventa datas de recebimento, baixa, agendamento ou término",()=>{
   expect(initialValues(getModule("convenio-parcelas")!)).toMatchObject({recebido_em:"",vencimento:""});
