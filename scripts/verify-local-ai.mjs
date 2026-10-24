@@ -4,7 +4,7 @@ env.allowLocalModels=false;
 const model="Xenova/paraphrase-multilingual-MiniLM-L12-v2";
 const start=Date.now();
 const extractor=await pipeline("feature-extraction",model,{dtype:"q8",device:"cpu"});
-const categories=["Receitas, arrecadação, classificação da receita e categoria orçamentária","Despesas, empenhos, liquidações, pagamentos e ordem bancária","Pessoal, servidores, folha de pagamento e remuneração","Licitações, editais, contratos, aditivos e documentos da contratação","Convênios, repasses, metas, parcelas e prestação de contas","Obras, ART, medições, execução física e financeira","Veículos, seguro, IPVA e manutenção da frota","Conselhos, composição, mandato, competências e atos","Serviços, prazos, etapas, Ouvidoria e e-SIC","Site institucional, notícias, imagens, banners e secretarias"];
+const categories=["Receitas, arrecadação, classificação da receita e categoria orçamentária","Despesas, empenhos, liquidações, pagamentos e ordem bancária","Problemas no cadastro de servidores públicos: folha de pagamento, remuneração, competência mensal, cargo, vínculo e lotação.","Licitações, editais, contratos, aditivos e documentos da contratação","Convênios, repasses, metas, parcelas e prestação de contas","Obras, ART, medições, execução física e financeira","Veículos, seguro, IPVA e manutenção da frota","Problemas em conselhos municipais: lei de criação, conselheiros, mandatos, atas e reuniões.","Serviços, prazos, etapas, Ouvidoria e e-SIC","Site institucional, notícias, imagens, banners e secretarias"];
 const inputs=["Receita sem classificação orçamentária","Servidor sem competência da folha"];
 const vectors=(await extractor([...categories,...inputs],{pooling:"mean",normalize:true})).tolist();
 const results=inputs.map((input,i)=>{
