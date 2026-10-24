@@ -128,5 +128,41 @@ VALUES ('diaria','POC FICTICIA','Pessoa ficticia','Destino ficticio','Justificat
 SELECT pg_temp.assert_true(
  EXISTS(SELECT 1 FROM public.publicacoes WHERE titulo='POC FICTICIA' AND beneficiario='Pessoa ficticia' AND destino='Destino ficticio' AND justificativa='Justificativa ficticia'),
  '0011 metadata persists');
+
+-- M04 4.2/4.11: two real contracts point to the same convenio.
+SET LOCAL ROLE authenticated;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000001',true);
+INSERT INTO public.contratos(id,numero,fornecedor,objeto,valor,convenio_id) VALUES
+ ('30000000-0000-0000-0000-000000000001','POC-CONTRATO-1','Fornecedor ficticio','Teste de vinculo',1000,'10000000-0000-0000-0000-000000000001'),
+ ('30000000-0000-0000-0000-000000000002','POC-CONTRATO-2','Fornecedor ficticio','Outro vinculo',2000,'10000000-0000-0000-0000-000000000001');
+SELECT pg_temp.assert_true(
+ (SELECT count(*)=2 AND sum(valor)=3000 FROM public.contratos WHERE convenio_id='10000000-0000-0000-0000-000000000001'),
+ 'multiple contracts persist for one convenio');
+SELECT pg_temp.expect_error(
+ $INSERT INTO public.contratos(numero,fornecedor,objeto,convenio_id) VALUES ('POC-ORFAO','Ficticio','Teste','99999999-0000-0000-0000-000000000099')$,
+ '23503','orphan contract-convenio link rejected');
+SELECT pg_temp.expect_error(
+ $DELETE FROM public.convenios WHERE id='10000000-0000-0000-0000-000000000001'$,
+ '23503','convenio with contracts cannot be silently deleted');
+INSERT INTO public.convenio_entidades(papel,nome,responsavel) VALUES
+ ('concedente','Entidade concedente ficticia','Responsavel ficticio'),
+ ('convenente','Entidade convenente ficticia','Responsavel ficticio');
+INSERT INTO public.convenio_tipos(nome,descricao) VALUES ('Categoria ficticia','Somente PoC');
+SELECT pg_temp.expect_error(
+ $INSERT INTO public.convenio_entidades(papel,nome) VALUES ('outro','Entidade ficticia')$,
+ '23514','entity role constrained');
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000002',true);
+SELECT pg_temp.expect_error(
+ $INSERT INTO public.convenio_tipos(nome) VALUES ('Sem permissao')$,
+ '42501','restricted editor cannot create convenio categories');
+SET LOCAL ROLE anon;
+SELECT pg_temp.assert_true(
+ (SELECT count(*)=2 FROM public.contratos WHERE convenio_id='10000000-0000-0000-0000-000000000001'),
+ 'public sees multiple linked contracts');
+SELECT pg_temp.assert_true(
+ EXISTS(SELECT 1 FROM public.convenio_tipos WHERE nome='Categoria ficticia'),
+ 'public sees convenio categories');
+RESET ROLE;
+
 ROLLBACK;
 \echo 'Sprint 5 SQL assertions completed; all test data rolled back.'

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { adminModuleQuery } from "@/lib/admin-queries";
 import { moduleQuery } from "@/lib/queries";
 import { resumoFinanceiroConvenio, type Parcela } from "@/lib/convenios/validacao";
+import { Button } from "@/components/ui/button";
 import { brl } from "@/lib/modules";
 import type { Row } from "@/lib/data";
 
@@ -12,9 +13,11 @@ export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
   const parcelas = useQuery(publico ? moduleQuery("convenio-parcelas") : adminModuleQuery("convenio-parcelas"));
   const obrigacoes = useQuery(publico ? moduleQuery("convenio-obrigacoes") : adminModuleQuery("convenio-obrigacoes"));
 
-  const erro = convenios.error || parcelas.error || obrigacoes.error;
+  const contratos = useQuery(publico ? moduleQuery("contratos") : adminModuleQuery("contratos"));
+
+  const erro = convenios.error || parcelas.error || obrigacoes.error || contratos.error;
   if (erro) return <p role="alert" className="rounded border border-destructive p-3 text-sm">Não foi possível carregar o consolidado de convênios. Confirme se a migração 0009 já foi aplicada ao ambiente.</p>;
-  if (convenios.isPending || parcelas.isPending || obrigacoes.isPending)
+  if (convenios.isPending || parcelas.isPending || obrigacoes.isPending || contratos.isPending)
     return <p className="rounded border p-3 text-sm text-muted-foreground">Carregando saldos e obrigações dos convênios...</p>;
 
   const lista = (convenios.data ?? []) as Row[];
@@ -29,6 +32,7 @@ export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
           <h2 className="font-display text-xl font-bold">Acompanhamento de convênios</h2>
           <p className="text-sm text-muted-foreground">Parcelas, saldo a programar e obrigações vinculadas ao convênio.</p>
         </div>
+        <Button size="sm" variant="outline" onClick={() => window.print()}>Imprimir relatório de convênios</Button>
         {!publico && <div className="flex gap-3 text-sm">
           <Link to="/admin/$module" params={{ module: "convenio-parcelas" }} className="text-primary underline">Gerenciar parcelas</Link>
           <Link to="/admin/$module" params={{ module: "convenio-obrigacoes" }} className="text-primary underline">Gerenciar obrigações</Link>
@@ -40,7 +44,7 @@ export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
             <thead className="bg-secondary"><tr>
               <th className="p-2">Convênio</th><th className="p-2">Valor global</th>
               <th className="p-2">Parcelas programadas</th><th className="p-2">Recebido</th>
-              <th className="p-2">Saldo a programar</th><th className="p-2">Obrigações</th>
+              <th className="p-2">Saldo a programar</th><th className="p-2">Obrigações</th><th className="p-2">Contratos vinculados</th>
             </tr></thead>
             <tbody>
               {lista.map((c) => {
@@ -51,13 +55,16 @@ export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
                 }));
                 const valor = Number(c.valor_global ?? c.valor ?? 0);
                 const resumo = resumoFinanceiroConvenio(valor, Number(c.contrapartida ?? 0), itens);
+                const vinculados = (contratos.data ?? []).filter(t => t.convenio_id === c.id || (c.contrato_numero && t.numero === c.contrato_numero));
                 const pendentes = deveres.filter(o => o.convenio_id === c.id && o.situacao === "Pendente");
                 const atrasadas = pendentes.filter(o => o.vencimento && String(o.vencimento) < hoje);
                 return <tr key={c.id} className="border-t align-top">
                   <td className="p-2 font-medium">{String(c.numero ?? "Sem número")}</td>
                   <td className="p-2">{brl(valor)}</td>
                   <td className="p-2">{brl(resumo.programado)}</td>
-                  <td className="p-2">{brl(resumo.recebido)}</td>
+                  <td className="p-2">{brl(resumo.recebido)}
+                    {valor > 0 && <div><meter min={0} max={valor} value={Math.min(resumo.recebido, valor)} aria-label={`Valor recebido do convênio ${String(c.numero)}`} /><span className="block text-xs">{(resumo.recebido / valor * 100).toFixed(1)}% recebido</span></div>}
+                  </td>
                   <td className="p-2">
                     <span className={resumo.excedido ? "font-bold text-destructive" : ""}>{brl(resumo.saldo)}</span>
                     {resumo.excedido && <span className="block text-xs text-destructive">Parcelas excedem valor global</span>}
@@ -66,6 +73,7 @@ export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
                     {pendentes.length} pendente(s)
                     {atrasadas.length > 0 && <span className="block font-semibold text-destructive">{atrasadas.length} vencida(s)</span>}
                   </td>
+                  <td className="p-2">{vinculados.length ? <ul>{vinculados.map(t => <li key={t.id}>{String(t.numero)} · {brl(t.valor_atualizado ?? t.valor)}</li>)}</ul> : "Nenhum vínculo cadastrado"}</td>
                 </tr>;
               })}
             </tbody>
