@@ -1,3 +1,4 @@
+import { MunicipioInformacoes } from "@/components/site/MunicipioInformacoes";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Mail, Phone, UserRound } from "lucide-react";
@@ -40,6 +41,7 @@ function Prefeitura() {
             ))}
           </div>
           <h2 className="section-title mt-12">O município</h2>
+          <MunicipioInformacoes />
           <p className="mt-4 leading-relaxed">Pau dos Ferros é polo regional do Alto Oeste Potiguar, no Rio Grande do Norte, referência em educação, saúde e comércio para dezenas de municípios vizinhos. A Prefeitura atua por meio de suas secretarias para oferecer serviços públicos de qualidade, com transparência e participação popular.</p>
         </section>
         <aside className="space-y-3">

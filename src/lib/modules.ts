@@ -52,6 +52,18 @@ const pub = (key: string, label: string, descricao: string, extra: Field[] = [])
 
 export const MODULES: ModuleDef[] = [
   {
+   key:"municipio-informacoes",table:"municipio_informacoes",label:"O Município e agenda",grupo:"Site Oficial",publico:true,orderBy:"categoria",
+   descricao:"História, localidades, equipamentos públicos, eventos e agenda institucional.",
+   fields:[
+    {name:"categoria",label:"Seção",type:"select",required:true,options:["História","A cidade","Praças","Sítios","Postos de saúde","Distritos","Escolas","Prédios públicos","Eventos","Agenda do gestor"]},
+    {name:"titulo",label:"Título",required:true},
+    {name:"descricao",label:"Descrição",type:"textarea",required:true},
+    {name:"endereco",label:"Endereço"},{name:"horario",label:"Horário"},
+    {name:"contato",label:"Contato"},{name:"data_evento",label:"Data do evento",type:"date"},
+    {name:"foto_url",label:"Foto",type:"file"}
+   ]
+  },
+  {
     key: "noticias", table: "noticias", label: "Notícias", grupo: "Site Oficial", orderBy: "publicado_em",
     descricao: "Notícias com fotos, vídeos e áudios.",
     fields: [

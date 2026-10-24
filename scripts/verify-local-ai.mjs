@@ -1,0 +1,13 @@
+import { pipeline,env } from "@huggingface/transformers";
+import { writeFile } from "node:fs/promises";
+env.allowLocalModels=false;
+const model="Xenova/flan-t5-small";
+const start=Date.now();
+const generator=await pipeline("text2text-generation",model,{dtype:"q8",device:"cpu"});
+const result=await generator("Translate English to Portuguese: Publish the municipal transparency documents.",{max_new_tokens:24,do_sample:false});
+const text=result[0]?.generated_text?.trim();
+if(!text)throw new Error("Real local inference returned no text");
+const proof={model,engine:"ONNX Runtime CPU",paidInferenceAPI:false,elapsedMs:Date.now()-start,output:text};
+await writeFile("local-ai-evidence.json",JSON.stringify(proof,null,2));
+console.log(JSON.stringify(proof));
+await generator.dispose();

@@ -1,3 +1,4 @@
+import { PainelAtricon } from "@/components/admin/PainelAtricon";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { fetchModule } from "@/lib/data";
@@ -27,6 +28,7 @@ function Pendencias() {
       {error && <p className="text-destructive">{(error as Error).message}</p>}
       {data && (
         <>
+          <PainelAtricon pendencias={data} />
           <p className="mb-3 text-sm"><strong>{data.length}</strong> pendência(s): {data.filter((d) => d.gravidade === "alta").length} alta(s).</p>
           <div className="overflow-x-auto rounded-lg border">
             <table className="w-full text-sm">
