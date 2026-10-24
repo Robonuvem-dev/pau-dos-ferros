@@ -29,7 +29,8 @@ export function ImportarArquivo({ modulo, onDone }: { modulo: string; onDone: ()
    const {data,error}=await db.rpc("importar_dados_poc",{_modulo:modulo,_origem:origem,_linhas:rows});
    if(error) throw error;
    setSucesso(String(data)+" registros importados e auditados.");setRows([]);onDone();
-  } catch(e) {setErro((e as Error).message+" Nenhuma linha deste envio foi gravada.");}
+  } catch(e) {const code=(e as {code?:string}).code;
+   setErro(code==="23505" ? "Esta origem e identificador já foram importados. O reenvio foi recusado sem duplicar registros." : code && /^[0-9A-Z]{5}$/.test(code) ? "Importação recusada: confira os campos e sua permissão. Nenhuma linha deste envio foi gravada." : "Não foi possível confirmar o resultado do envio. Confira os registros antes de reenviar.");}
   finally {setBusy(false);}
  };
  return <details className="mb-5 rounded border bg-card p-4">

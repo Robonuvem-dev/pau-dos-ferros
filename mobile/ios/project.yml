@@ -1,0 +1,23 @@
+name: PauDosFerrosPoC
+options:
+  bundleIdPrefix: org.robonuvem
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+targets:
+  PauDosFerrosPoC:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources: [Sources]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.robonuvem.paudosferrospoc
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Pau dos Ferros PoC
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        CODE_SIGNING_ALLOWED: NO
+        TARGETED_DEVICE_FAMILY: "1,2"
+        INFOPLIST_KEY_NSPhotoLibraryUsageDescription: Selecionar fotos fictícias para publicações da PoC.
+        INFOPLIST_KEY_NSCameraUsageDescription: Registrar fotos autorizadas para publicações da PoC.
