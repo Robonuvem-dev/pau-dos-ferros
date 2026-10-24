@@ -1,24 +1,34 @@
-export const MODELO_LOCAL = "Xenova/flan-t5-small";
+export const MODELO_LOCAL = "Xenova/paraphrase-multilingual-MiniLM-L12-v2";
 const RUNTIME_LOCAL = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1";
-type Gerador = (texto:string,options:Record<string,unknown>)=>Promise<{generated_text:string}[]>;
-let carregamento: Promise<Gerador>|undefined;
+const TEMAS = ["Receitas, arrecadação, classificação da receita e categoria orçamentária","Despesas, empenhos, liquidações, pagamentos e ordem bancária","Pessoal, servidores, folha de pagamento e remuneração","Licitações, editais, contratos, aditivos e documentos da contratação","Convênios, repasses, metas, parcelas e prestação de contas","Obras, ART, medições, execução física e financeira","Veículos, seguro, IPVA e manutenção da frota","Conselhos, composição, mandato, competências e atos","Serviços, prazos, etapas, Ouvidoria e e-SIC","Site institucional, notícias, imagens, banners e secretarias"];
+type Extrator=(texto:string[],opcoes:Record<string,unknown>)=>Promise<{tolist:()=>number[][]}>;
+let carregamento:Promise<Extrator>|undefined;
 export async function analisarLocalmente(texto:string,onStatus:(s:string)=>void):Promise<string>{
  if(typeof window==="undefined")throw new Error("A análise local precisa ser executada no navegador.");
- onStatus("Carregando modelo gratuito no dispositivo. O primeiro uso baixa os arquivos do modelo.");
+ onStatus("Carregando modelo semântico gratuito no dispositivo. O primeiro uso baixa os arquivos do modelo.");
  if(!carregamento)carregamento=(async()=>{
   const runtime=await import(/* @vite-ignore */ RUNTIME_LOCAL);
   runtime.env.allowLocalModels=false;
   runtime.env.backends.onnx.wasm.numThreads=1;
-  return await runtime.pipeline("text2text-generation",MODELO_LOCAL,{
-   dtype:"q8",device:"wasm",progress_callback:(p:{status?:string;progress?:number})=>{
-    if(p.status==="progress")onStatus("Baixando modelo local: "+Math.round(p.progress??0)+"%");
-   }
-  }) as Gerador;
+  return await runtime.pipeline("feature-extraction",MODELO_LOCAL,{dtype:"q8",device:"wasm",progress_callback:(p:{status?:string;progress?:number})=>{
+   if(p.status==="progress")onStatus("Baixando modelo local: "+Math.round(p.progress??0)+"%");
+  }}) as Extrator;
  })().catch(e=>{carregamento=undefined;throw e;});
- const gerador=await carregamento;
- onStatus("Executando IA no dispositivo, sem API de inferência externa...");
- const resultado=await gerador("Responda em português. Sugira ações objetivas para corrigir estas pendências de um portal de transparência municipal: "+texto.slice(0,1700),{max_new_tokens:160,do_sample:false});
- const saida=resultado[0]?.generated_text?.trim();
- if(!saida)throw new Error("O modelo local não retornou análise. Nenhum resultado foi aprovado automaticamente.");
- return saida;
+ const extrator=await carregamento;
+ const frases=[...new Set(texto.split(";").map(t=>t.trim()).filter(Boolean))].slice(0,50);
+ if(!frases.length)throw new Error("Não há observações suficientes para analisar.");
+ const temas=(await extrator(TEMAS,{pooling:"mean",normalize:true})).tolist();
+ const saida=["Análise semântica de "+frases.length+" alertas por modelo neural multilíngue executado localmente. Sem prompts, geração de texto livre ou API paga. As similaridades não comprovam atendimento de requisito."];
+ for(let start=0;start<frases.length;start+=8){
+  onStatus("Analisando alertas "+(start+1)+" a "+Math.min(start+8,frases.length)+" de "+frases.length+" no dispositivo...");
+  const lote=frases.slice(start,start+8);
+  const vetores=(await extrator(lote,{pooling:"mean",normalize:true})).tolist();
+  lote.forEach((frase,i)=>{
+   const vetor=vetores[i];if(!vetor)throw new Error("Resposta neural incompleta.");
+   const ranks=temas.map((v,j)=>({tema:TEMAS[j]!,score:v.reduce((s,n,k)=>s+n*(vetor[k]??0),0)})).sort((a,b)=>b.score-a.score);
+   const melhor=ranks[0];if(!melhor||!Number.isFinite(melhor.score))throw new Error("Resultado neural inválido.");
+   saida.push("- "+frase+"\n  Tema sugerido: "+(melhor.score>=0.28?melhor.tema:"Revisão humana necessária")+"\n  Similaridade semântica: "+melhor.score.toFixed(3)+". Conferir o cadastro de origem, corrigir a pendência e registrar evidência pública.");
+  });
+ }
+ return saida.join("\n");
 }
