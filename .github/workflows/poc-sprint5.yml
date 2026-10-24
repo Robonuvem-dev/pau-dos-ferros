@@ -93,7 +93,7 @@ jobs:
         with:
           node-version: 22
       - name: Preparar runtime gratuito isolado
-        run: npm install --prefix .poc-ai-runtime --no-save @huggingface/transformers@4.3.1
+        run: npm install --prefix .poc-ai-runtime --no-save @huggingface/transformers@4.3.1 --onnxruntime-node-install=skip
       - name: Executar inferencia real em CPU sem API paga
         run: |
           cp scripts/verify-local-ai.mjs .poc-ai-runtime/check.mjs
