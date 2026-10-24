@@ -2,7 +2,7 @@
 Plano aprovado: .lovable/plan/novo-plano-de-sprints-entrega-completa-do-edital-sem-webmail-2026-10-23.md
 
 ## Atualização de navegação da PoC
-- [ ] Revisar sincronização das páginas públicas com o painel, banners e sobreposição na página inicial; validar renderização no navegador.
+- [x] Revisar sincronização das páginas públicas com o painel, banners e sobreposição na página inicial; 75 endereços e edição real de banner verificados (docs/poc/07_VERIFICACAO_PUBLICA.md).
 - [x] Organizar /admin em 16 módulos, mantendo visão geral abaixo e sem menu lateral nessa página.
 - [x] Corrigir e verificar todos os endereços do anexo com sessão administrativa (docs/poc/06_VERIFICACAO_ROTAS.md).
 - [x] Vincular M16 ao webmail externo informado.

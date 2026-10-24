@@ -21,7 +21,7 @@ export const Route = createFileRoute("/transparencia/$module")({
     await context.queryClient.ensureQueryData(moduleQuery(mod.key));
     return { label: mod.label, descricao: mod.descricao };
   },
-  head: ({ loaderData }) => loaderData ? pageHead(`${loaderData.label} — Transparência`, loaderData.descricao) : { meta: [{ title: "Consulta indisponível | Prefeitura de Pau dos Ferros" }, { name: "robots", content: "noindex" }] },
+  head: ({ loaderData }) => pageHead(loaderData ? `${loaderData.label} — Transparência` : 'Consulta indisponível', loaderData?.descricao ?? 'Consulta não encontrada no portal da transparência municipal.'),
   component: Consulta,
   errorComponent: QueryError,
   notFoundComponent: QueryNotFound,
