@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadAvatar } from "@/lib/data";
 import { QueryError, QueryNotFound } from "@/components/site/RouteStates";
+import { pageHead } from '@/lib/seo';
 
 const perfilQuery = queryOptions({
   queryKey: ["meu-perfil"],
@@ -19,7 +20,7 @@ const perfilQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/_authenticated/conta")({
-  head: () => ({ meta: [{ title: "Minha conta | Prefeitura de Pau dos Ferros" }] }),
+  head: () => pageHead('Minha conta', 'Dados do perfil e foto da conta de acesso ao portal municipal.'),
   loader: ({ context }) => context.queryClient.ensureQueryData(perfilQuery),
   component: Conta,
   errorComponent: QueryError,

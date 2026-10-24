@@ -57,7 +57,7 @@ export function SiteHeader() {
         </div>
       </div>
       <div className="border-b bg-card">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-5">
           <Link to="/" aria-label="Prefeitura de Pau dos Ferros — início"><img src={logo.url} alt="Prefeitura de Pau dos Ferros — Avançando com você" className="h-20 w-64 max-w-[65vw] object-contain" /></Link>
           <div className="flex flex-wrap justify-end gap-2">
             <Button variant="outline" size="sm" asChild><Link to={isStaff ? '/admin' : user ? '/conta' : '/auth'}><LogIn />{isStaff ? 'Painel administrativo' : user ? 'Minha conta' : 'Área restrita'}</Link></Button>

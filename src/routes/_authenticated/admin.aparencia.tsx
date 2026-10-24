@@ -9,9 +9,10 @@ import { db } from "@/lib/data";
 import { configQuery } from "@/lib/queries";
 import { TEMAS } from "@/lib/temas";
 import { useSession } from "@/hooks/use-session";
+import { pageHead } from '@/lib/seo';
 
 export const Route = createFileRoute("/_authenticated/admin/aparencia")({
-  head: () => ({ meta: [{ title: "Aparência do site | Painel" }] }),
+  head: () => pageHead('Aparência do site', 'Temas, cores e página social do portal institucional municipal.'),
   component: Aparencia,
 });
 
