@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
@@ -6,6 +6,7 @@ import { useSession } from "@/hooks/use-session";
 import { supabase } from "@/integrations/supabase/client";
 import { MODULES, modulePermissionTable } from "@/lib/modules";
 import { HISTORICO, VERSAO } from "@/lib/versao";
+import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel administrativo | Prefeitura de Pau dos Ferros" }] }),
@@ -27,18 +28,20 @@ function AvisoAtualizacao() {
         <strong>Sistema atualizado para a versão {VERSAO}.</strong> {(HISTORICO[0]?.itens ?? []).slice(0, 2).join(" ")}{" "}
         <Link to="/sobre" className="underline">Ver novidades</Link>
       </div>
-      <button onClick={fechar} aria-label="Fechar aviso"><X className="size-4" /></button>
+      <Button variant="ghost" size="icon" onClick={fechar} aria-label="Fechar aviso"><X className="size-4" /></Button>
     </div>
   );
 }
 
 function AdminLayout() {
+  const home = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, '') === '/admin' });
   const { ready, isStaff, isAdmin, user } = useSession();
   const { data: perms } = useQuery({
     queryKey: ["minhas-permissoes", user?.id],
     enabled: !!user && isStaff && !isAdmin,
     queryFn: async () => {
-      const { data, error } = await supabase.from("permissoes_modulo").select("tabela").eq("user_id", user!.id);
+      if (!user) return [];
+      const { data, error } = await supabase.from("permissoes_modulo").select("tabela").eq("user_id", user.id);
       if (error) throw error;
       return data.map((p) => p.tabela);
     },
@@ -52,8 +55,8 @@ function AdminLayout() {
   );
   const visiveis = MODULES.filter((m) => isAdmin || !perms?.length || perms.includes(modulePermissionTable(m)));
   return (
-    <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 md:grid-cols-[230px_1fr]">
-      <aside className="space-y-4 rounded-lg border bg-card p-3 md:sticky md:top-4 md:max-h-[90vh] md:overflow-y-auto">
+    <div className={`mx-auto grid max-w-7xl gap-6 px-4 py-8 ${home ? '' : 'md:grid-cols-[230px_1fr]'}`}>
+      {!home && <aside className="space-y-4 rounded-lg border bg-card p-3 md:sticky md:top-4 md:max-h-[90vh] md:overflow-y-auto">
         <nav aria-label="Painel">
           <Link to="/admin" className={item} activeOptions={{ exact: true }} activeProps={{ className: "bg-secondary font-semibold" }}>Visão geral</Link>
           {isAdmin && <Link to="/admin/usuarios" className={item}>Usuários e perfis</Link>}
@@ -77,7 +80,7 @@ function AdminLayout() {
             </div>
           );
         })}
-      </aside>
+      </aside>}
       <section className="min-w-0"><AvisoAtualizacao /><Outlet /></section>
     </div>
   );

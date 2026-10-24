@@ -598,7 +598,7 @@ export const modulePermissionTable = (mod: ModuleDef) => mod.permissionTable ?? 
 
 // Preserve the evaluation-sheet URLs while sharing the canonical schema and policies.
 export const MODULE_ALIASES: Record<string, string> = {
-  leis: 'lei', decretos: 'decreto', portarias: 'portaria', resolucoes: 'resolucao',
+  leis: 'lei', decretos: 'decreto', portarias: 'portaria', resolucoes: 'resolucao', diarias: 'diaria',
   'categorias-convenio': 'tipos-convenio', 'metas-convenio': 'convenios',
   'planos-aplicacao': 'convenios', 'boletim-epidemiologico': 'covid',
 };

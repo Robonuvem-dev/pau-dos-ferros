@@ -1,13 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { moduleQuery } from "@/lib/queries";
 import { brl } from "@/lib/modules";
 import { agruparPessoal } from "@/lib/fiscal";
 export function ResumoPessoal() {
- const {data,error}=useQuery({...moduleQuery("servidores"),refetchInterval:15_000});
+ const {data}=useSuspenseQuery({...moduleQuery("servidores"),refetchInterval:15_000});
  const [por,setPor]=useState<"cargo"|"lotacao"|"vinculo">("cargo"),[competencia,setCompetencia]=useState("");
- if(error)return <p role="alert">Não foi possível carregar o detalhamento de pessoal.</p>;
- if(!data)return <p>Carregando pessoal...</p>;
  const competencias=[...new Set(data.map(r=>String(r.competencia??"")).filter(Boolean))].sort().reverse();
  const rows=agruparPessoal(data,por,competencia);
  return <section className="my-5 rounded border bg-card p-5"><h2 className="font-display text-xl font-bold">Quadro de pessoal por competência</h2>

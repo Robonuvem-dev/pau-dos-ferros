@@ -30,7 +30,8 @@ export const Route = createFileRoute("/transparencia/$module")({
 function Consulta() {
   const { module } = Route.useParams();
   const { registro } = Route.useSearch();
-  const mod = getModule(module)!;
+  const mod = getModule(module);
+  if (!mod) return <QueryNotFound />;
   return (
     <>
       <PageHeader title={mod.label} subtitle={mod.descricao}>
