@@ -1,3 +1,4 @@
+import { initialValues as emptyValues } from "@/lib/normalization";
 import { useMemo, useState } from "react";
 import { useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { FileText, Pencil, Plus, Search, Trash2, Upload, X } from "lucide-react";
@@ -11,21 +12,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { adminModuleQuery } from "@/lib/admin-queries";
 import { deleteRow, saveRow, uploadFile, type Row } from "@/lib/data";
 import { formatCell, type Field, type ModuleDef } from "@/lib/modules";
+import { ImportarArquivo } from "@/components/admin/ImportarArquivo";
+import { ResumoFiscal } from "@/components/transparencia/ResumoFiscal";
+import { ResumoPessoal } from "@/components/transparencia/ResumoPessoal";
 import { ResumoConvenios } from "@/components/convenios/ResumoConvenios";
 
 type Values = Record<string, unknown>;
 
-function emptyValues(mod: ModuleDef): Values {
-  const v: Values = {};
-  for (const f of mod.fields) {
-    if (f.type === "bool") v[f.name] = true;
-    else if (f.type === "files") v[f.name] = [];
-    else if (f.name === "ano") v[f.name] = new Date().getFullYear();
-    else if (f.type === "date") v[f.name] = new Date().toISOString().slice(0, 10);
-    else v[f.name] = "";
-  }
-  return v;
-}
 
 export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew?: boolean }) {
   const qc = useQueryClient();
@@ -66,6 +59,9 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
         </div>
         <Button onClick={() => setEditing({ values: emptyValues(mod) })}><Plus />Novo registro</Button>
       </div>
+      <ImportarArquivo modulo={mod.key} onDone={refresh} />
+      {["receitas","despesas"].includes(mod.key) && <ResumoFiscal />}
+      {mod.key === "servidores" && <ResumoPessoal />}
       {mod.key === "convenios" && <ResumoConvenios />}
       <div className="rounded-lg border bg-card">
         <div className="flex items-center gap-3 border-b p-3">

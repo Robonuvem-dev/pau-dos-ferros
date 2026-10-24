@@ -70,3 +70,6 @@ jobs:
           done
       - name: Testar RLS, RPCs, constraints e auditoria
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/sprint5_assertions.sql
+
+      - name: Testar importacao atomica e classificacao fiscal
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/sprint6_assertions.sql

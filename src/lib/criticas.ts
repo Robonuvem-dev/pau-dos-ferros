@@ -76,6 +76,19 @@ export const REGRAS: Regra[] = [
   { modulo: "convenio-parcelas", nome: (r) => String(r.numero ?? ""), testes: [
     { problema: "Parcela de convênio vencida", gravidade: "alta", falha: (r, h) => r.status === "Programada" && vencido(r.vencimento, h) },
   ] },
+  { modulo: "receitas", nome: r => String(r.descricao ?? r.categoria ?? ""), testes: [
+    { problema: "Receita sem classificação orçamentária", gravidade: "media", falha: r => vazio(r.natureza) },
+  ] },
+  { modulo: "despesas", nome: r => String(r.empenho ?? r.orgao ?? ""), testes: [
+    { problema: "Despesa sem classificação orçamentária", gravidade: "media", falha: r => vazio(r.natureza) },
+    { problema: "Pagamento sem ordem bancária", gravidade: "alta", falha: r => Number(r.pago)>0 && vazio(r.ordem_bancaria) },
+    { problema: "Despesa liquidada acima do empenhado", gravidade: "alta", falha: r => Number(r.liquidado)>Number(r.empenhado) },
+    { problema: "Pagamento acima do liquidado", gravidade: "alta", falha: r => Number(r.pago)>Number(r.liquidado) },
+  ] },
+  { modulo: "servidores", nome: r => String(r.nome ?? ""), testes: [
+    { problema: "Servidor sem competência da folha", gravidade: "alta", falha: r => vazio(r.competencia) },
+    { problema: "Servidor sem lotação", gravidade: "media", falha: r => vazio(r.lotacao) },
+  ] },
   { modulo: "obras", nome: (r) => String(r.nome ?? ""), testes: [
     { problema: "Obra paralisada", gravidade: "alta", falha: (r) => r.situacao === "Paralisada" },
     { problema: "Obra sem ART", gravidade: "alta", falha: (r) => vazio(r.art) },

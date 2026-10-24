@@ -1,5 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageHeader } from "@/components/site/PageHeader";
+import { ResumoFiscal } from "@/components/transparencia/ResumoFiscal";
+import { ResumoPessoal } from "@/components/transparencia/ResumoPessoal";
 import { ResumoConvenios } from "@/components/convenios/ResumoConvenios";
 import { PublicTable } from "@/components/site/PublicTable";
 import { QueryError, QueryNotFound } from "@/components/site/RouteStates";
@@ -30,6 +32,8 @@ function Consulta() {
         <Link to="/transparencia" className="mt-4 inline-block text-sm underline">← Portal da Transparência</Link>
       </PageHeader>
       <div className="mx-auto max-w-6xl px-4 py-8">
+        {["receitas","despesas"].includes(mod.key) && <ResumoFiscal />}
+        {mod.key === "servidores" && <ResumoPessoal />}
         <PublicTable mod={mod} />
         {mod.key === "convenios" && <ResumoConvenios publico />}
         {mod.key === "concurso" && <EtapasConcursos />}
