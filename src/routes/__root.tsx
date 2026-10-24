@@ -21,7 +21,12 @@ import { temaCss } from '@/lib/temas';
 function TemaSite() {
   const { data } = useQuery({ ...configQuery, refetchInterval: 15_000 });
   const css = data ? temaCss(data) : '';
-  return css ? <style>{css}</style> : null;
+  return <>
+    {css ? <style>{css}</style> : null}
+    {data?.modo_demonstracao === "true" && <div role="note" className="border-b border-amber-500 bg-amber-100 px-4 py-3 text-center text-sm font-semibold text-amber-950">
+      AMBIENTE DE PROVA DE CONCEITO — DADOS FICTÍCIOS. Sem validade administrativa.
+    </div>}
+  </>;
 }
 
 import appCss from "../styles.css?url";

@@ -6,7 +6,7 @@ export const moduleQuery = (key: string) => queryOptions({
 });
 
 export const estatisticasQuery = queryOptions({
-  queryKey: ['public-estatisticas-atendimento'], queryFn: () => readEstatisticasAtendimento(), staleTime: 60_000,
+  queryKey: ['public-estatisticas-atendimento'], queryFn: () => readEstatisticasAtendimento(), staleTime: 15_000, refetchInterval: 15_000,
 });
 
 export const configQuery = queryOptions({

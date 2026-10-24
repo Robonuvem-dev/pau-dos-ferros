@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ const FAQ: [string, string][] = [
   ["Preciso me identificar para pedir informação?", "Para pedidos do e-SIC é necessário informar um nome e um contato para envio da resposta. Na Ouvidoria você pode registrar de forma anônima."],
   ["Qual o prazo de resposta?", "Até 20 dias, prorrogáveis por mais 10 mediante justificativa (art. 11 da Lei 12.527/2011). Na Ouvidoria, até 30 dias (Lei 13.460/2017)."],
   ["Como acompanho meu pedido?", "Guarde o número de protocolo exibido após o envio e consulte na aba “Consultar protocolo”."],
-  ["Posso recorrer da resposta?", "Sim. Em até 10 dias após a resposta, registre um novo pedido informando o protocolo original e o motivo do recurso."],
+  ["Posso recorrer da resposta?", "Sim. Em até 10 dias após a resposta, consulte seu protocolo com o e-mail cadastrado e use a opção “Interpor recurso” para registrar a justificativa."],
 ];
 
 function Esic() {
@@ -79,6 +79,7 @@ function Esic() {
 }
 
 export function NovoPedido({ canalFixo }: { canalFixo?: keyof typeof TIPOS }) {
+  const qc = useQueryClient();
   const [canal, setCanal] = useState<keyof typeof TIPOS>(canalFixo ?? "esic");
   const [form, setForm] = useState({ tipo: TIPOS[canalFixo ?? "esic"][0] ?? "", nome: "", email: "", telefone: "", assunto: "", mensagem: "", anonimo: false });
   const [protocolo, setProtocolo] = useState<string | null>(null);
@@ -98,6 +99,7 @@ export function NovoPedido({ canalFixo }: { canalFixo?: keyof typeof TIPOS }) {
     setSending(false);
     if (error) { toast.error("Não foi possível registrar. Tente novamente."); return; }
     setProtocolo(data);
+    void qc.invalidateQueries({ queryKey: estatisticasQuery.queryKey });
   };
 
   if (protocolo) return (
@@ -147,6 +149,7 @@ export function NovoPedido({ canalFixo }: { canalFixo?: keyof typeof TIPOS }) {
 type Resultado = { protocolo: string; canal: string; assunto: string; status: string; resposta: string | null; created_at: string; respondido_em: string | null; prorrogado: boolean; prazo_final: string | null; justificativa_prorrogacao: string | null; setor_destino: string | null; protocolo_origem: string | null };
 
 function Consulta() {
+  const qc = useQueryClient();
   const [protocolo, setProtocolo] = useState("");
   const [res, setRes] = useState<Resultado | null | undefined>(undefined);
   const [email, setEmail] = useState("");
@@ -163,7 +166,7 @@ function Consulta() {
     <div className="mt-4 rounded-lg border bg-card p-6">
       <form onSubmit={buscar} className="flex flex-wrap gap-2">
         <Label htmlFor="protocolo" className="sr-only">Protocolo</Label>
-        <Input id="protocolo" placeholder="Ex.: PF2026123456" value={protocolo} onChange={(e) => setProtocolo(e.target.value)} />
+        <Input id="protocolo" placeholder="Cole o protocolo completo" value={protocolo} onChange={(e) => setProtocolo(e.target.value)} />
         <Input type="email" aria-label="E-mail cadastrado no pedido" placeholder="E-mail cadastrado (pedidos identificados)" value={email} onChange={(e) => setEmail(e.target.value)} className="min-w-52 flex-1" />
         <Button type="submit">Consultar</Button>
       </form>
@@ -188,6 +191,7 @@ function Consulta() {
                   const {data, error} = await db.rpc("registrar_recurso_esic", {_protocolo: protocolo, _email: email, _mensagem: recurso});
                   if (error) throw error;
                   setProtocoloRecurso(String(data));
+                  void qc.invalidateQueries({ queryKey: estatisticasQuery.queryKey });
                   setRecurso("");
                   toast.success("Recurso protocolado.");
                 } catch (e) { toast.error((e as Error).message); }

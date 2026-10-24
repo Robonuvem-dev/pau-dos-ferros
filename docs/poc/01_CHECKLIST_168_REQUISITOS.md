@@ -3,6 +3,8 @@
 > Documento de trabalho gerado a partir do Anexo I ao Termo de Referência do edital **RETIFICADO**, páginas **31–50** do PDF (60 páginas). Este documento reproduz os 168 quesitos individuais da matriz de avaliação. Não substitui o edital nem configura prova de atendimento.
 > Base: 22/10/2026 | Branch: `Vette` | Repositório único de alterações: `Robonuvem-dev/pau-dos-ferros`.
 
+> Atualização 23/10/2026: Webmail será provido por outra pessoa. Merge/publicação e uso do Cloud existente autorizados; prompts e IA paga continuam proibidos. Evidências técnicas e ensaio público parcial: [status Sprint 5](05_STATUS_VALIDACAO_SPRINT5.md). Homologação integral continua pendente.
+
 ## Regras de uso
 - Todos os itens começam **não homologados** (`[ ]`); cadastros/telas existentes não significam atendimento até execução e evidência.
 - Ao concluir uma implementação, ainda manter `[ ]` até teste funcional positivo, captura da evidência e segunda conferência do roteiro.
@@ -121,31 +123,31 @@
 ### M04 — Convênios públicos (13 requisitos; S2)
 
 - [ ] **4.1** — Cadastro de Convênios (Campos obrigatórios: Nome Convenente, Responsável Convenente, Número do Convênio, Valor das Parcelas, Nome Concedente, Responsável Concedente, Valor Global do Convênio). *(edital, p. 35)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.2** — Vinculação direta de contratos oriundos de convênios. *(edital, p. 36)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.3** — Cadastro de Concedente (Entidade repassadora do recurso). *(edital, p. 36)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.4** — Cadastro de Convenente (Entidade executora local). *(edital, p. 36)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.5** — Cadastro de Tipos e Categorias de Convênio. *(edital, p. 36)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.6** — Relatórios gerenciais completos sobre convênios vigentes. *(edital, p. 36)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.7** — Cadastro de Metas e Especificações Técnicas do Convênio. *(edital, p. 36)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.8** — Cadastro e controle do Plano de Aplicação de Recursos detalhado. *(edital, p. 36)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.9** — Vinculação de Parcelas de desembolso e cronograma de pagamentos. *(edital, p. 36)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.10** — Cadastro de Obrigações e condições imputadas ao Concedente. *(edital, p. 36)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.11** — Vinculação de múltiplos Contratos vinculados diretamente ao Convênio. *(edital, p. 36)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.12** — Visualização pública dos dados de convênios na interface web do Portal. *(edital, p. 37)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **4.13** — Geração automática de relatórios de críticas, alertas e pendências do módulo de Convênios. *(edital, p. 37)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 
 ### M05 — Portais e informações do município (17 requisitos; S1/S2)
 
@@ -154,7 +156,7 @@
 - [ ] **5.2** — Portal específico para visualização pública e detalhada de receitas e despesas. *(edital, p. 37)*  
   Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
 - [ ] **5.3** — Módulo integrado ao e-SIC (Serviço de Informação ao Cidadão) com controle de prazos. *(edital, p. 37)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **5.4** — Publicação estruturada de leis municipais e outros documentos administrativos. *(edital, p. 37)*  
   Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
 - [ ] **5.5** — Integração completa e funcional com o sistema de Ouvidoria Municipal. *(edital, p. 37)*  
@@ -180,7 +182,7 @@
 - [ ] **5.15** — Cadastro e exibição da Lei de Responsabilidade Fiscal municipal consolidada. *(edital, p. 38)*  
   Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
 - [ ] **5.16** — Cadastro, controle e justificativa de Diárias de Viagens de agentes públicos. *(edital, p. 38)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **5.17** — Geração automática de relatórios de críticas, alertas e pendências no portal público. *(edital, p. 38)*  
   Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
 
@@ -206,11 +208,11 @@
 ### M07 — Integrações e importação TCE (3 requisitos; S3)
 
 - [ ] **7.1** — Realizar integração técnica com sistema contábil de outras empresas contratadas pelo município. *(edital, p. 40)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **7.2** — Realizar integração técnica com sistema de folha de pagamento de outras empresas. *(edital, p. 40)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **7.3** — Importar do Tribunal de Contas do Estado (TCE) informações cadastrais básicas como agentes públicos e credores. *(edital, p. 40)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 
 ### M08 — LC 131: transparência fiscal avançada (10 requisitos; S3)
 
@@ -310,32 +312,32 @@
 ### M13 — Aplicativo Android/iOS (8 requisitos; S5)
 
 - [ ] **13.1** — Visualização móvel nativa de Notícias publicadas no portal. *(edital, p. 45)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **13.2** — Cadastro direto de novas notícias por meio do dispositivo móvel autorizado. *(edital, p. 45)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **13.3** — Alteração e edição de notícias publicadas utilizando o aplicativo mobile. *(edital, p. 45)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **13.4** — Visualização de estatísticas em tempo real de acessos e visualizações das notícias. *(edital, p. 45)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **13.5** — Cadastro de Editais e Processos Seletivos por meio do aplicativo de gestão móvel. *(edital, p. 45)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **13.6** — Publicação simplificada de relatórios fiscais oficiais de forma direta pelo aplicativo. *(edital, p. 45)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **13.7** — Publicação e upload rápido de Leis municipais via dispositivo móvel. *(edital, p. 46)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **13.8** — Publicação rápida de Decretos municipais pelo smartphone/tablet. *(edital, p. 46)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 
 ### M14 — IA/ATRICON (4 requisitos; S5)
 
 - [ ] **14.1** — Mecanismo interno de varredura automatizada com IA para detecção de pendências fiscais de transparência. *(edital, p. 46)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **14.2** — Aferição e simulação em tempo real da aderência do portal aos 88 pontos de avaliação de transparência da ATRICON. *(edital, p. 46)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 - [ ] **14.3** — Apresentação automática de Anexo Técnico com a solução descrita e o caminho técnico da solução para adequação. *(edital, p. 46)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Evidência/rota: [bloqueadores remanescentes](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste/revisor: **pendente**
 - [ ] **14.4** — Apresentação de relatório indicando o status (Se Atende, Se Não Atende, ou Se é Portal de Terceiro) para cada um dos 88 pontos avaliados. *(edital, p. 46)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `P` · Evidência/rota: [provas técnicas e ensaio parcial](05_STATUS_VALIDACAO_SPRINT5.md) · PR/teste: #3 / CI 40045034592 · Revisor independente: **pendente**
 
 ### M15 — Carta de Serviços (15 requisitos; S1/S5)
 
@@ -373,51 +375,51 @@
 ### M16 — Webmail institucional SaaS (23 requisitos; S0 (decisão)/S5 (execução))
 
 - [ ] **16.1** — Plataforma hospedada em nuvem, dispensando servidores locais ou infraestrutura física municipal. *(edital, p. 48)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.2** — Acesso completo ao webmail via navegador web (Google Chrome, Firefox, Safari, Edge). *(edital, p. 48)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.3** — Criação, edição, ativação, desativação e exclusão lógica de caixas de e-mail institucional. *(edital, p. 48)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.4** — Capacidade técnica para configuração e operação de até 60 contas de e-mail oficiais. *(edital, p. 48)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.5** — Suporte estrito a domínios de internet personalizados municipais (Exemplo: usuario@nomedoorgao.gov.br). *(edital, p. 48)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.6** — Envio e recebimento de mensagens de correio eletrônico em tempo real. *(edital, p. 49)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.7** — Organização estruturada de mensagens através de pastas personalizadas pelo usuário. *(edital, p. 49)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.8** — Presença obrigatória de pastas padrão: Caixa de Entrada, Itens Enviados, Rascunhos, Spam e Lixeira. *(edital, p. 49)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.9** — Funcionalidade de recuperação segura de senha com interface administrativa. *(edital, p. 49)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.10** — Gestão e cadastro de múltiplos usuários com perfil de Administradores Gerais. *(edital, p. 49)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.11** — Controle e agrupamento de contas de e-mail por secretaria, setor, conselho municipal ou departamento. *(edital, p. 49)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.12** — Envio, recebimento e armazenamento de arquivos anexos associados às mensagens de e-mail. *(edital, p. 49)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.13** — Filtros básicos integrados contra mensagens de e-mail indesejadas (Spam). *(edital, p. 49)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.14** — Autenticação e segurança de acesso reforçada por login individual e senha criptografada. *(edital, p. 49)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.15** — Painel administrativo dedicado, de uso exclusivo do gestor indicado pelo município. *(edital, p. 49)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.16** — Compatibilidade nativa e responsividade de visualização em dispositivos móveis (Android e iOS). *(edital, p. 50)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.17** — Registro, histórico de auditoria e manutenção ativa de contas da entidade. *(edital, p. 50)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.18** — Prestação de suporte técnico especializado para criação de contas, redefinição de senhas e domínio. *(edital, p. 50)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.19** — Disponibilização de orientação e treinamento inicial para os administradores do painel SaaS do Webmail. *(edital, p. 50)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.20** — Painel Administrativo: permitir cadastrar novas contas, alterar dados, bloquear/desbloquear e redefinir senhas em tempo de sessão. *(edital, p. 50)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.21** — Painel Administrativo: consultar contas ativas/inativas e organizá-las por órgão, secretaria ou setor. *(edital, p. 50)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.22** — Segurança: ambiente criptografado SSL/TLS para tráfego e proteção contra acessos não autorizados. *(edital, p. 50)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 - [ ] **16.23** — Conformidade e conformação tecnológica estrita com os princípios da Lei Geral de Proteção de Dados (LGPD). *(edital, p. 50)*  
-  Situação: `NV` · Evidência/rota: **a preencher** · PR/teste/revisor: **a preencher**
+  Situação: `B` · Dependência: responsável externo pelo Webmail · Evidência individual: **pendente**
 
 ## Protocolo de homologação individual
 
