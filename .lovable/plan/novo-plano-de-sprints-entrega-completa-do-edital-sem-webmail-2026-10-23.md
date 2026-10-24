@@ -1,6 +1,6 @@
 # Novo plano de sprints — entrega completa do edital (sem Webmail)
 
-Base: matriz oficial do Anexo I (itens 1.1 a 15.15), o checklist de 168 itens em `docs/poc` e o que já existe. O Módulo 16 (Webmail, 23 itens) fica fora, porque já existe em outro repositório. **Total no escopo: 145 itens, em 15 módulos.**
+Base: matriz oficial do Anexo I (itens 1.1 a 15.15), o checklist de 168 itens em `docs/poc` e o que já existe. O Módulo 16 (Webmail, 23 itens) será provido por outra pessoa, conforme confirmação do usuário em 23/10/2026. A existência de outro repositório não foi comprovada. Os 23 itens continuam na avaliação integral do lote. **Total no escopo: 145 itens, em 15 módulos.**
 
 ## Regras para todas as sprints
 
@@ -68,7 +68,7 @@ Já existem: entrada no sistema, perfis e permissões por módulo, painel em jan
 - Segurança e LGPD: revisão das regras de acesso, varredura de segurança, bloqueio de senhas vazadas, tempo de sessão e registro de consentimento.
 - Acessibilidade (contraste, teclado, VLibras) e teste em celular, tablet e computador.
 - Ensaio cronometrado de 1.1 a 15.15, feito por outro operador sem mexer no código. Resultado ATENDE ou NÃO ATENDE em cada item, correção do que falhar e congelamento da versão.
-- **Regra final:** GO só com os 145 itens demonstráveis. Se faltar algum, NO-GO, com a lista do que falta.
+- **Regra final da frente principal:** os 145 itens devem ser demonstráveis. O GO do lote exige também os 23 itens M16, totalizando 168, com evidência individual. Sem isso, NO-GO.
 
 ---
 
@@ -83,5 +83,5 @@ Já existem: entrada no sistema, perfis e permissões por módulo, painel em jan
 - Cada sprint cria suas tabelas com permissões e regras de acesso no mesmo passo, e adiciona os módulos à configuração central.
 - As integrações usam rotas públicas com chave por sistema de origem, validada no servidor.
 - O aplicativo usa o mesmo código, empacotado para as lojas.
-- A IA usa o Lovable AI no servidor.
+- É proibido usar Lovable AI ou prompts pagos. A alternativa implementada aceita somente IA local em loopback, configurada por POC_AI_BASE_URL e POC_AI_MODEL; execução do modelo ainda pendente.
 - Os testes automáticos ficam em `src/test`, um por regra (prazos, aditivos, saldo de convênio, situação ATRICON, importações).
