@@ -108,10 +108,12 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
 function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values; id?: string | undefined; onDone: () => void }) {
   const [values, setValues] = useState<Values>(initial);
   const [saving, setSaving] = useState(false);
+  const [uploads, setUploads] = useState(0);
   const set = (name: string, v: unknown) => setValues((p) => ({ ...p, [name]: v }));
 
   const submit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    if (uploads > 0) { toast.error("Aguarde o envio dos arquivos terminar antes de salvar."); return; }
     const missing = mod.fields.find((f) => f.required && String(values[f.name] ?? "").trim() === "");
     if (missing) { toast.error(`Preencha o campo “${missing.label}”.`); return; }
     setSaving(true);
@@ -122,27 +124,28 @@ function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values
 
   return (
     <form onSubmit={submit} className="grid gap-4">
-      {mod.fields.map((f) => <FieldInput key={f.name} field={f} value={values[f.name]} onChange={(v) => set(f.name, v)} />)}
+      {mod.fields.map((f) => <FieldInput key={f.name} field={f} value={values[f.name]} onChange={(v) => set(f.name, v)} onUploadBusy={(busy) => setUploads(n => Math.max(0, n + (busy ? 1 : -1)))} />)}
       <div className="flex justify-end gap-2">
-        <Button type="submit" disabled={saving}>{saving ? "Salvando..." : "Salvar"}</Button>
+        <Button type="submit" disabled={saving || uploads > 0}>{uploads > 0 ? "Aguarde os arquivos..." : saving ? "Salvando..." : "Salvar"}</Button>
       </div>
     </form>
   );
 }
 
-function FieldInput({ field: f, value, onChange }: { field: Field; value: unknown; onChange: (v: unknown) => void }) {
+function FieldInput({ field: f, value, onChange, onUploadBusy }: { field: Field; value: unknown; onChange: (v: unknown) => void; onUploadBusy: (busy: boolean) => void }) {
   const [busy, setBusy] = useState(false);
   const id = `f-${f.name}`;
   const label = <Label htmlFor={id}>{f.label}{f.required && " *"}</Label>;
   const upload = async (files: FileList | null, multi: boolean) => {
     if (!files?.length) return;
     setBusy(true);
+    onUploadBusy(true);
     try {
       const urls = await Promise.all(Array.from(files).map((file) => uploadFile(file)));
       onChange(multi ? [...((value as string[]) ?? []), ...urls] : urls[0]);
       toast.success("Arquivo enviado");
     } catch (e) { toast.error((e as Error).message); }
-    finally { setBusy(false); }
+    finally { setBusy(false); onUploadBusy(false); }
   };
 
   if (f.type === "bool") return <div className="flex items-center gap-3"><Switch id={id} checked={Boolean(value)} onCheckedChange={onChange} />{label}</div>;
@@ -163,7 +166,7 @@ function FieldInput({ field: f, value, onChange }: { field: Field; value: unknow
         <div className="flex gap-2">
           <Input id={id} placeholder="Cole um link ou envie um arquivo" value={url} onChange={(e) => onChange(e.target.value)} />
           <Button type="button" variant="outline" asChild disabled={busy}>
-            <label className="cursor-pointer"><Upload />{busy ? "Enviando" : "Enviar"}<input type="file" className="sr-only" onChange={(e) => upload(e.target.files, false)} /></label>
+            <label className="cursor-pointer"><Upload />{busy ? "Enviando" : "Enviar"}<input type="file" disabled={busy} className="sr-only" onChange={(e) => upload(e.target.files, false)} /></label>
           </Button>
         </div>
         {url && (isImg ? <img src={url} alt="" className="h-24 w-auto rounded border object-cover" /> : <a href={url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-primary"><FileText className="size-4" />Ver arquivo atual</a>)}
@@ -183,7 +186,7 @@ function FieldInput({ field: f, value, onChange }: { field: Field; value: unknow
           ))}
         </div>
         <Button type="button" variant="outline" asChild disabled={busy} className="w-fit">
-          <label className="cursor-pointer"><Upload />{busy ? "Enviando..." : "Adicionar fotos"}<input type="file" multiple accept="image/*" className="sr-only" onChange={(e) => upload(e.target.files, true)} /></label>
+          <label className="cursor-pointer"><Upload />{busy ? "Enviando..." : "Adicionar fotos"}<input type="file" disabled={busy} multiple accept="image/*" className="sr-only" onChange={(e) => upload(e.target.files, true)} /></label>
         </Button>
       </div>
     );
