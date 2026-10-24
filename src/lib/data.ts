@@ -52,9 +52,17 @@ export async function deleteRow(mod: ModuleDef, id: string) {
 
 const TEN_YEARS = 60 * 60 * 24 * 365 * 10;
 
-/** Envia arquivo ao armazenamento e devolve um link de longa duração. */
-export async function uploadFile(file: File, folder = String(new Date().getFullYear())): Promise<string> {
+/** Preserva anexos administrativos no banco antes de disponibilizar a cópia no armazenamento. */
+export async function uploadFile(file: File, folder = String(new Date().getFullYear()), preservarNoBanco = true): Promise<string> {
   const path = `${folder}/${crypto.randomUUID()}-${file.name.replace(/[^\w.-]/g, "_")}`;
+  if (preservarNoBanco) {
+    if (file.size < 1 || file.size > 50 * 1024 * 1024) throw new Error("O anexo deve ter entre 1 byte e 50 MB.");
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    let hex = "\\x";
+    for (let i = 0; i < bytes.length; i += 16384) hex += Array.from(bytes.subarray(i,i+16384),b=>b.toString(16).padStart(2,"0")).join("");
+    const { error: erroBanco } = await db.from("arquivos_binarios").insert({storage_path:path,nome:file.name,mime:file.type||"application/octet-stream",conteudo:hex});
+    if (erroBanco) throw new Error("Falha ao preservar o anexo no banco: "+erroBanco.message);
+  }
   const { error } = await supabase.storage.from("arquivos").upload(path, file);
   if (error) throw error;
   const { data, error: e2 } = await supabase.storage.from("arquivos").createSignedUrl(path, TEN_YEARS);
@@ -62,4 +70,4 @@ export async function uploadFile(file: File, folder = String(new Date().getFullY
   return data.signedUrl;
 }
 
-export const uploadAvatar = (file: File, userId: string) => uploadFile(file, `avatars/${userId}`);
+export const uploadAvatar = (file: File, userId: string) => uploadFile(file, `avatars/${userId}`, false);

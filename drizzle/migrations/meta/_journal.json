@@ -134,6 +134,13 @@
       "when": 1792890200000,
       "tag": "0018_processos_engenharia",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1792890300000,
+      "tag": "0019_anexos_binarios_banco",
+      "breakpoints": true
     }
   ]
 }
