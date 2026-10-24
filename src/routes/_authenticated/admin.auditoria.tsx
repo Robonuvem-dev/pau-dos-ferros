@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { auditoriaQuery, usuariosQuery } from "@/lib/admin-queries";
 import { baixar, toCSV } from "@/lib/versao";
 import { QueryError, QueryNotFound } from "@/components/site/RouteStates";
+import { pageHead } from '@/lib/seo';
 
 export const Route = createFileRoute("/_authenticated/admin/auditoria")({
+  head: () => pageHead('Auditoria e acessos', 'Histórico de alterações, entradas e saídas da equipe municipal.'),
   loader: ({ context }) => Promise.all([context.queryClient.ensureQueryData(auditoriaQuery), context.queryClient.ensureQueryData(usuariosQuery)]),
   component: Auditoria,
   errorComponent: QueryError,
