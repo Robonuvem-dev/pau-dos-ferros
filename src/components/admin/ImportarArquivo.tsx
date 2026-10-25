@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { db } from "@/lib/data";
 import { cabecalhosExternos, prepararLeiauteExterno } from "@/lib/importacao-mapeamento";
 import { IMPORT_COLUNAS, prepararImportacao } from "@/lib/importacao";
+import { decodificarCSV, type CodificacaoCSV } from "@/lib/csv-codificacao";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export function ImportarArquivo({ modulo, onDone }: { modulo: string; onDone: () => void }) {
  const [externo,setExterno]=useState(false);
+ const [codificacao,setCodificacao]=useState<CodificacaoCSV>('utf-8');
+ const leitura = useRef(0);
  const [raw,setRaw]=useState("");
  const [headers,setHeaders]=useState<string[]>([]);
  const [mapa,setMapa]=useState<Record<string,string>>({});
@@ -22,11 +25,12 @@ export function ImportarArquivo({ modulo, onDone }: { modulo: string; onDone: ()
   const a=document.createElement("a"); a.href=url; a.download=modulo+"-modelo.csv"; a.click(); URL.revokeObjectURL(url);
  };
  const ler = async (file?: File) => {
-  setRows([]); setErro(""); setSucesso("");
+  const tentativa = ++leitura.current;
+  setRows([]); setErro(""); setSucesso("");setRaw('');setHeaders([]);setMapa({});
   if (!file) return;
   if (file.size>2_000_000) {setErro("Arquivo acima de 2 MB.");return;}
-  try {const text=await file.text();setRaw(text);setHeaders(cabecalhosExternos(text));if(!externo)setRows(prepararImportacao(modulo,text));}
-  catch(e) {setErro((e as Error).message);}
+  try {const bytes=await file.arrayBuffer();if(tentativa!==leitura.current)return;const text=decodificarCSV(bytes,codificacao);setRaw(text);setHeaders(cabecalhosExternos(text));if(!externo)setRows(prepararImportacao(modulo,text));}
+  catch(e) {if(tentativa===leitura.current)setErro((e as Error).message);}
  };
  const importar = async () => {
   setBusy(true);setErro("");setSucesso("");
@@ -42,8 +46,10 @@ export function ImportarArquivo({ modulo, onDone }: { modulo: string; onDone: ()
   <summary className="cursor-pointer font-semibold">Importar arquivo CSV</summary>
   <p className="my-2 text-sm">Leiaute próprio do portal. Baixe o modelo, informe a origem e revise os registros. O envio é integral: qualquer erro cancela todas as linhas. Reenviar a mesma origem e identificador é bloqueado.</p>
   <p className="my-2 text-sm text-muted-foreground">A compatibilidade com sistemas contábeis, folha e TCE depende da validação de arquivos desses sistemas.</p>
-  <label className="my-3 block"><input type="checkbox" checked={externo} onChange={e=>{setExterno(e.target.checked);setRows([]);setErro("");}} /> Mapear colunas de outro leiaute CSV</label>
+  <label className="my-3 block"><input type="checkbox" checked={externo} onChange={e=>{++leitura.current;setExterno(e.target.checked);setRows([]);setRaw('');setHeaders([]);setMapa({});setErro("");}} /> Mapear colunas de outro leiaute CSV</label>
   <Button variant="outline" onClick={modelo}>Baixar modelo CSV</Button>
+  <label className="my-3 block">Codificação do arquivo <select aria-label="Codificação do arquivo CSV" disabled={busy} className="ml-2 rounded border p-1" value={codificacao} onChange={e=>{++leitura.current;setCodificacao(e.target.value as CodificacaoCSV);setRows([]);setHeaders([]);setMapa({});setRaw('');setErro('');setSucesso('');}}><option value="utf-8">UTF-8</option><option value="windows-1252">Windows-1252 (ANSI)</option></select></label>
+  <p className="text-sm text-muted-foreground">Selecione a codificação usada na exportação antes de escolher o arquivo. Ao alterar, escolha o arquivo novamente e revise a prévia.</p>
   <div className="my-3 grid gap-3 sm:grid-cols-2">
    <Input aria-label="Sistema de origem do arquivo" placeholder="Sistema de origem" value={origem} maxLength={120} onChange={e=>setOrigem(e.target.value)} />
    <Input aria-label="Arquivo CSV para importar" type="file" accept=".csv,text/csv" disabled={busy} onChange={e=>{void ler(e.target.files?.[0]);e.target.value="";}}/>

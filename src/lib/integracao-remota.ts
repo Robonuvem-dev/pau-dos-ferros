@@ -1,6 +1,7 @@
 import { prepararImportacao } from './importacao';
 import { prepararLeiauteExterno } from './importacao-mapeamento';
-export interface IntegrationConfig { modulo:string;origem:string;arquivoUrl:string;mapeamento?:Record<string,string> }
+import { decodificarCSV, type CodificacaoCSV } from './csv-codificacao';
+export interface IntegrationConfig { modulo:string;origem:string;arquivoUrl:string;mapeamento?:Record<string,string>;codificacao?:CodificacaoCSV }
 export interface IntegrationCredentials { backendUrl:string;publishableKey:string;email:string;password:string;sourceToken?:string }
 /** Executado por um operador/serviço autorizado, nunca pelo carregamento público do portal. */
 export async function executarIntegracao(config:IntegrationConfig,credentials:IntegrationCredentials,read:typeof fetch=fetch):Promise<number> {
@@ -10,7 +11,8 @@ export async function executarIntegracao(config:IntegrationConfig,credentials:In
   const response=await read(source,{redirect:'error',signal:AbortSignal.timeout(30_000),headers:credentials.sourceToken?{Authorization:'Bearer '+credentials.sourceToken}:{}});
   if(!response.ok)throw new Error('Arquivo de origem indisponível: HTTP '+response.status);
   if(Number(response.headers.get('content-length')??0)>2_000_000)throw new Error('Arquivo de origem acima de 2 MB.');
-  const csv=await response.text();if(new TextEncoder().encode(csv).length>2_000_000)throw new Error('Arquivo de origem acima de 2 MB.');
+  const bytes=await response.arrayBuffer();if(bytes.byteLength>2_000_000)throw new Error('Arquivo de origem acima de 2 MB.');
+  const csv=decodificarCSV(bytes,config.codificacao);
   const rows=config.mapeamento?prepararLeiauteExterno(config.modulo,csv,config.mapeamento):prepararImportacao(config.modulo,csv);
   const login=await read(new URL('/auth/v1/token?grant_type=password',backend),{method:'POST',redirect:'error',signal:AbortSignal.timeout(30_000),headers:{apikey:credentials.publishableKey,'Content-Type':'application/json'},body:JSON.stringify({email:credentials.email,password:credentials.password})});
   if(!login.ok)throw new Error('A conta de integração não pôde autenticar.');

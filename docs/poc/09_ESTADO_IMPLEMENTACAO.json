@@ -619,7 +619,7 @@
       "requisito": "Realizar integração técnica com sistema contábil de outras empresas contratadas pelo município.",
       "pagina_pdf": 40,
       "classificacao": "PARCIAL",
-      "observacao": "Mapeamento contábil e coleta/sincronização HTTPS implementados. Falta comprovar o leiaute do fornecedor efetivo com exportação ou documentação autorizada."
+      "observacao": "Mapeamento contábil e coleta/sincronização HTTPS implementados. Falta comprovar o leiaute do fornecedor efetivo com exportação ou documentação autorizada. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente."
     },
     {
       "id": "7.2",
@@ -627,7 +627,7 @@
       "requisito": "Realizar integração técnica com sistema de folha de pagamento de outras empresas.",
       "pagina_pdf": 40,
       "classificacao": "PARCIAL",
-      "observacao": "Importação, mapeamento e sincronização de folha implementados. Falta validar campos/rubricas e competências do sistema efetivamente usado."
+      "observacao": "Importação, mapeamento e sincronização de folha implementados. Falta validar campos/rubricas e competências do sistema efetivamente usado. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente."
     },
     {
       "id": "7.3",
@@ -635,7 +635,7 @@
       "requisito": "Importar do Tribunal de Contas do Estado (TCE) informações cadastrais básicas como agentes públicos e credores.",
       "pagina_pdf": 40,
       "classificacao": "PARCIAL",
-      "observacao": "Agentes/credores podem ser mapeados e importados. Falta prova do leiaute oficial TCE/RN; CSV fictício próprio não comprova essa origem."
+      "observacao": "Agentes/credores podem ser mapeados e importados. Falta prova do leiaute oficial TCE/RN; CSV fictício próprio não comprova essa origem. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente."
     },
     {
       "id": "8.1",
@@ -731,7 +731,7 @@
       "requisito": "Importação de dados de pessoal originários de múltiplos sistemas de Folha de Pagamento.",
       "pagina_pdf": 41,
       "classificacao": "PARCIAL",
-      "observacao": "Conversão de dois leiautes distintos de folha passou nos testes fictícios. Falta confrontar os perfis com exportações dos múltiplos fornecedores concretos."
+      "observacao": "Conversão de dois leiautes distintos de folha passou nos testes fictícios. Falta confrontar os perfis com exportações dos múltiplos fornecedores concretos. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente."
     },
     {
       "id": "9.3",
@@ -1365,5 +1365,14 @@
       "/transparencia"
     ],
     "limite": "Não confirma fluxos administrativos autenticados ou homologação."
+  },
+  "revisao_local": {
+    "data": "2026-10-25",
+    "testes": 214,
+    "arquivos_teste": 26,
+    "typescript": "aprovado",
+    "build": "aprovado",
+    "lint_arquivos_alterados": "aprovado",
+    "limite": "Não substitui compatibilidade com fornecedor efetivo ou homologação."
   }
 }
