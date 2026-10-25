@@ -81,16 +81,30 @@ struct NativeNewsFeed:Decodable {let noticias:[NativeNewsItem]}
   NavigationStack {
    List {
     if !message.isEmpty {Text(message);Button("Tentar novamente"){Task{await load()}}}
-    ForEach(items){item in NavigationLink {
-     ScrollView {VStack(alignment:.leading,spacing:16){
-      Text(item.titulo ?? "Notícia").font(.title).bold()
-      Text(item.publicado_em ?? "").font(.caption)
-      Text(item.resumo ?? "").font(.headline)
-      Text((item.conteudo ?? "").replacingOccurrences(of:"<[^>]+>",with:"",options:.regularExpression)).textSelection(.enabled)
-      if let slug=item.slug,let url=URL(string:"https://pau-dos-ferros.lovable.app/noticias/"+slug.addingPercentEncoding(withAllowedCharacters:.urlPathAllowed)!) {Link("Ver mídias da publicação no portal",destination:url)}
-     }.padding()}.navigationTitle("Notícia").navigationBarTitleDisplayMode(.inline)
-    } label: {VStack(alignment:.leading,spacing:6){Text(item.titulo ?? "Notícia").font(.headline);Text(item.resumo ?? "").font(.subheadline)}}}
+    ForEach(items){item in NavigationLink { NativeNewsArticle(item:item) } label: {VStack(alignment:.leading,spacing:6){Text(item.titulo ?? "Notícia").font(.headline);Text(item.resumo ?? "").font(.subheadline)}}}
    }.navigationTitle("Notícias").refreshable{await load()}.task{await load()}
+  }
+ }
+}
+
+@MainActor struct NativeNewsArticle:View {
+ let item:NativeNewsItem
+ @State private var counterError=""
+ var body:some View {
+  ScrollView {VStack(alignment:.leading,spacing:16){
+   Text(item.titulo ?? "Notícia").font(.title).bold()
+   Text(item.publicado_em ?? "").font(.caption)
+   Text(item.resumo ?? "").font(.headline)
+   Text((item.conteudo ?? "").replacingOccurrences(of:"<[^>]+>",with:"",options:.regularExpression)).textSelection(.enabled)
+   if !counterError.isEmpty {Text(counterError).font(.caption)}
+   if let slug=item.slug,let encoded=slug.addingPercentEncoding(withAllowedCharacters:.urlPathAllowed),let url=URL(string:"https://pau-dos-ferros.lovable.app/noticias/"+encoded) {Link("Ver mídias da publicação no portal",destination:url)}
+  }.padding()}.navigationTitle("Notícia").navigationBarTitleDisplayMode(.inline).task {
+   do {
+    var request=URLRequest(url:URL(string:"https://pau-dos-ferros.lovable.app/api/noticias")!);request.httpMethod="POST";request.timeoutInterval=15;request.setValue("application/json",forHTTPHeaderField:"Content-Type")
+    request.httpBody=try JSONSerialization.data(withJSONObject:["slug":item.slug ?? ""])
+    let (_,response)=try await URLSession.shared.data(for:request)
+    guard let http=response as? HTTPURLResponse,http.statusCode==200 else {throw URLError(.badServerResponse)}
+   } catch {counterError="Leitura aberta; não foi possível registrar esta visualização."}
   }
  }
 }

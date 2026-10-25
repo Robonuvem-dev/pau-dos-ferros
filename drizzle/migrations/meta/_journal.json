@@ -176,6 +176,13 @@
       "when": 1792890460000,
       "tag": "0024_integracao_automatica",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1792890470000,
+      "tag": "0025_estatisticas_carta_completas",
+      "breakpoints": true
     }
   ]
 }

@@ -1,7 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { readPublicModule } from '@/lib/public.functions';
+import { readPublicModule, registerPublicNewsView } from '@/lib/public.functions';
+import { handleNativeNewsView } from '@/lib/native-news';
 export const Route = createFileRoute('/api/noticias')({
   server: { handlers: {
+    POST: async ({request}) => handleNativeNewsView(request,slug=>registerPublicNewsView({data:{slug}})),
     GET: async () => {
       try {
         const rows = await readPublicModule({ data: { key: 'noticias' } });

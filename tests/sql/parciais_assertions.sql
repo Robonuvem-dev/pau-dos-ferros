@@ -88,5 +88,6 @@ SELECT public.sincronizar_dados_poc('receitas','POC-AUTOMATICA','[{"ano":2026,"m
 SELECT pg_temp.assert_true((SELECT arrecadado=250 FROM public.receitas WHERE origem='POC-AUTOMATICA' AND chave_externa='POC-X1'),'coluna ausente do arquivo não apaga valor existente');
 SELECT set_config('request.jwt.claim.sub','00200000-0000-4000-8000-000000000002',true);
 SELECT pg_temp.expect_error($q$SELECT public.sincronizar_dados_poc('receitas','POC-AUTOMATICA','[{"ano":2026,"mes":10,"categoria":"POC","chave_externa":"POC-X2"}]')$q$,'42501','sincronização respeita permissão de escrita do módulo');
+SELECT pg_temp.assert_true((SELECT conteudo LIKE '%visualizacoes%' FROM public.gerar_documento_carta('estatisticas')),'arquivo de estatísticas inclui também visualizações');
 SET CONSTRAINTS ALL IMMEDIATE;
 ROLLBACK;

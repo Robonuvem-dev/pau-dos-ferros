@@ -92,7 +92,14 @@ public final class MainActivity extends Activity {
    finally{if(c!=null)c.disconnect();}
   });
  }
+ private void registerNativeView(String slug){worker.execute(()->{
+  java.net.HttpURLConnection c=null;
+  try{c=(java.net.HttpURLConnection)new java.net.URL(BASE+"/api/noticias").openConnection();c.setRequestMethod("POST");c.setDoOutput(true);c.setInstanceFollowRedirects(false);c.setConnectTimeout(10000);c.setReadTimeout(10000);c.setRequestProperty("Content-Type","application/json");
+   byte[] bytes=new org.json.JSONObject().put("slug",slug).toString().getBytes(java.nio.charset.StandardCharsets.UTF_8);try(java.io.OutputStream out=c.getOutputStream()){out.write(bytes);}if(c.getResponseCode()!=200)throw new java.io.IOException("Contador indisponível");
+  }catch(Exception e){runOnUiThread(()->{if(!isDestroyed())message.setText("Leitura aberta; não foi possível registrar esta visualização.");});}finally{if(c!=null)c.disconnect();}
+ });}
  private void showArticle(org.json.JSONObject n){
+  registerNativeView(n.optString("slug"));
   nativeContent.removeAllViews();Button back=new Button(this);back.setText("Voltar à lista de notícias");back.setOnClickListener(v->showList());nativeContent.addView(back);
   nativeText(n.optString("titulo"),24);nativeText(n.optString("publicado_em"),13);nativeText(n.optString("resumo"),18);
   nativeText(android.text.Html.fromHtml(n.optString("conteudo"),android.text.Html.FROM_HTML_MODE_LEGACY).toString(),17);

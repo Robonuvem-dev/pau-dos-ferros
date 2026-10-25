@@ -20,10 +20,10 @@ Base: `7ce0dc6e41883e46f49e26f7144141c24c837add`, 25/10/2026. Alterações exclu
 | 10.2, 11.1, 12.1 | Obrigatoriedade compartilhada com validação na gravação e constraints no banco; término efetivo/baixa condicionais ao estado aplicável | Testes de campos, zero/falso válidos, baixa e SQL de rejeição |
 | 10.12 | Crítica de ART também consulta registros da tabela `obra_arts` | Testes de presença e ausência |
 | 10.13 | Plano Diretor cria fase/equipe/eixo/ação na mesma transação e não permite remover o último componente obrigatório | Testes de chamada/erro e SQL de atomicidade/constraint diferida |
-| 13.1 | Notícias lidas por componentes nativos Android e SwiftUI iOS; API pública lê a mesma fonte do portal | CI mobile de compilação/instalação/abertura; operação de rede e aparelho físico têm escopo próprio |
+| 13.1 | Notícias lidas por componentes nativos Android e SwiftUI iOS; API pública lê a mesma fonte do portal e registra a leitura de notícias publicadas no contador | CI mobile de compilação/instalação/abertura; operação de rede e aparelho físico têm escopo próprio |
 | 13.4 | Total de visualizações soma todas as notícias; ranking continua limitado às dez primeiras | Paginação, TypeScript e build |
 | 14.1 | IA local lê conteúdo das páginas fiscais e compara embeddings dos critérios com os trechos públicos; não depende apenas das críticas pré-calculadas | Testes de coleta/falha/remoção de scripts e inferência real gratuita no CI |
-| 15.5 | Uploads continuam preservados; CSV/JSON, modelo em branco e estatísticas da Carta são gerados e arquivados no PostgreSQL antes da saída | SQL: bytes, hash, deduplicação e recusa de conteúdo arbitrário; testes/build dos fluxos |
+| 15.5 | Uploads continuam preservados; CSV/JSON, modelo em branco e estatísticas completas (incluindo visualizações) da Carta são gerados e arquivados no PostgreSQL antes da saída | SQL: bytes, hash, deduplicação e recusa de conteúdo arbitrário; testes/build dos fluxos |
 | 15.12 | Solicitação efetiva com protocolo, dados privados, tratamento pela equipe e estatísticas separadas; visualizações usam referência estável | Teste de envio/erro da tela; SQL de protocolo, estatísticas, RLS e imutabilidade dos dados do solicitante |
 
 O resultado executado deve ser conferido no workflow **PoC Sprint 5 - qualidade** do commit em análise. CI de nomes históricos continua aplicando todas as migrações e testes atuais; nome da sprint não limita o alcance.
@@ -49,7 +49,7 @@ Esses 25 itens continuam separados da contagem de funcionalidades. Não são tod
 
 ## Aplicação e legado
 
-Migrações novas: **0020–0024**. Devem ser ensaiadas integralmente no PostgreSQL descartável do CI antes da aplicação em homologação. Não há conexão com produção nesses testes.
+Migrações novas: **0020–0025**. Devem ser ensaiadas integralmente no PostgreSQL descartável do CI antes da aplicação em homologação. Não há conexão com produção nesses testes.
 
 Constraints `NOT VALID` preservam registros legados sem inventar responsáveis, datas ou dados. A obrigatoriedade passa a valer para novos registros e edições. Cadastros antigos incompletos precisam ser regularizados com dados autorizados. Origem textual ambígua de contrato não é convertida arbitrariamente em UUID.
 

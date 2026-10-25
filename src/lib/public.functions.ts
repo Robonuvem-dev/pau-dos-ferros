@@ -57,3 +57,18 @@ export const readEstatisticasServicos = createServerFn({ method: 'GET' }).handle
   if (error) throw new Error("Não foi possível carregar as estatísticas de serviços.");
   return data as { servico_id: string; avaliacoes: number; media: number; uteis: number; solicitacoes: number }[];
 });
+
+export const registerPublicNewsView = createServerFn({method:'POST'})
+  .inputValidator((input:{slug:string})=>{
+    if(typeof input.slug!=='string'||!input.slug.trim()||input.slug.length>160)throw new Error('Notícia inválida');
+    return input;
+  })
+  .handler(async({data})=>{
+    const client=publicClient();
+    const {data:visible,error}=await client.from('noticias').select('slug').eq('slug',data.slug).eq('publicado',true).or(`agendar_para.is.null,agendar_para.lte.${municipalDate()}`).maybeSingle();
+    if(error)throw new Error('Não foi possível verificar a publicação.');
+    if(!visible)return false;
+    const result=await client.rpc('registrar_visualizacao',{_slug:data.slug});
+    if(result.error)throw new Error('Contador indisponível');
+    return true;
+  });
