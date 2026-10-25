@@ -2,6 +2,7 @@
   "modulo": "despesas",
   "origem": "POC - fornecedor ficticio",
   "arquivoUrl": "https://example.invalid/contabilidade.csv",
+  "codificacao": "utf-8",
   "mapeamento": {
     "ano": "Exercicio",
     "mes": "Mes",

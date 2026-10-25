@@ -34,3 +34,19 @@ Correção desta revisão: identificação acessível de pesquisa, tabela, cabe�
 5. **14.2:** aferir os 88 critérios individualmente; comparação semântica de páginas não certifica documentos, prazos e atendimento legal.
 
 Não usar prompts do Lovable nem IA paga. Alterações de implementação continuam na Vette e seguem para main após os testes; a checklist acompanha cada alteração e diferencia código, publicação e homologação.
+
+## 7.1 — integração contábil, revisão executada
+
+O caminho de arquivo e a sincronização remota usavam leitura UTF-8 com substituição silenciosa de bytes inválidos. Isso podia corromper descrições de exportações ANSI. Agora ambos usam decodificação explícita UTF-8 ou Windows-1252 com validação. Na configuração remota, `codificacao` é opcional e assume `utf-8`; no painel, selecione a opção antes de escolher o arquivo. A alteração invalida a prévia e qualquer leitura anterior ainda pendente.
+
+Oito testes novos cobrem acentos, BOM, rejeição de conteúdo inválido sem escrita, mapeamento e sincronização remota, além da troca de codificação durante leitura. O mesmo controle é compartilhado pelos arquivos de folha e cadastros TCE, sem afirmar compatibilidade com um sistema não identificado.
+
+**7.1 permanece PARCIAL:** a capacidade genérica foi exercitada, mas não existe no material disponível identificação nem exportação do sistema contábil efetivo. Dados sintéticos solicitados pelo usuário permitem demonstrar o processamento; não comprovam que o fornecedor municipal entrega aquele contrato de dados.
+
+### 7.2 e 9.2 — caminho compartilhado de folha
+
+Importação e mapeamento de dois formatos sintéticos distintos já possuem teste; o suporte de codificação também é compartilhado. Faltam leiautes/exportações autorizados dos fornecedores concretos para conferir rubricas, competência e conciliação. Permanecem PARCIAIS, sem inventar identificação de fornecedores.
+
+### 7.3 — origem TCE/RN
+
+O [portal oficial de dados abertos](https://apidadosabertos.tce.rn.gov.br/) informa que disponibiliza remessas SIAI via API e oferece CSV/JSON/HTML. A documentação apontada pelo próprio portal (`/swagger`) não respondeu nesta verificação; `/swagger/docs/v1` também não foi recuperado. Não foi obtido o esquema oficial de agentes/credores. O importador genérico continua disponível, mas 7.3 permanece PARCIAL até ensaio com contrato de dados oficial. Nenhuma informação pessoal da base real foi importada.
