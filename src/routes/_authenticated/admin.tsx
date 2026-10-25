@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useSession } from "@/hooks/use-session";
 import { supabase } from "@/integrations/supabase/client";
 import { MODULES, modulePermissionTable } from "@/lib/modules";
+import { RemoteVersion } from "@/components/admin/RemoteVersion";
 import { HISTORICO, VERSAO } from "@/lib/versao";
 import { Button } from '@/components/ui/button';
 
@@ -81,7 +82,7 @@ function AdminLayout() {
           );
         })}
       </aside>}
-      <section className="min-w-0"><AvisoAtualizacao /><Outlet /></section>
+      <section className="min-w-0"><RemoteVersion /><AvisoAtualizacao /><Outlet /></section>
     </div>
   );
 }

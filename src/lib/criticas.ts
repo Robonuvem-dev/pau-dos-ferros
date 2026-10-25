@@ -9,6 +9,7 @@ const vencido = (v: unknown, hoje: string) => !vazio(v) && String(v).slice(0, 10
 const diasAte = (v: unknown, hoje: string) => (Date.parse(String(v)) - Date.parse(hoje)) / 86400000;
 
 export const REGRAS: Regra[] = [
+  { modulo: "obra-arts", nome: r => String(r.numero ?? ""), testes: [] },
   { modulo: "noticias", nome: (r) => String(r.titulo ?? ""), testes: [
     { problema: "Notícia sem imagem de capa", gravidade: "baixa", falha: (r) => vazio(r.capa_url) },
     { problema: "Notícia sem resumo", gravidade: "baixa", falha: (r) => vazio(r.resumo) },
@@ -113,6 +114,7 @@ export const REGRAS: Regra[] = [
 ];
 
 export function avaliarPendencias(dados: Record<string, R[]>, hoje = new Date().toISOString().slice(0, 10)): Pendencia[] {
+  dados = { ...dados, obras: (dados.obras ?? []).map(o => ({ ...o, art: o.art || (dados["obra-arts"] ?? []).find(a => a.obra_id === o.id)?.numero })) };
   const out: Pendencia[] = [];
   for (const regra of REGRAS) for (const r of dados[regra.modulo] ?? []) for (const t of regra.testes)
     if (t.falha(r, hoje)) out.push({ modulo: regra.modulo, registro: regra.nome(r) || "(sem nome)", id: r.id, problema: t.problema, gravidade: t.gravidade });

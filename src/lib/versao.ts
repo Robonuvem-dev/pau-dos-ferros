@@ -1,7 +1,8 @@
 /** Versão e histórico do sistema, exibidos na página "Sobre" e no aviso de atualização do painel. */
-export const VERSAO = "1.2.0";
+export const VERSAO = "1.3.0";
 
 export const HISTORICO: { versao: string; data: string; itens: string[] }[] = [
+  { versao: "1.3.0", data: "2026-10-25", itens: ["Verificação remota de versão no acesso ao painel.", "Correções de integridade, relatórios e cadastros da PoC na Vette."] },
   {
     versao: "1.2.0",
     data: "2026-10-23",

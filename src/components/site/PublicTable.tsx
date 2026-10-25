@@ -1,3 +1,5 @@
+import { baixarDocumentoCarta } from "@/lib/documentos-carta";
+import { toast } from "sonner";
 import { useMemo, useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Download, FileText, Search } from "lucide-react";
@@ -28,6 +30,7 @@ export function PublicTable({ mod }: { mod: ModuleDef }) {
   }, [data, q, mod.fields, legislacao, numero, ano, ementa]);
 
   const exportar = (tipo: "csv" | "json") => {
+    if (mod.key === "servicos") {void baixarDocumentoCarta(tipo, rows.map(r=>r.id)).catch(e=>toast.error(e.message));return;}
     const content = tipo === "csv" ? "\uFEFF" + toCSV(mod.fields, rows) : JSON.stringify(rows, null, 2);
     const blob = new Blob([content], { type: tipo === "csv" ? "text/csv" : "application/json" });
     const a = document.createElement("a");

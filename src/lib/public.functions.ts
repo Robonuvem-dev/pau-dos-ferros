@@ -2,6 +2,7 @@ import { createServerFn } from '@tanstack/react-start';
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 import { MODULES } from './modules';
+import { collectPages } from './pagination';
 import type { Row } from './data';
 import { municipalDate, visibleBanners } from './public-content';
 
@@ -32,9 +33,8 @@ export const readPublicModule = createServerFn({ method: 'GET' })
     if (mod.key === 'banners') query = query.eq('ativo', true);
     if (mod.key === 'links-uteis') query = query.eq('ativo', true);
     if (mod.orderBy) query = query.order(mod.orderBy, { ascending: ['nome','ordem','placa'].includes(mod.orderBy) });
-    const { data: rows, error } = await query.limit(1000);
-    if (error) throw new Error('Não foi possível carregar a consulta.');
-    const result = rows as unknown as Row[];
+    query = query.order('id');
+    const result = await collectPages<Row>((from, to) => query.range(from, to));
     return mod.key === 'banners' ? visibleBanners(result, municipalDate()) : result;
   });
 
@@ -54,6 +54,21 @@ export const readConfiguracoes = createServerFn({ method: 'GET' }).handler(async
 export const readEstatisticasServicos = createServerFn({ method: 'GET' }).handler(async () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await (publicClient() as any).rpc('estatisticas_servicos');
-  if (error) return [] as { servico_id: string; avaliacoes: number; media: number; uteis: number }[];
-  return data as { servico_id: string; avaliacoes: number; media: number; uteis: number }[];
+  if (error) throw new Error("Não foi possível carregar as estatísticas de serviços.");
+  return data as { servico_id: string; avaliacoes: number; media: number; uteis: number; solicitacoes: number }[];
 });
+
+export const registerPublicNewsView = createServerFn({method:'POST'})
+  .inputValidator((input:{slug:string})=>{
+    if(typeof input.slug!=='string'||!input.slug.trim()||input.slug.length>160)throw new Error('Notícia inválida');
+    return input;
+  })
+  .handler(async({data})=>{
+    const client=publicClient();
+    const {data:visible,error}=await client.from('noticias').select('slug').eq('slug',data.slug).eq('publicado',true).or(`agendar_para.is.null,agendar_para.lte.${municipalDate()}`).maybeSingle();
+    if(error)throw new Error('Não foi possível verificar a publicação.');
+    if(!visible)return false;
+    const result=await client.rpc('registrar_visualizacao',{_slug:data.slug});
+    if(result.error)throw new Error('Contador indisponível');
+    return true;
+  });

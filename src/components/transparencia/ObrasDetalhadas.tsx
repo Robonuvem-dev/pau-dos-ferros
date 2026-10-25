@@ -14,7 +14,7 @@ export function ObrasDetalhadas() {
  {obras.map(o=>{
   const vinculados=(key:string)=>rows(key).filter(r=>r.obra_id===o.id);
   const contrato=rows("contratos").find(c=>c.id===o.contrato_id);
-  const aditivos=contrato?rows("contratos").filter(c=>c.tipo==="Aditivo"&&c.contrato_origem===contrato.numero):[];
+  const aditivos=contrato?rows("contratos").filter(c=>c.tipo==="Aditivo"&&c.contrato_origem_id===contrato.id):[];
   return <article key={o.id} className="my-4 rounded border bg-card p-5">
    <h3 className="font-display text-xl font-bold">{String(o.nome)}</h3>
    <p>{String(o.situacao??"Não informada")} · {brl(o.valor)} · {String(o.percentual??0)}% executado</p>

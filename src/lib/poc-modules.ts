@@ -7,7 +7,7 @@ export const POC_MODULES: PocModule[] = [
   { id: '1', title: 'Infraestrutura, instalação e segurança', keys: [], pages: [{ label: 'Usuários e permissões', to: '/admin/usuarios' }, { label: 'Auditoria e acessos', to: '/admin/auditoria' }, { label: 'Pedidos de melhoria', to: '/admin/melhorias' }, { label: 'Minha conta', to: '/conta' }, { label: 'Versão do sistema', to: '/sobre' }] },
   { id: '2', title: 'Portal institucional oficial', keys: ['banners','noticias','albuns','midias','agentes-politicos','secretarias','links-uteis','documentos','concurso','unidades-gestoras'], pages: [{ label: 'Aparência do site', to: '/admin/aparencia' }, { label: 'Críticas e pendências', to: '/admin/pendencias' }] },
   { id: '3', title: 'Licitações, contratos e aditivos', keys: ['licitacoes','andamentos-licitacao','contratos','credores','empresas-inidoneas','comissoes','membros-equipe','parcerias','termos-fomento'], pages: [{ label: 'Boletim, mapa e contratos a vencer', to: '/admin/licitacoes-relatorios' }, { label: 'Críticas e pendências', to: '/admin/pendencias' }] },
-  { id: '4', title: 'Convênios públicos', keys: ['convenios','concedentes','convenentes','categorias-convenio','metas-convenio','planos-aplicacao','convenio-parcelas','convenio-obrigacoes'] },
+  { id: '4', title: 'Convênios públicos', keys: ['convenios','concedentes','convenentes','categorias-convenio','metas-convenio','planos-aplicacao','convenio-parcelas','convenio-obrigacoes','convenio-aplicacoes'] },
   { id: '5', title: 'Portais e informações municipais', keys: ['municipio-informacoes','leis','decretos','portarias','resolucoes','diarias','lrf','rreo','rgf'], pages: [{ label: 'e-SIC e Ouvidoria', to: '/admin/esic' }] },
   { id: '6', title: 'COVID-19 e emergências', keys: ['boletim-epidemiologico'], publicKeys: ['covid'] },
   { id: '7', title: 'Integrações e importação TCE', keys: ['despesas','receitas','servidores','credores','agentes-politicos'] },
@@ -18,7 +18,7 @@ export const POC_MODULES: PocModule[] = [
   { id: '12', title: 'Conselhos municipais', keys: ['conselhos','conselho-membros','conselho-acoes','conselho-doc'] },
   { id: '13', title: 'Aplicativo Android e iOS', keys: ['noticias','leis','decretos','licitacoes','rreo','rgf'], pages: [{ label: 'Portal do cidadão', to: '/' }, { label: 'Estatísticas de acesso aos serviços', to: '/admin/servicos-estatisticas' }] },
   { id: '14', title: 'Inteligência artificial e ATRICON', keys: [], pages: [{ label: 'Avaliação ATRICON e análise com IA', to: '/admin/atricon' }] },
-  { id: '15', title: 'Carta de serviços ao cidadão', keys: ['servicos'], pages: [{ label: 'Estatísticas de acessos e satisfação', to: '/admin/servicos-estatisticas' }] },
+  { id: '15', title: 'Carta de serviços ao cidadão', keys: ['servicos','servico-solicitacoes'], pages: [{ label: 'Estatísticas de acessos e satisfação', to: '/admin/servicos-estatisticas' }] },
   { id: '16', title: 'Webmail institucional', keys: [] },
 ];
 export const pocResourceLabel = (key: string) => ({ 'metas-convenio': 'Metas e especificações técnicas', 'planos-aplicacao': 'Planos de aplicação', 'boletim-epidemiologico': 'Boletim epidemiológico' }[key] ?? getModule(key)?.label ?? key);

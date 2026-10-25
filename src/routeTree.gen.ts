@@ -25,6 +25,7 @@ import { Route as ServicosRouteImport } from './routes/servicos'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
+import { Route as ApiNoticiasRouteImport } from './routes/api.noticias'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as ServicosFichaRouteImport } from './routes/servicos_.ficha'
@@ -121,6 +122,11 @@ const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
   id: '/conta',
   path: '/conta',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiNoticiasRoute = ApiNoticiasRouteImport.update({
+  id: '/api/noticias',
+  path: '/api/noticias',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
   id: '/noticias/',
@@ -233,6 +239,7 @@ export interface FileRoutesByFullPath {
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
+  '/api/noticias': typeof ApiNoticiasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/servicos/ficha': typeof ServicosFichaRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
@@ -266,6 +273,7 @@ export interface FileRoutesByTo {
   '/servicos': typeof ServicosRoute
   '/sobre': typeof SobreRoute
   '/conta': typeof AuthenticatedContaRoute
+  '/api/noticias': typeof ApiNoticiasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/servicos/ficha': typeof ServicosFichaRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
@@ -302,6 +310,7 @@ export interface FileRoutesById {
   '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/conta': typeof AuthenticatedContaRoute
+  '/api/noticias': typeof ApiNoticiasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/servicos_/ficha': typeof ServicosFichaRoute
   '/transparencia/$module': typeof TransparenciaModuleRoute
@@ -338,6 +347,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/admin'
     | '/conta'
+    | '/api/noticias'
     | '/noticias/$slug'
     | '/servicos/ficha'
     | '/transparencia/$module'
@@ -371,6 +381,7 @@ export interface FileRouteTypes {
     | '/servicos'
     | '/sobre'
     | '/conta'
+    | '/api/noticias'
     | '/noticias/$slug'
     | '/servicos/ficha'
     | '/transparencia/$module'
@@ -406,6 +417,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/_authenticated/admin'
     | '/_authenticated/conta'
+    | '/api/noticias'
     | '/noticias/$slug'
     | '/servicos_/ficha'
     | '/transparencia/$module'
@@ -440,6 +452,7 @@ export interface RootRouteChildren {
   SecretariasRoute: typeof SecretariasRoute
   ServicosRoute: typeof ServicosRoute
   SobreRoute: typeof SobreRoute
+  ApiNoticiasRoute: typeof ApiNoticiasRoute
   NoticiasSlugRoute: typeof NoticiasSlugRoute
   ServicosFichaRoute: typeof ServicosFichaRoute
   TransparenciaModuleRoute: typeof TransparenciaModuleRoute
@@ -560,6 +573,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/conta'
       preLoaderRoute: typeof AuthenticatedContaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/noticias': {
+      id: '/api/noticias'
+      path: '/api/noticias'
+      fullPath: '/api/noticias'
+      preLoaderRoute: typeof ApiNoticiasRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/noticias/': {
       id: '/noticias/'
@@ -746,6 +766,7 @@ const rootRouteChildren: RootRouteChildren = {
   SecretariasRoute: SecretariasRoute,
   ServicosRoute: ServicosRoute,
   SobreRoute: SobreRoute,
+  ApiNoticiasRoute: ApiNoticiasRoute,
   NoticiasSlugRoute: NoticiasSlugRoute,
   ServicosFichaRoute: ServicosFichaRoute,
   TransparenciaModuleRoute: TransparenciaModuleRoute,

@@ -1,3 +1,5 @@
+import { LICITACAO_MODALIDADES } from "./catalogos";
+
 // Configuração central dos módulos: dirige o Portal da Transparência e o painel administrativo.
 export type FieldType = "text" | "textarea" | "number" | "money" | "date" | "bool" | "file" | "tags" | "select" | "int" | "files" | "relation";
 
@@ -7,6 +9,7 @@ export interface Field {
   type?: FieldType;
   options?: string[];
   required?: boolean;
+  readOnly?: boolean;
   hideInTable?: boolean;
   /** Para type "relation": módulo de origem e coluna gravada/exibida. */
   ref?: { module: string; column: string; displayColumn?: string };
@@ -23,6 +26,8 @@ export interface ModuleDef {
   fields: Field[];
   /** Tabela cuja permissão governa este cadastro e suas regras RLS. */
   permissionTable?: string;
+  allowCreate?: boolean;
+  allowDelete?: boolean;
   publico?: boolean; // aparece no Portal da Transparência
 }
 
@@ -221,7 +226,7 @@ export const MODULES: ModuleDef[] = [
     descricao: "Processos licitatórios, dispensas e inexigibilidades.",
     fields: [
       { name: "numero", label: "Número", required: true },
-      { name: "modalidade", label: "Modalidade", type: "select", options: ["Pregão Eletrônico", "Pregão Presencial", "Concorrência", "Concurso", "Leilão", "Diálogo Competitivo", "Dispensa", "Inexigibilidade", "Credenciamento", "Pré-qualificação", "Manifestação de Interesse"] },
+      { name: "modalidade", label: "Modalidade", type: "select", options: LICITACAO_MODALIDADES },
       { name: "tipo", label: "Tipo", type: "select", options: ["Licitação", "Dispensa", "Inexigibilidade"], hideInTable: true },
       { name: "objeto", label: "Objeto", type: "textarea", required: true },
       { name: "situacao", label: "Situação", type: "select", options: ["Em Elaboração", "Publicado", "Aberto", "Em Julgamento", "Homologado", "Concluída", "Suspensa", "Anulada", "Cancelada", "Deserta", "Fracassada", "Revogada", "Inativa"] },
@@ -244,7 +249,7 @@ export const MODULES: ModuleDef[] = [
       { name: "valor", label: "Valor (no aditivo, apenas a diferença)", type: "money" },
       { name: "data_inicio", label: "Início", type: "date" },
       { name: "data_fim", label: "Fim da vigência", type: "date" },
-      { name: "contrato_origem", label: "Contrato/ata de origem (aditivos e adesões)", type: "relation", ref: { module: "contratos", column: "numero" }, hideInTable: true },
+      { name: "contrato_origem_id", label: "Contrato/ata de origem (aditivos e adesões)", type: "relation", ref: { module: "contratos", column: "id", displayColumn: "numero" }, hideInTable: true },
       { name: "valor_atualizado", label: "Valor atualizado (automático)", type: "money" },
       { name: "data_fim_atualizada", label: "Vigência atualizada (automática)", type: "date", hideInTable: true },
       { name: "convenio_id", label: "Convênio de origem", type: "relation", ref: { module: "convenios", column: "id", displayColumn: "numero" }, hideInTable: true },
@@ -597,6 +602,27 @@ export const MODULES: ModuleDef[] = [
 export const modulePermissionTable = (mod: ModuleDef) => mod.permissionTable ?? mod.table;
 
 // Preserve the evaluation-sheet URLs while sharing the canonical schema and policies.
+const camposObrigatorios: Record<string, string[]> = {
+ obras: ['data_inicio','previsao_fim','descricao','valor','aditivo_acrescimo','aditivo_supressao','origem_recurso','numero_processo','tipo_guarda_chuva','secretaria','local','objeto_contrato','justificativa'],
+ veiculos: ['ano','renavam','entrada_frota','tipo','situacao','secretaria','finalidade','maquina_obra'],
+ conselhos: ['data_criacao','descricao','lei_criacao','vigencia_inicio','vigencia_fim','competencias'],
+ 'convenio-parcelas': ['vencimento'],
+};
+for (const mod of MODULES) for (const f of mod.fields) if (camposObrigatorios[mod.key]?.includes(f.name)) f.required = true;
+MODULES.find(m => m.key === 'convenio-obrigacoes')!.fields.push({ name: 'parte_obrigada', label: 'Parte obrigada', type: 'select', options: ['Concedente','Convenente','Ambos'], required: true });
+MODULES.push({ key: 'convenio-aplicacoes', table: 'convenio_aplicacoes', permissionTable: 'convenios', label: 'Itens do plano de aplicação', descricao: 'Aplicação detalhada por natureza e valor, conciliada com o valor global.', grupo: 'Licitações e Contratos', publico: true, fields: [
+ { name: 'convenio_id', label: 'Convênio', type: 'relation', ref: { module: 'convenios', column: 'id', displayColumn: 'numero' }, required: true },
+ { name: 'descricao', label: 'Item de aplicação', type: 'textarea', required: true },
+ { name: 'natureza', label: 'Natureza da aplicação', required: true },
+ { name: 'valor', label: 'Valor', type: 'money', required: true },
+] });
+MODULES.push({key:'servico-solicitacoes',allowCreate:false,allowDelete:false,table:'servico_solicitacoes',permissionTable:'servicos',label:'Solicitações de serviços',descricao:'Recebimento e tratamento privado das solicitações da Carta de Serviços.',grupo:'Gestão',publico:false,orderBy:'created_at',fields:[
+ {name:'servico_id',label:'Serviço',type:'relation',required:true,ref:{module:'servicos',column:'id',displayColumn:'nome'}},
+ {name:'protocolo',label:'Protocolo',required:true},{name:'nome',label:'Nome',required:true},{name:'email',label:'E-mail',required:true},
+ {name:'mensagem',label:'Solicitação',type:'textarea',required:true},
+ {name:'status',label:'Situação',type:'select',options:['Recebida','Em atendimento','Concluída'],required:true},{name:'resposta',label:'Resposta / providências',type:'textarea'},
+]});
+for (const f of MODULES.find(m=>m.key==='servico-solicitacoes')!.fields) if (!['status','resposta'].includes(f.name)) f.readOnly=true;
 export const MODULE_ALIASES: Record<string, string> = {
   leis: 'lei', decretos: 'decreto', portarias: 'portaria', resolucoes: 'resolucao', diarias: 'diaria',
   'categorias-convenio': 'tipos-convenio', 'metas-convenio': 'convenios',

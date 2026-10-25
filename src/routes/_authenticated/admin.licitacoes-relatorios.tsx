@@ -6,10 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { collectPages } from "@/lib/pagination";
+import { db } from "@/lib/data";
 import { fetchModule, type Row } from "@/lib/data";
 import { getModule, dataBR, brl } from "@/lib/modules";
 import { boletimDoDia, contratosAVencer, mapaLicitacoes, type ContratoLike, type LicitacaoLike } from "@/lib/compras/relatorios";
-import { BIDDING_MODALITIES, BIDDING_STATUS } from "@/lib/compras/bidding-workflow";
+import { LICITACAO_MODALIDADES } from "@/lib/catalogos";
+import { BIDDING_STATUS } from "@/lib/compras/bidding-workflow";
 import { baixar, toCSV } from "@/lib/versao";
 import { pageHead } from '@/lib/seo';
 
@@ -23,7 +26,9 @@ const hojeISO = () => new Date().toISOString().slice(0, 10);
 function useDados() {
   return useQuery({
     queryKey: ["relatorios-licitacoes"],
+    refetchInterval: 15_000,
     queryFn: async () => ({
+      publicacoes: await collectPages<Row>((from,to)=>db.from("licitacao_publicacoes").select("*").order("publicado_em",{ascending:false}).order("id").range(from,to)),
       licitacoes: (await fetchModule(getModule("licitacoes")!)) as unknown as LicitacaoLike[],
       contratos: (await fetchModule(getModule("contratos")!)) as unknown as ContratoLike[],
     }),
@@ -42,10 +47,12 @@ function Relatorios() {
         <Tabs defaultValue="boletim">
           <TabsList>
             <TabsTrigger value="boletim">Boletim do dia</TabsTrigger>
+            <TabsTrigger value="publicacoes">Publicações</TabsTrigger>
             <TabsTrigger value="mapa">Mapa de licitações</TabsTrigger>
             <TabsTrigger value="vencer">Contratos a vencer</TabsTrigger>
           </TabsList>
           <TabsContent value="boletim"><Boletim licitacoes={data.licitacoes} /></TabsContent>
+          <TabsContent value="publicacoes"><Publicacoes rows={data.publicacoes} /></TabsContent>
           <TabsContent value="mapa"><Mapa licitacoes={data.licitacoes} /></TabsContent>
           <TabsContent value="vencer"><AVencer contratos={data.contratos} /></TabsContent>
         </Tabs>
@@ -112,7 +119,7 @@ function Mapa({ licitacoes }: { licitacoes: LicitacaoLike[] }) {
       <div className="flex flex-wrap items-end gap-3">
         <div className="grid gap-1.5"><Label>Modalidade</Label>
           <select className={sel} value={f.modalidade} onChange={(e) => setF({ ...f, modalidade: e.target.value })}>
-            <option value="">Todas</option>{BIDDING_MODALITIES.map((m) => <option key={m}>{m}</option>)}
+            <option value="">Todas</option>{LICITACAO_MODALIDADES.map((m) => <option key={m}>{m}</option>)}
           </select>
         </div>
         <div className="grid gap-1.5"><Label>Situação</Label>
@@ -188,4 +195,15 @@ function AVencer({ contratos }: { contratos: ContratoLike[] }) {
       </div>
     </div>
   );
+}
+
+function Publicacoes({rows}:{rows:Row[]}) {
+ const [de,setDe]=useState(''),[ate,setAte]=useState('');
+ const lista=rows.filter(r=>{const dia=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Fortaleza',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(String(r.publicado_em)));return (!de||dia>=de)&&(!ate||dia<=ate);});
+ return <section className="space-y-4"><h2 className="text-xl font-bold">Relatório de publicações</h2>
+ <p>Histórico gerado no servidor a cada cadastro e atualização de licitação, desde a ativação deste registro.</p>
+ <div className="flex gap-3"><label>De<Input type="date" value={de} onChange={e=>setDe(e.target.value)} /></label><label>Até<Input type="date" value={ate} onChange={e=>setAte(e.target.value)} /></label></div>
+ <Button variant="outline" onClick={()=>window.print()}>Imprimir publicações</Button>
+ <table className="w-full text-left text-sm"><thead><tr><th>Data da publicação</th><th>Licitação</th><th>Evento</th><th>Objeto</th></tr></thead><tbody>{lista.map(r=><tr key={r.id} className="border-t"><td>{new Date(String(r.publicado_em)).toLocaleString('pt-BR',{timeZone:'America/Fortaleza'})}</td><td>{String(r.numero)}</td><td>{String(r.evento)}</td><td>{String(r.objeto??'')}</td></tr>)}</tbody></table>
+ {!lista.length&&<p>Nenhuma publicação registrada neste período.</p>}</section>;
 }

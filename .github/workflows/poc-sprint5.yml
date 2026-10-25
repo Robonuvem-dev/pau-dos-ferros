@@ -83,6 +83,9 @@ jobs:
       - name: Testar municipio e evidencias ATRICON
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/sprint9_assertions.sql
 
+      - name: Testar fechamento dos itens parciais
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/parciais_assertions.sql
+
   ai-local:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
@@ -98,7 +101,7 @@ jobs:
         run: |
           cp scripts/verify-local-ai.mjs .poc-ai-runtime/check.mjs
           cd .poc-ai-runtime
-          node check.mjs
+          node --experimental-strip-types check.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: evidencia-ia-local

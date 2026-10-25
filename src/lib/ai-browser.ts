@@ -1,3 +1,4 @@
+import { comparePublicEvidence, type EvidenceInput } from "./ai-evidence";
 export const MODELO_LOCAL = "Xenova/paraphrase-multilingual-MiniLM-L12-v2";
 const RUNTIME_LOCAL = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1";
 const TEMAS = ["Receitas, arrecadação, classificação da receita e categoria orçamentária","Despesas, empenhos, liquidações, pagamentos e ordem bancária","Problemas no cadastro de servidores públicos: folha de pagamento, remuneração, competência mensal, cargo, vínculo e lotação.","Licitações, editais, contratos, aditivos e documentos da contratação","Convênios, repasses, metas, parcelas e prestação de contas","Obras, ART, medições, execução física e financeira","Veículos, seguro, IPVA e manutenção da frota","Problemas em conselhos municipais: lei de criação, conselheiros, mandatos, atas e reuniões.","Serviços, prazos, etapas, Ouvidoria e e-SIC","Site institucional, notícias, imagens, banners e secretarias"];
@@ -6,15 +7,7 @@ let carregamento:Promise<Extrator>|undefined;
 export async function analisarLocalmente(texto:string,onStatus:(s:string)=>void):Promise<string>{
  if(typeof window==="undefined")throw new Error("A análise local precisa ser executada no navegador.");
  onStatus("Carregando modelo semântico gratuito no dispositivo. O primeiro uso baixa os arquivos do modelo.");
- if(!carregamento)carregamento=(async()=>{
-  const runtime=await import(/* @vite-ignore */ RUNTIME_LOCAL);
-  runtime.env.allowLocalModels=false;
-  runtime.env.backends.onnx.wasm.numThreads=1;
-  return await runtime.pipeline("feature-extraction",MODELO_LOCAL,{dtype:"q8",device:"wasm",progress_callback:(p:{status?:string;progress?:number})=>{
-   if(p.status==="progress")onStatus("Baixando modelo local: "+Math.round(p.progress??0)+"%");
-  }}) as Extrator;
- })().catch(e=>{carregamento=undefined;throw e;});
- const extrator=await carregamento;
+ const extrator=await carregarExtrator(onStatus);
  const frases=[...new Set(texto.split(";").map(t=>t.trim()).filter(Boolean))].slice(0,50);
  if(!frases.length)throw new Error("Não há observações suficientes para analisar.");
  const temas=(await extrator(TEMAS,{pooling:"mean",normalize:true})).tolist();
@@ -31,4 +24,26 @@ export async function analisarLocalmente(texto:string,onStatus:(s:string)=>void)
   });
  }
  return saida.join("\n");
+}
+
+async function carregarExtrator(onStatus:(s:string)=>void):Promise<Extrator>{
+ if(!carregamento)carregamento=(async()=>{
+  const runtime=await import(/* @vite-ignore */ RUNTIME_LOCAL);
+  runtime.env.allowLocalModels=false;
+  runtime.env.backends.onnx.wasm.numThreads=1;
+  return await runtime.pipeline("feature-extraction",MODELO_LOCAL,{dtype:"q8",device:"wasm",progress_callback:(p:{status?:string;progress?:number})=>{
+   if(p.status==="progress")onStatus("Baixando modelo local: "+Math.round(p.progress??0)+"%");
+  }}) as Extrator;
+ })().catch(e=>{carregamento=undefined;throw e;});
+ return await carregamento;
+}
+
+export async function analisarEvidenciasPublicas(cases:EvidenceInput[],onStatus:(s:string)=>void):Promise<string>{
+ if(typeof window==='undefined')throw new Error('A análise precisa ser executada no navegador.');
+ onStatus('Carregando modelo semântico local para comparar o conteúdo público com os critérios fiscais.');
+ const extrator=await carregarExtrator(onStatus);
+ const results=await comparePublicEvidence(cases,async texts=>(await extrator(texts,{pooling:'mean',normalize:true})).tolist());
+ return ['Varredura semântica do conteúdo efetivamente publicado. Comparações: '+results.length+'. Modelo neural local, sem prompts ou API paga.',
+  'Um indício textual não comprova conformidade jurídica, atualização, completude ou conteúdo dos PDFs. Evidência não localizada deve ser revisada pelo setor responsável.',
+  ...results.map(r=>r.criterio+'\n'+(r.sinal==='evidencia_nao_localizada'?'PENDÊNCIA: evidência textual não localizada com similaridade suficiente.':'Indício textual localizado; conferir valores, datas e documentos antes de validar.')+'\nURL: '+r.link+'\nSimilaridade: '+r.similaridade.toFixed(3))].join('\n\n');
 }

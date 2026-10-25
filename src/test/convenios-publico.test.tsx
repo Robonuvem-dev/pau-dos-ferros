@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { ResumoConvenios } from "../components/convenios/ResumoConvenios";
 import { PublicTable } from "../components/site/PublicTable";
 import { getModule } from "../lib/modules";
 
 const fixtures = vi.hoisted(() => ({
-  convenios: [{ id: "c1", numero: "POC-FICTICIO", valor_global: 10000, contrapartida: 0, metas: "Meta ficticia" }],
+  convenios: [{ id: "c1", numero: "POC-FICTICIO", valor_global: 10000, contrapartida: 0, metas: "Meta ficticia",data_inicio:"2020-01-01",data_fim:"2099-12-31" },{id:"vencido",numero:"POC-VENCIDO",valor_global:1000,contrapartida:0,metas:"Meta vencida",data_inicio:"2020-01-01",data_fim:"2020-12-31"}],
   "convenio-parcelas": [{ id: "p1", convenio_id: "c1", numero: 1, valor: 2500, status: "Recebida" }],
   "convenio-obrigacoes": [],
   contratos: [
@@ -39,8 +39,14 @@ describe("M04 — apresentacao publica", () => {
   });
   it("disponibiliza as metas completas, antes ocultas na listagem publica", () => {
     render(<PublicTable mod={getModule("convenios")!} />);
-    expect(screen.getByText("Ver informações completas")).toBeInTheDocument();
+    expect(within(screen.getByText("POC-FICTICIO").closest('tr')!).getByText("Ver informações completas")).toBeInTheDocument();
     expect(screen.getByText("Meta ficticia")).toBeInTheDocument();
+  });
+  it("mostra convênio vencido somente quando o filtro de vigência é desativado",()=>{
+    render(<ResumoConvenios publico />);
+    expect(screen.queryByText('POC-VENCIDO')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('checkbox',{name:/Somente vigentes/}));
+    expect(screen.getByText('POC-VENCIDO')).toBeInTheDocument();
   });
   it("busca inclui os campos de detalhe", () => {
     render(<PublicTable mod={getModule("convenios")!} />);
