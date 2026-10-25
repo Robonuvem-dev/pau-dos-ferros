@@ -1,6 +1,10 @@
 # Fechamento dos 30 itens parciais — Vette
 
-Base: `7ce0dc6e41883e46f49e26f7144141c24c837add`, 25/10/2026. Alterações exclusivamente na Vette. Não há merge, alteração no webmail ou aplicação automática em banco publicado.
+Base: `7ce0dc6e41883e46f49e26f7144141c24c837add`, 25/10/2026. Desenvolvimento na Vette; integração na main autorizada pelo solicitante após CI. Não há alteração no webmail nem aplicação automática das migrações pelo workflow de testes.
+
+Código validado: `c54b236d0d42f9d710539c6c80c98ea50418d510`. CI de qualidade: https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40165059394 . CI mobile: https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40165059417 . Ambos aprovados. São 203 testes em 23 arquivos; TypeScript/build/lint semântico aprovados (seis avisos), 26 migrações em PostgreSQL descartável e compilação/instalação/abertura Android/iOS aprovadas. A compilação iOS para aparelho é sem assinatura; isso não instala o app num iPhone físico.
+
+Resultado de implementação dos 168 itens: **137 implementados, 6 parciais e 25 não verificados por código**. Dos 30 parciais originais, 24 receberam as correções abaixo. A revisão presencial e a comprovação externa continuam distintas da implementação. Cada mudança de classificação deve atualizar a planilha existente e `09_ESTADO_IMPLEMENTACAO.json`.
 
 ## Implementações e testes
 
@@ -66,3 +70,4 @@ Copie `integracao.exemplo.json` e preencha a origem HTTPS real e as correspondê
 Execute `bun run integrar caminho/configuracao.json` para uma execução, ou acrescente `--watch=900` para repetir a cada quinze minutos no serviço/equipamento de integração. Cada ciclo autentica novamente; não usa chave de serviço nem salva senha no código. Configurar/ativar esse processo e validar o fornecedor continuam necessários no ambiente operacional.
 
 As amostras sintéticas servem ao ensaio, não substituem especificações de fornecedor/TCE. Não há chamadas a prompts do Lovable nem API de IA paga.
+
