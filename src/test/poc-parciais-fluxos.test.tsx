@@ -45,7 +45,8 @@ describe('Persistência e fluxos dos itens parciais',()=>{
   const cases=await readFiscalEvidence(read);
   expect(cases).toHaveLength(88);expect(cases.every(c=>!c.texto.includes('SEGREDO_INJETADO'))).toBe(true);
   const urls=read.mock.calls.map(([url])=>url);
-  expect(urls).toEqual(expect.arrayContaining(['/esic','/lgpd','/servicos','/transparencia/receitas']));
+  expect(urls).toEqual(expect.arrayContaining(['/esic','/lgpd','/servicos','/prefeitura','/transparencia/receitas']));
+  expect(urls).not.toContain('/transparencia/agentes-politicos');
   expect(new Set(urls).size).toBe(urls.length);
   for (const c of CRITERIOS.filter(c=>!c.fonte)) expect(cases.find(i=>i.criterio.startsWith('['+c.id+']'))).toMatchObject({coleta:'fonte_nao_configurada',texto:'',link:''});
  });

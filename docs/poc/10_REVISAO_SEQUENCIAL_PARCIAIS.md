@@ -58,3 +58,11 @@ A coleta anterior analisava somente dez módulos fiscais e omitía da análise s
 Cada registro distingue página lida, fonte específica não configurada, falha de leitura e conteúdo vazio. Falha de uma página não apaga os resultados das outras. Uma fonte ausente não recebe um documento genérico como prova. O relatório diferencia a quantidade de pontos registrados da quantidade efetivamente lida; limite de texto também é declarado. Mesmo vetores semelhantes não transformam falha de coleta em indício positivo.
 
 **14.2 permanece PARCIAL:** cobertura de rastreabilidade dos 88 pontos não é aferição integral. Continuam necessários o confronto com a edição oficial aplicável do instrumento, as fontes dos pontos sem configuração, validação de conteúdo/PDFs, tempestividade e acessibilidade. A IA local não certifica esses aspectos. Testes verificam conservação dos 88 IDs, falhas independentes, fontes ausentes, conteúdo vazio e ausência de aprovação por similaridade.
+
+## Evidência do ensaio no Cloud
+
+Na publicação funcional `80be36e`, a pesquisa acessível de Leis filtrou de dois para um registro ao consultar `702/2025`. A sessão administrativa existente abriu o painel e a importação de despesas exibiu as opções UTF-8 e Windows-1252.
+
+Em 25/10/2026 às 14:13:46 UTC, a varredura neural gratuita no navegador concluiu e salvou o anexo: 88 pontos registrados, 61 com leitura concluída e 27 com coleta pendente. O painel manteve a matriz sem aprovações automáticas. Foram observadas 81 pendências cadastrais nos dados fictícios, incluindo anexos ausentes e campos incompletos; não foram apagadas nem tratadas como falhas resolvidas.
+
+O ensaio revelou que a fonte dos agentes políticos deve ser `/prefeitura`, pois o cadastro não é um módulo público genérico. Essa rota foi corrigida nesta revisão. A versão 1.3.1 identifica a entrega para que o controle remoto detecte diferença em relação a clientes abertos na 1.3.0. A atualização entre versões ainda deve ser observada no deploy, sem confundir emissão do manifesto com recarga efetiva.
