@@ -27,7 +27,7 @@
       "requisito": "Atualização automática de versão remota: ao iniciar o sistema, verificar e atualizar automaticamente sem intervenção local.",
       "pagina_pdf": 31,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Manifesto remoto verificado no acesso e periodicamente; atualiza sem instalação e adia a recarga durante edição. A versão precisa ser publicada para chegar ao deploy."
+      "observacao": "Controle remoto de versão implementado; versão publicada 1.3.0 confirmada por /version.json no navegador. Ensaio de atualização entre versões na sessão autenticada ainda pendente."
     },
     {
       "id": "1.3",
@@ -419,7 +419,7 @@
       "requisito": "Cumprimento integral das diretrizes da LRF e Lei de Acesso à Informação.",
       "pagina_pdf": 37,
       "classificacao": "PARCIAL",
-      "observacao": "Os controles técnicos foram ampliados e testados; cumprimento integral de LRF/LAI ainda depende de revisão dos conteúdos publicados, prazos e procedimentos do órgão."
+      "observacao": "Pesquisa pública, legenda da tabela, cabeçalhos e anexos com identificação acessível; três testes de componente. Permanecem revisão integral de conteúdos, tempestividade, procedimentos e acessibilidade; não há declaração de conformidade integral."
     },
     {
       "id": "5.2",
@@ -1075,7 +1075,7 @@
       "requisito": "Atualização automática de versão online executada de forma remota no login.",
       "pagina_pdf": 47,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Carta usa o mesmo controle remoto de versão do painel, com proteção contra recarga repetida e durante edição."
+      "observacao": "Controle remoto de versão implementado; versão publicada 1.3.0 confirmada por /version.json no navegador. Ensaio de atualização entre versões na sessão autenticada ainda pendente."
     },
     {
       "id": "15.4",
@@ -1357,6 +1357,13 @@
       "classificacao": "NÃO VERIFICADO",
       "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
     }
-  ]
+  ],
+  "publicacao_verificada": {
+    "versao": "1.3.0",
+    "pontos": [
+      "/version.json",
+      "/transparencia"
+    ],
+    "limite": "Não confirma fluxos administrativos autenticados ou homologação."
+  }
 }
-
