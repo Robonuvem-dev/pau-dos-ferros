@@ -49,4 +49,12 @@ Importação e mapeamento de dois formatos sintéticos distintos já possuem tes
 
 ### 7.3 — origem TCE/RN
 
-O [portal oficial de dados abertos](https://apidadosabertos.tce.rn.gov.br/) informa que disponibiliza remessas SIAI via API e oferece CSV/JSON/HTML. A documentação apontada pelo próprio portal (`/swagger`) não respondeu nesta verificação; `/swagger/docs/v1` também não foi recuperado. Não foi obtido o esquema oficial de agentes/credores. O importador genérico continua disponível, mas 7.3 permanece PARCIAL até ensaio com contrato de dados oficial. Nenhuma informação pessoal da base real foi importada.
+O [portal oficial de dados abertos](https://apidadosabertos.tce.rn.gov.br/) informa que disponibiliza remessas SIAI via API. A recuperação inicial da documentação pelo serviço de busca falhou; no navegador, a documentação foi acessada em `/swagger` e o esquema completo em `//swagger/docs/v1`. Foram encontradas 11 operações nos grupos InformacoesBasicasApi, BalancoOrcamentarioApi, ProcedimentosLicitatoriosApi, EmpenhosLiquidacoesPagamentosApi e ContratosApi. Não foi encontrada operação direta de cadastro de agentes/credores; as respostas estão documentadas apenas como `object`, sem propriedades. Não se inventou mapeamento desses campos. O importador genérico continua disponível, mas 7.3 permanece PARCIAL até ensaio com contrato de dados oficial. Nenhuma informação pessoal da base real foi importada.
+
+## 14.2 — cobertura explícita da coleta dos 88 pontos
+
+A coleta anterior analisava somente dez módulos fiscais e omitía da análise semântica os demais pontos. Agora gera exatamente um registro para cada um dos 88 critérios, consulta também as fontes configuradas institucionais, e-SIC, serviços e LGPD, e reutiliza cada página entre os pontos correspondentes.
+
+Cada registro distingue página lida, fonte específica não configurada, falha de leitura e conteúdo vazio. Falha de uma página não apaga os resultados das outras. Uma fonte ausente não recebe um documento genérico como prova. O relatório diferencia a quantidade de pontos registrados da quantidade efetivamente lida; limite de texto também é declarado. Mesmo vetores semelhantes não transformam falha de coleta em indício positivo.
+
+**14.2 permanece PARCIAL:** cobertura de rastreabilidade dos 88 pontos não é aferição integral. Continuam necessários o confronto com a edição oficial aplicável do instrumento, as fontes dos pontos sem configuração, validação de conteúdo/PDFs, tempestividade e acessibilidade. A IA local não certifica esses aspectos. Testes verificam conservação dos 88 IDs, falhas independentes, fontes ausentes, conteúdo vazio e ausência de aprovação por similaridade.

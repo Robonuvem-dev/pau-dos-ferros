@@ -635,7 +635,7 @@
       "requisito": "Importar do Tribunal de Contas do Estado (TCE) informações cadastrais básicas como agentes públicos e credores.",
       "pagina_pdf": 40,
       "classificacao": "PARCIAL",
-      "observacao": "Agentes/credores podem ser mapeados e importados. Falta prova do leiaute oficial TCE/RN; CSV fictício próprio não comprova essa origem. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente."
+      "observacao": "Agentes/credores podem ser mapeados e importados. Falta prova do leiaute oficial TCE/RN; CSV fictício próprio não comprova essa origem. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente. Documentação Swagger oficial TCE/RN recuperada no navegador; 11 operações, sem cadastro direto de agentes/credores e sem propriedades no esquema de resposta. Não foi inventado leiaute oficial."
     },
     {
       "id": "8.1",
@@ -1027,7 +1027,7 @@
       "requisito": "Mecanismo interno de varredura automatizada com IA para detecção de pendências fiscais de transparência.",
       "pagina_pdf": 46,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Modelo neural local compara conteúdo das páginas fiscais com os critérios e aponta ausência de evidência textual. Não usa prompts nem API paga; indícios não aprovam juridicamente requisitos."
+      "observacao": "Modelo neural local compara páginas públicas com critérios; coleta ampliada para fontes institucionais e fiscais. Relatório diferencia leitura concluída de coleta pendente, sem prompts nem API paga. Indícios não aprovam juridicamente requisitos."
     },
     {
       "id": "14.2",
@@ -1035,7 +1035,7 @@
       "requisito": "Aferição e simulação em tempo real da aderência do portal aos 88 pontos de avaliação de transparência da ATRICON.",
       "pagina_pdf": 46,
       "classificacao": "PARCIAL",
-      "observacao": "Apoio automático de varredura fiscal foi ampliado, mas aferição completa dos 88 pontos, PDFs, atualização e conteúdo normativo ainda exige revisão e evidência individual."
+      "observacao": "Coleta registra os 88 pontos e distingue página lida, fonte não configurada, falha e conteúdo vazio. Fontes institucionais/e-SIC/serviços/LGPD incluídas; falha isolada não apaga outros resultados. Continua parcial: faltam fontes específicas, confronto com instrumento oficial, PDFs, atualização e aferição integral; similaridade não aprova requisito."
     },
     {
       "id": "14.3",
@@ -1368,11 +1368,12 @@
   },
   "revisao_local": {
     "data": "2026-10-25",
-    "testes": 214,
+    "testes": 216,
     "arquivos_teste": 26,
     "typescript": "aprovado",
     "build": "aprovado",
     "lint_arquivos_alterados": "aprovado",
-    "limite": "Não substitui compatibilidade com fornecedor efetivo ou homologação."
+    "limite": "Não substitui compatibilidade com fornecedor efetivo ou homologação.",
+    "atricon": "88 registros de coleta; não equivale à aferição integral dos 88 critérios."
   }
 }
