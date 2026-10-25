@@ -2,6 +2,7 @@ import { CRITERIOS, type Criterio } from './atricon';
 import type { EvidenceInput } from './ai-evidence';
 function rotaDoCriterio(c: Criterio): string | null {
   if (!c.fonte) return null;
+  if (c.fonte === 'agentes-politicos') return '/prefeitura';
   if (c.fonte !== 'portal') return c.fonte === 'servicos' ? '/servicos' : '/transparencia/' + c.fonte;
   if (c.dimensao === 'Transparência passiva' || c.dimensao === 'Ouvidoria' || c.descricao.includes('FAQ')) return '/esic';
   if (c.dimensao === 'LGPD e governo digital') return '/lgpd';
