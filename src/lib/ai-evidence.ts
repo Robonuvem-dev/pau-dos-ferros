@@ -1,5 +1,5 @@
-export interface EvidenceInput { criterio: string; texto: string; link: string }
-export interface EvidenceResult extends EvidenceInput { similaridade: number; sinal: 'indicio_textual'|'evidencia_nao_localizada' }
+export interface EvidenceInput { criterio: string; texto: string; link: string; coleta?: 'lida'|'fonte_nao_configurada'|'falha_leitura'|'conteudo_vazio'; detalhe?: string | undefined }
+export interface EvidenceResult extends EvidenceInput { similaridade: number; sinal: 'indicio_textual'|'evidencia_nao_localizada'|'revisao_necessaria' }
 export type EmbedTexts = (texts: string[]) => Promise<number[][]>;
 export async function comparePublicEvidence(cases: EvidenceInput[], embed: EmbedTexts): Promise<EvidenceResult[]> {
   if (!cases.length) throw new Error('Não há critérios para comparar.');
@@ -22,6 +22,6 @@ export async function comparePublicEvidence(cases: EvidenceInput[], embed: Embed
       return norm ? v.reduce((s,n,k)=>s+n*query[k]!,0)/norm : 0;
     });
     const score=scores.length?Math.max(...scores):0;
-    return {...c,similaridade:score,sinal:score>=0.5?'indicio_textual':'evidencia_nao_localizada'};
+    return {...c,similaridade:score,sinal:c.coleta && c.coleta!=='lida'?'revisao_necessaria':score>=0.5?'indicio_textual':'evidencia_nao_localizada'};
   });
 }

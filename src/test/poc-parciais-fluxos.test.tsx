@@ -6,6 +6,7 @@ import { saveRow } from '../lib/data';
 import { getModule } from '../lib/modules';
 import { comparePublicEvidence } from '../lib/ai-evidence';
 import { readFiscalEvidence } from '../lib/public-scan';
+import { CRITERIOS } from '../lib/atricon';
 const mocks=vi.hoisted(()=>({rpc:vi.fn(),from:vi.fn()}));
 vi.mock('@/integrations/supabase/client',()=>({supabase:mocks}));
 afterEach(()=>{cleanup();vi.clearAllMocks();});
@@ -42,11 +43,28 @@ describe('Persistência e fluxos dos itens parciais',()=>{
  it('leitor da IA consulta conteúdo fiscal público e elimina scripts do material analisado',async()=>{
   const read=vi.fn().mockImplementation(async()=>new Response('<header>menu</header><main>Receita prevista e arrecadada <script>SEGREDO_INJETADO</script> Dados fiscais públicos</main>'));
   const cases=await readFiscalEvidence(read);
-  expect(cases.length).toBeGreaterThan(20);expect(cases.every(c=>!c.texto.includes('SEGREDO_INJETADO'))).toBe(true);
-  expect(read.mock.calls.every(([url])=>String(url).startsWith('/transparencia/'))).toBe(true);
+  expect(cases).toHaveLength(88);expect(cases.every(c=>!c.texto.includes('SEGREDO_INJETADO'))).toBe(true);
+  const urls=read.mock.calls.map(([url])=>url);
+  expect(urls).toEqual(expect.arrayContaining(['/esic','/lgpd','/servicos','/transparencia/receitas']));
+  expect(new Set(urls).size).toBe(urls.length);
+  for (const c of CRITERIOS.filter(c=>!c.fonte)) expect(cases.find(i=>i.criterio.startsWith('['+c.id+']'))).toMatchObject({coleta:'fonte_nao_configurada',texto:'',link:''});
  });
- it('varredura interrompe em vez de aprovar quando a página fiscal falha',async()=>{
-  await expect(readFiscalEvidence(vi.fn().mockResolvedValue(new Response('Erro',{status:503})))).rejects.toThrow('indisponível');
+ it('registra falhas sem aprovar nem perder os outros pontos da matriz',async()=>{
+  const cases=await readFiscalEvidence(vi.fn().mockResolvedValue(new Response('Erro',{status:503})));
+  expect(cases).toHaveLength(88);
+  expect(cases.every(c=>c.coleta==='falha_leitura'||c.coleta==='fonte_nao_configurada')).toBe(true);
+  expect(cases.every(c=>c.texto==='')).toBe(true);
+ });
+ it('isola página indisponível e explicita texto vazio sem atribuir conteúdo de outra página',async()=>{
+  const cases=await readFiscalEvidence(vi.fn(async(url)=>String(url).endsWith('/receitas')?new Response('Erro',{status:503}):new Response('<main></main>')));
+  expect(cases.filter(c=>c.link.endsWith('/receitas')).every(c=>c.coleta==='falha_leitura')).toBe(true);
+  expect(cases.find(c=>c.link.endsWith('/despesas'))?.coleta).toBe('conteudo_vazio');
+ });
+ it('não transforma erro de coleta em indício textual mesmo com vetores semelhantes',async()=>{
+  const cases=[{criterio:'Requisito',texto:'Texto indevido',link:'/pagina',coleta:'falha_leitura' as const}];
+  const [out]=await comparePublicEvidence(cases,async texts=>texts.map(()=>[1,0]));
+  expect(out?.sinal).toBe('revisao_necessaria');
+  expect(out).not.toHaveProperty('status');
  });
  it('compara evidência neural, reutiliza vetores da página e não aprova juridicamente por similaridade',async()=>{
   const embed=vi.fn(async(texts:string[])=>texts.map(t=>t.includes('Receita')?[1,0]:[0,1]));

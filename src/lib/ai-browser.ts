@@ -40,10 +40,10 @@ async function carregarExtrator(onStatus:(s:string)=>void):Promise<Extrator>{
 
 export async function analisarEvidenciasPublicas(cases:EvidenceInput[],onStatus:(s:string)=>void):Promise<string>{
  if(typeof window==='undefined')throw new Error('A análise precisa ser executada no navegador.');
- onStatus('Carregando modelo semântico local para comparar o conteúdo público com os critérios fiscais.');
+ onStatus('Carregando modelo semântico local para comparar o conteúdo público com os critérios que possuem fonte configurada.');
  const extrator=await carregarExtrator(onStatus);
  const results=await comparePublicEvidence(cases,async texts=>(await extrator(texts,{pooling:'mean',normalize:true})).tolist());
- return ['Varredura semântica do conteúdo efetivamente publicado. Comparações: '+results.length+'. Modelo neural local, sem prompts ou API paga.',
+ return ['Varredura do conteúdo público: '+results.length+' pontos registrados; '+results.filter(r=>!r.coleta||r.coleta==='lida').length+' com leitura concluída; '+results.filter(r=>r.sinal==='revisao_necessaria').length+' com coleta pendente. Modelo neural local, sem prompts ou API paga.',
   'Um indício textual não comprova conformidade jurídica, atualização, completude ou conteúdo dos PDFs. Evidência não localizada deve ser revisada pelo setor responsável.',
-  ...results.map(r=>r.criterio+'\n'+(r.sinal==='evidencia_nao_localizada'?'PENDÊNCIA: evidência textual não localizada com similaridade suficiente.':'Indício textual localizado; conferir valores, datas e documentos antes de validar.')+'\nURL: '+r.link+'\nSimilaridade: '+r.similaridade.toFixed(3))].join('\n\n');
+  ...results.map(r=>r.criterio+'\n'+(r.sinal==='revisao_necessaria'?'COLETA PENDENTE: '+(r.detalhe??r.coleta):r.sinal==='evidencia_nao_localizada'?'PENDÊNCIA: evidência textual não localizada com similaridade suficiente.':'Indício textual localizado; conferir valores, datas e documentos antes de validar.')+'\nURL: '+(r.link||'Fonte específica não configurada')+'\nSimilaridade: '+r.similaridade.toFixed(3)+(r.coleta==='lida'&&r.detalhe?'\nLimitação: '+r.detalhe:''))].join('\n\n');
 }
