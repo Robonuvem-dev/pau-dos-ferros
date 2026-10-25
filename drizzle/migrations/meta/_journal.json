@@ -141,6 +141,41 @@
       "when": 1792890300000,
       "tag": "0019_anexos_binarios_banco",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792890420000,
+      "tag": "0020_integridade_e_publicacoes",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1792890421000,
+      "tag": "0021_cadastros_compostos",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1792890422000,
+      "tag": "0022_solicitacoes_servicos",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1792890450000,
+      "tag": "0023_documentos_carta",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1792890460000,
+      "tag": "0024_integracao_automatica",
+      "breakpoints": true
     }
   ]
 }

@@ -42,14 +42,55 @@ struct PortalWebView:UIViewRepresentable {
 }
 struct PortalView:View {
  @StateObject private var model=PortalModel()
+ @State private var nativeNews=true
+ @State private var newsRefresh=UUID()
  let links:[(String,String)]=[("Notícias","/noticias"),("Painel","/admin"),("Nova notícia","/admin/noticias?novo=1"),("Editais","/admin/edital"),("Fiscal","/admin/lrf"),("Leis","/admin/lei"),("Decretos","/admin/decreto"),("Estatísticas","/admin")]
  var body:some View {
   VStack(spacing:0){
    Text(model.message).font(.caption).padding(10).frame(maxWidth:.infinity).background(Color.yellow.opacity(0.25))
    ScrollView(.horizontal,showsIndicators:false){
-    HStack{ForEach(links,id:\.0){item in Button(item.0){model.open(item.1)}};Button("Voltar"){model.web.goBack()};Button("Atualizar"){model.web.reload()};Button("Navegador"){if let u=model.web.url{UIApplication.shared.open(u)}}}.padding(10)
+    HStack{ForEach(links,id:\.0){item in Button(item.0){if item.0 == "Notícias" {nativeNews=true} else {nativeNews=false;model.open(item.1)}}};Button("Voltar"){model.web.goBack()};Button("Atualizar"){if nativeNews {newsRefresh=UUID()} else {model.web.reload()}};Button("Navegador"){if let u=model.web.url{UIApplication.shared.open(u)}}}.padding(10)
    }
-   PortalWebView(model:model)
+   if nativeNews { NativeNewsList().id(newsRefresh) } else { PortalWebView(model:model) }
+  }
+ }
+}
+
+struct NativeNewsItem:Decodable,Identifiable {
+ let id:String
+ let titulo:String?
+ let slug:String?
+ let resumo:String?
+ let conteudo:String?
+ let publicado_em:String?
+}
+struct NativeNewsFeed:Decodable {let noticias:[NativeNewsItem]}
+@MainActor struct NativeNewsList:View {
+ @State private var items:[NativeNewsItem]=[]
+ @State private var message="Carregando notícias..."
+ func load() async {
+  do {
+   var request=URLRequest(url:URL(string:"https://pau-dos-ferros.lovable.app/api/noticias")!);request.cachePolicy = .reloadIgnoringLocalCacheData;request.timeoutInterval=15
+   let (data,response)=try await URLSession.shared.data(for:request)
+   guard let http=response as? HTTPURLResponse,http.statusCode==200,data.count<=4*1024*1024 else {throw URLError(.badServerResponse)}
+   let feed=try JSONDecoder().decode(NativeNewsFeed.self,from:data)
+   items=feed.noticias;message=items.isEmpty ? "Nenhuma notícia publicada." : ""
+  } catch {message="Não foi possível carregar as notícias. Toque em Tentar novamente."}
+ }
+ var body:some View {
+  NavigationStack {
+   List {
+    if !message.isEmpty {Text(message);Button("Tentar novamente"){Task{await load()}}}
+    ForEach(items){item in NavigationLink {
+     ScrollView {VStack(alignment:.leading,spacing:16){
+      Text(item.titulo ?? "Notícia").font(.title).bold()
+      Text(item.publicado_em ?? "").font(.caption)
+      Text(item.resumo ?? "").font(.headline)
+      Text((item.conteudo ?? "").replacingOccurrences(of:"<[^>]+>",with:"",options:.regularExpression)).textSelection(.enabled)
+      if let slug=item.slug,let url=URL(string:"https://pau-dos-ferros.lovable.app/noticias/"+slug.addingPercentEncoding(withAllowedCharacters:.urlPathAllowed)!) {Link("Ver mídias da publicação no portal",destination:url)}
+     }.padding()}.navigationTitle("Notícia").navigationBarTitleDisplayMode(.inline)
+    } label: {VStack(alignment:.leading,spacing:6){Text(item.titulo ?? "Notícia").font(.headline);Text(item.resumo ?? "").font(.subheadline)}}}
+   }.navigationTitle("Notícias").refreshable{await load()}.task{await load()}
   }
  }
 }

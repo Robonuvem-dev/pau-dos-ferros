@@ -9,7 +9,7 @@ import { getModule } from "@/lib/modules";
 const fixtures=vi.hoisted(()=>({
  obras:[{id:"o1",nome:"POC obra",percentual:40,situacao:"Em andamento",contrato_id:"ct1"}],
  "obra-medicoes":[{id:"m1",obra_id:"o1",numero:"MEDICAO-CORRETA",aprovada:true,valor:123},{id:"m2",obra_id:"o2",numero:"OUTRA-MEDICAO"}],
- contratos:[{id:"ct1",numero:"CONTRATO-ORIGEM",fornecedor:"Fornecedor POC",valor:1000},{id:"ct2",numero:"ADITIVO-ORIGEM",tipo:"Aditivo",contrato_origem:"CONTRATO-ORIGEM"}],
+ contratos:[{id:"ct1",numero:"CONTRATO-ORIGEM",fornecedor:"Fornecedor POC",valor:1000},{id:"ct2",numero:"ADITIVO-ORIGEM",tipo:"Aditivo",contrato_origem_id:"ct1"},{id:"ct3",numero:"ADITIVO-DE-OUTRO-ID",tipo:"Aditivo",contrato_origem:"CONTRATO-ORIGEM",contrato_origem_id:"outro-id"}],
  conselhos:[{id:"c1",nome:"Conselho POC",competencias:"Fiscalizar ensaios",cor:"#123456"},{id:"c2",nome:"Outro conselho"}],
  "conselho-membros":[{id:"mc1",conselho_id:"c1",nome:"Membro correto",tipo:"Titular",representacao:"Sociedade civil",ativo:true},{id:"mc2",conselho_id:"c2",nome:"Membro de outro conselho"}],
  "conselho-acoes":[], "conselho-doc":[],
@@ -25,6 +25,7 @@ describe("Acompanhamento de obras, conselhos e emergências",()=>{
   expect(screen.queryByText(/OUTRA-MEDICAO/)).not.toBeInTheDocument();
   expect(screen.getByText(/Fornecedor POC/)).toBeInTheDocument();
   expect(screen.getByText(/ADITIVO-ORIGEM/)).toBeInTheDocument();
+  expect(screen.queryByText(/ADITIVO-DE-OUTRO-ID/)).not.toBeInTheDocument();
   expect(screen.getByRole("progressbar")).toHaveAttribute("value","40");
  });
  it("isola a página individual e os membros de cada conselho",()=>{

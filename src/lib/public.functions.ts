@@ -2,6 +2,7 @@ import { createServerFn } from '@tanstack/react-start';
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 import { MODULES } from './modules';
+import { collectPages } from './pagination';
 import type { Row } from './data';
 import { municipalDate, visibleBanners } from './public-content';
 
@@ -32,9 +33,8 @@ export const readPublicModule = createServerFn({ method: 'GET' })
     if (mod.key === 'banners') query = query.eq('ativo', true);
     if (mod.key === 'links-uteis') query = query.eq('ativo', true);
     if (mod.orderBy) query = query.order(mod.orderBy, { ascending: ['nome','ordem','placa'].includes(mod.orderBy) });
-    const { data: rows, error } = await query.limit(1000);
-    if (error) throw new Error('Não foi possível carregar a consulta.');
-    const result = rows as unknown as Row[];
+    query = query.order('id');
+    const result = await collectPages<Row>((from, to) => query.range(from, to));
     return mod.key === 'banners' ? visibleBanners(result, municipalDate()) : result;
   });
 
@@ -54,6 +54,6 @@ export const readConfiguracoes = createServerFn({ method: 'GET' }).handler(async
 export const readEstatisticasServicos = createServerFn({ method: 'GET' }).handler(async () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await (publicClient() as any).rpc('estatisticas_servicos');
-  if (error) return [] as { servico_id: string; avaliacoes: number; media: number; uteis: number }[];
-  return data as { servico_id: string; avaliacoes: number; media: number; uteis: number }[];
+  if (error) throw new Error("Não foi possível carregar as estatísticas de serviços.");
+  return data as { servico_id: string; avaliacoes: number; media: number; uteis: number; solicitacoes: number }[];
 });

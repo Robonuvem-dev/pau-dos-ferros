@@ -1,5 +1,6 @@
 import { pipeline,env } from "@huggingface/transformers";
 import { writeFile } from "node:fs/promises";
+import { comparePublicEvidence } from "../src/lib/ai-evidence.ts";
 env.allowLocalModels=false;
 const model="Xenova/paraphrase-multilingual-MiniLM-L12-v2";
 const start=Date.now();
@@ -13,7 +14,12 @@ const results=inputs.map((input,i)=>{
  return {input,prediction:ranked[0]};
 });
 if(results[0].prediction.index!==0||results[1].prediction.index!==2)throw new Error("The real neural model did not identify revenue/payroll correctly: "+JSON.stringify(results));
-const proof={model,engine:"ONNX Runtime CPU",paidInferenceAPI:false,prompts:false,elapsedMs:Date.now()-start,results};
+const comparison=await comparePublicEvidence([
+ {criterio:"Receitas previstas e arrecadadas",texto:"Receitas previstas e arrecadadas por categoria orçamentária no exercício.",link:"https://example.invalid/receitas"},
+ {criterio:"Receitas previstas e arrecadadas",texto:"Fotos de um festival cultural e programação de shows musicais.",link:"https://example.invalid/cultura"}
+],async texts=>(await extractor(texts,{pooling:"mean",normalize:true})).tolist());
+if(comparison[0].similaridade<=comparison[1].similaridade+0.1)throw new Error("A comparação neural não distinguiu evidência fiscal de conteúdo não relacionado");
+const proof={model,engine:"ONNX Runtime CPU",paidInferenceAPI:false,prompts:false,elapsedMs:Date.now()-start,results,comparison};
 await writeFile("local-ai-evidence.json",JSON.stringify(proof,null,2));
 console.log(JSON.stringify(proof));
 await extractor.dispose();

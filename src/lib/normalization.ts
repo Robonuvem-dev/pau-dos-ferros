@@ -24,6 +24,7 @@ export function initialValues(mod: ModuleDef): Record<string, unknown> {
  for (const f of mod.fields) {
   if(f.type==="bool")v[f.name]=!["aprovada","maquina_obra"].includes(f.name);
   else if(f.type==="files")v[f.name]=[];
+  else if (["aditivo_acrescimo","aditivo_supressao"].includes(f.name)) v[f.name]=0;
   else if(f.name==="ano")v[f.name]=Number(new Intl.DateTimeFormat("en",{year:"numeric",timeZone:"America/Fortaleza"}).format(new Date()));
   else v[f.name]="";
  }

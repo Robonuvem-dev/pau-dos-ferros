@@ -1,0 +1,14 @@
+{
+  "modulo": "despesas",
+  "origem": "POC - fornecedor ficticio",
+  "arquivoUrl": "https://example.invalid/contabilidade.csv",
+  "mapeamento": {
+    "ano": "Exercicio",
+    "mes": "Mes",
+    "orgao": "Unidade",
+    "chave_externa": "Identificador",
+    "empenhado": "ValorEmpenhado",
+    "liquidado": "ValorLiquidado",
+    "pago": "ValorPago"
+  }
+}

@@ -16,6 +16,7 @@ const cor = { alta: "bg-destructive text-destructive-foreground", media: "bg-acc
 function Pendencias() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["pendencias"],
+    refetchInterval: 15_000,
     queryFn: async () => {
       const entries = await Promise.all(REGRAS.map(async (r) => [r.modulo, await fetchModule(getModule(r.modulo)!)] as const));
       return avaliarPendencias(Object.fromEntries(entries));

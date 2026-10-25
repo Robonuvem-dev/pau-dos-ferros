@@ -24,34 +24,34 @@ INSERT INTO public.user_roles(user_id,role) VALUES
  ('00000000-0000-0000-0000-000000000002','editor');
 INSERT INTO public.permissoes_modulo(user_id,tabela)
 VALUES ('00000000-0000-0000-0000-000000000002','noticias');
-INSERT INTO public.convenios(id,numero,concedente,convenente,objeto,valor_global)
-VALUES ('10000000-0000-0000-0000-000000000001','POC-FICTICIO-001','Concedente ficticio','Convenente ficticio','Somente teste',10000);
+INSERT INTO public.convenios(id,numero,concedente,convenente,objeto,valor_global,responsavel_concedente,responsavel_convenente)
+VALUES ('10000000-0000-0000-0000-000000000001','POC-FICTICIO-001','Concedente ficticio','Convenente ficticio','Somente teste',10000,'Responsavel ficticio','Responsavel ficticio');
 
 SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000003',true);
 SELECT pg_temp.expect_error(
- $$INSERT INTO public.convenio_parcelas(convenio_id,numero,valor) VALUES ('10000000-0000-0000-0000-000000000001',1,100)$$,
+ $$INSERT INTO public.convenio_parcelas(convenio_id,numero,valor,vencimento) VALUES ('10000000-0000-0000-0000-000000000001',1,100,'2026-10-30')$$,
  '42501','citizen cannot insert installment');
 SELECT pg_temp.expect_error(
  $$SELECT public.prorrogar_esic('20000000-0000-0000-0000-000000000001','Justificativa ficticia')$$,
  'P0001','citizen cannot extend SIC');
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000002',true);
 SELECT pg_temp.expect_error(
- $$INSERT INTO public.convenio_obrigacoes(convenio_id,titulo) VALUES ('10000000-0000-0000-0000-000000000001','Obrigacao ficticia')$$,
+ $$INSERT INTO public.convenio_obrigacoes(convenio_id,titulo,parte_obrigada) VALUES ('10000000-0000-0000-0000-000000000001','Obrigacao ficticia','Concedente')$$,
  '42501','editor restricted to noticias cannot write convenio');
 
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000001',true);
-INSERT INTO public.convenio_parcelas(id,convenio_id,numero,valor)
-VALUES ('11000000-0000-0000-0000-000000000001','10000000-0000-0000-0000-000000000001',1,1000);
-INSERT INTO public.convenio_obrigacoes(convenio_id,titulo) VALUES ('10000000-0000-0000-0000-000000000001','Obrigacao ficticia');
+INSERT INTO public.convenio_parcelas(id,convenio_id,numero,valor,vencimento)
+VALUES ('11000000-0000-0000-0000-000000000001','10000000-0000-0000-0000-000000000001',1,1000,'2026-10-30');
+INSERT INTO public.convenio_obrigacoes(convenio_id,titulo,parte_obrigada) VALUES ('10000000-0000-0000-0000-000000000001','Obrigacao ficticia','Concedente');
 SELECT pg_temp.expect_error(
- $$INSERT INTO public.convenio_parcelas(convenio_id,numero,valor) VALUES ('10000000-0000-0000-0000-000000000001',1,100)$$,
+ $$INSERT INTO public.convenio_parcelas(convenio_id,numero,valor,vencimento) VALUES ('10000000-0000-0000-0000-000000000001',1,100,'2026-10-30')$$,
  '23505','installment number unique within convenio');
 SELECT pg_temp.expect_error(
- $$INSERT INTO public.convenio_parcelas(convenio_id,numero,valor) VALUES ('10000000-0000-0000-0000-000000000001',2,-1)$$,
+ $$INSERT INTO public.convenio_parcelas(convenio_id,numero,valor,vencimento) VALUES ('10000000-0000-0000-0000-000000000001',2,-1,'2026-10-30')$$,
  '23514','negative installment rejected');
 SELECT pg_temp.expect_error(
- $$INSERT INTO public.convenio_obrigacoes(convenio_id,titulo) VALUES ('99999999-0000-0000-0000-000000000099','Orphan')$$,
+ $$INSERT INTO public.convenio_obrigacoes(convenio_id,titulo,parte_obrigada) VALUES ('99999999-0000-0000-0000-000000000099','Orphan','Concedente')$$,
  '23503','orphan obligation rejected');
 UPDATE public.convenio_parcelas SET status='Recebida', recebido_em=current_date WHERE id='11000000-0000-0000-0000-000000000001';
 SELECT pg_temp.assert_true((SELECT status='Recebida' FROM public.convenio_parcelas WHERE id='11000000-0000-0000-0000-000000000001'),'admin updates installment');
@@ -79,7 +79,7 @@ SELECT pg_temp.assert_true((SELECT count(*)=1 FROM public.consultar_protocolo_se
 SELECT pg_temp.assert_true((SELECT count(*)=1 FROM public.consultar_protocolo_seguro('PF2026ABCDEF0123456789ABCDEF0123456789','')),'anonymous bearer protocol works');
 SELECT pg_temp.assert_true((SELECT count(*)=1 FROM public.convenio_parcelas WHERE id='11000000-0000-0000-0000-000000000001'),'public can read installment');
 SELECT pg_temp.expect_error(
- $$INSERT INTO public.convenio_parcelas(convenio_id,numero,valor) VALUES ('10000000-0000-0000-0000-000000000001',2,10)$$,
+ $$INSERT INTO public.convenio_parcelas(convenio_id,numero,valor,vencimento) VALUES ('10000000-0000-0000-0000-000000000001',2,10,'2026-10-30')$$,
  '42501','anon cannot write installment');
 
 SET LOCAL ROLE authenticated;

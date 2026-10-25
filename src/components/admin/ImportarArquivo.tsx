@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { db } from "@/lib/data";
+import { cabecalhosExternos, prepararLeiauteExterno } from "@/lib/importacao-mapeamento";
 import { IMPORT_COLUNAS, prepararImportacao } from "@/lib/importacao";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export function ImportarArquivo({ modulo, onDone }: { modulo: string; onDone: () => void }) {
+ const [externo,setExterno]=useState(false);
+ const [raw,setRaw]=useState("");
+ const [headers,setHeaders]=useState<string[]>([]);
+ const [mapa,setMapa]=useState<Record<string,string>>({});
  const [origem,setOrigem] = useState("");
  const [rows,setRows] = useState<Record<string,unknown>[]>([]);
  const [erro,setErro] = useState("");
@@ -20,7 +25,7 @@ export function ImportarArquivo({ modulo, onDone }: { modulo: string; onDone: ()
   setRows([]); setErro(""); setSucesso("");
   if (!file) return;
   if (file.size>2_000_000) {setErro("Arquivo acima de 2 MB.");return;}
-  try {setRows(prepararImportacao(modulo,await file.text()));}
+  try {const text=await file.text();setRaw(text);setHeaders(cabecalhosExternos(text));if(!externo)setRows(prepararImportacao(modulo,text));}
   catch(e) {setErro((e as Error).message);}
  };
  const importar = async () => {
@@ -37,11 +42,17 @@ export function ImportarArquivo({ modulo, onDone }: { modulo: string; onDone: ()
   <summary className="cursor-pointer font-semibold">Importar arquivo CSV</summary>
   <p className="my-2 text-sm">Leiaute próprio do portal. Baixe o modelo, informe a origem e revise os registros. O envio é integral: qualquer erro cancela todas as linhas. Reenviar a mesma origem e identificador é bloqueado.</p>
   <p className="my-2 text-sm text-muted-foreground">A compatibilidade com sistemas contábeis, folha e TCE depende da validação de arquivos desses sistemas.</p>
+  <label className="my-3 block"><input type="checkbox" checked={externo} onChange={e=>{setExterno(e.target.checked);setRows([]);setErro("");}} /> Mapear colunas de outro leiaute CSV</label>
   <Button variant="outline" onClick={modelo}>Baixar modelo CSV</Button>
   <div className="my-3 grid gap-3 sm:grid-cols-2">
    <Input aria-label="Sistema de origem do arquivo" placeholder="Sistema de origem" value={origem} maxLength={120} onChange={e=>setOrigem(e.target.value)} />
    <Input aria-label="Arquivo CSV para importar" type="file" accept=".csv,text/csv" disabled={busy} onChange={e=>{void ler(e.target.files?.[0]);e.target.value="";}}/>
   </div>
+  {externo && headers.length>0 && <details open className="my-3 rounded border p-3"><summary>Correspondência de colunas</summary>
+   <p className="my-2 text-sm">Associe as colunas do arquivo às do portal; campos não associados não serão enviados. O mapeamento não certifica compatibilidade com fornecedor ou TCE.</p>
+   <div className="grid gap-2 sm:grid-cols-2">{colunas.map(dest=><label key={dest}>{dest}<select className="ml-2 rounded border p-1" aria-label={'Coluna externa para '+dest} value={mapa[dest]??''} onChange={e=>{setMapa(m=>({...m,[dest]:e.target.value}));setRows([]);}}><option value="">Não importar</option>{headers.map(h=><option key={h} value={h}>{h}</option>)}</select></label>)}</div>
+   <Button className="mt-3" variant="outline" onClick={()=>{try{setRows(prepararLeiauteExterno(modulo,raw,mapa));setErro('');}catch(e){setRows([]);setErro((e as Error).message);}}}>Validar correspondências e mostrar prévia</Button>
+  </details>}
   {erro && <p role="alert" className="my-2 text-destructive">{erro}</p>}
   {sucesso && <p role="status" className="my-2">{sucesso}</p>}
   {rows.length>0 && <>

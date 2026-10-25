@@ -24,7 +24,7 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
   const qc = useQueryClient();
   const { data } = useSuspenseQuery(adminModuleQuery(mod.key));
   const [q, setQ] = useState("");
-  const [editing, setEditing] = useState<{ id?: string; values: Values } | null>(startNew ? { values: emptyValues(mod) } : null);
+  const [editing, setEditing] = useState<{ id?: string; values: Values } | null>(startNew && mod.allowCreate !== false ? { values: emptyValues(mod) } : null);
   const cols = mod.fields.filter((f) => !f.hideInTable && f.type !== "files").slice(0, 6);
 
   const rows = useMemo(() => {
@@ -38,6 +38,9 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
     void qc.invalidateQueries({ queryKey: ["public-config"] });
     void qc.invalidateQueries({ queryKey: ["public-servicos-stats"] });
     void qc.invalidateQueries({ queryKey: ["admin-counts"] });
+    void qc.invalidateQueries({ queryKey: ["relatorios-licitacoes"] });
+    void qc.invalidateQueries({ queryKey: ["pendencias"] });
+    void qc.invalidateQueries({ queryKey: ["admin-noticias-stats"] });
   };
 
   const remove = async (r: Row) => {
@@ -59,7 +62,7 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
           <h1 className="font-display text-3xl font-bold">{mod.label}</h1>
           <p className="text-muted-foreground">{mod.descricao}</p>
         </div>
-        <Button onClick={() => setEditing({ values: emptyValues(mod) })}><Plus />Novo registro</Button>
+        {mod.allowCreate !== false && <Button onClick={() => setEditing({ values: emptyValues(mod) })}><Plus />Novo registro</Button>}
       </div>
       <ImportarArquivo modulo={mod.key} onDone={refresh} />
       {["receitas","despesas"].includes(mod.key) && <ResumoFiscal />}
@@ -89,7 +92,7 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
                   ))}
                   <td className="whitespace-nowrap px-3 py-2 text-right">
                     <Button size="icon" variant="ghost" onClick={() => edit(r)} aria-label="Editar"><Pencil /></Button>
-                    <Button size="icon" variant="ghost" onClick={() => remove(r)} aria-label="Excluir"><Trash2 /></Button>
+                    {mod.allowDelete !== false && <Button size="icon" variant="ghost" onClick={() => remove(r)} aria-label="Excluir"><Trash2 /></Button>}
                   </td>
                 </tr>
               ))}
@@ -127,6 +130,15 @@ function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values
   return (
     <form onSubmit={submit} className="grid gap-4">
       {mod.fields.map((f) => <FieldInput key={f.name} field={f} value={values[f.name]} onChange={(v) => set(f.name, v)} onUploadBusy={(busy) => setUploads(n => Math.max(0, n + (busy ? 1 : -1)))} />)}
+      {mod.key === 'convenios' && <fieldset className="grid gap-3 rounded border p-3"><legend>Parcela {id ? 'adicional (opcional)' : 'inicial (obrigatória)'}</legend>
+        <label>Valor da parcela<Input aria-label="Valor da parcela inicial" required={!id} inputMode="decimal" value={String(values._parcela_valor ?? '')} onChange={e=>set('_parcela_valor',e.target.value)} /></label>
+        <label>Vencimento<Input aria-label="Vencimento da parcela inicial" required={!id || !!values._parcela_valor} type="date" value={String(values._parcela_vencimento ?? '')} onChange={e=>set('_parcela_vencimento',e.target.value)} /></label>
+        <p className="text-sm">Convênio e parcela são gravados juntos. Registros antigos sem parcela precisam incluir a primeira ao salvar.</p>
+      </fieldset>}
+      {mod.key === 'plano-diretor' && <fieldset className="grid gap-3 rounded border p-3"><legend>Componentes {id ? 'adicionais' : 'iniciais obrigatórios'}</legend>
+        {([['_fase','Fase'],['_integrante','Integrante da equipe'],['_eixo','Eixo'],['_acao','Ação estratégica']] as const).map(([name,label])=><label key={name}>{label}<Input aria-label={label} required={!id} value={String(values[name] ?? '')} onChange={e=>set(name,e.target.value)} /></label>)}
+        <p className="text-sm">Os componentes são vinculados e salvos na mesma transação do plano.</p>
+      </fieldset>}
       <div className="flex justify-end gap-2">
         <Button type="submit" disabled={saving || uploads > 0}>{uploads > 0 ? "Aguarde os arquivos..." : saving ? "Salvando..." : "Salvar"}</Button>
       </div>
@@ -150,6 +162,7 @@ function FieldInput({ field: f, value, onChange, onUploadBusy }: { field: Field;
     finally { setBusy(false); onUploadBusy(false); }
   };
 
+  if (f.readOnly) return <div className="grid gap-1.5">{label}<Input id={id} readOnly value={String(value??"")} /></div>;
   if (f.type === "bool") return <div className="flex items-center gap-3"><Switch id={id} checked={Boolean(value)} onCheckedChange={onChange} />{label}</div>;
   if (f.type === "textarea") return <div className="grid gap-1.5">{label}<Textarea id={id} rows={f.name === "conteudo" ? 10 : 4} value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} /></div>;
   if (f.type === "select") return (

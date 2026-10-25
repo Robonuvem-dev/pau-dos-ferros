@@ -1,6 +1,8 @@
+import { baixarDocumentoCarta } from "@/lib/documentos-carta";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { SolicitarServico } from "@/components/site/SolicitarServico";
+import { useRef, useState } from "react";
 import { ExternalLink, FileText, Printer, Star } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
@@ -30,14 +32,16 @@ function Servicos() {
   const [tag, setTag] = useState("");
   const tags = Array.from(new Set(data.flatMap((s) => (Array.isArray(s.tags) ? s.tags : [])))).sort();
   const list = data.filter((s) => (!q || JSON.stringify(s).toLowerCase().includes(q.toLowerCase())) && (!tag || (Array.isArray(s.tags) && s.tags.includes(tag))));
-  const visto = new Set<string>();
-  const abrir = (ids: string[]) => ids.forEach((id) => { if (!visto.has(id)) { visto.add(id); void supabase.rpc("registrar_visualizacao_servico", { _id: id }); } });
+  const visto = useRef(new Set<string>());
+  const abrir = (ids: string[]) => ids.forEach((id) => { if (!visto.current.has(id)) { visto.current.add(id); void supabase.rpc("registrar_visualizacao_servico", { _id: id }).then(({error})=>{if(error){visto.current.delete(id);toast.error("Não foi possível registrar a visualização.");}}); } });
   return (
     <>
       <PageHeader title="Carta de Serviços" subtitle="Saiba como acessar os serviços públicos municipais." />
       <div className="mx-auto max-w-4xl px-4 py-10">
         <div className="mb-4 flex flex-wrap items-center gap-2">
           <Input placeholder="Pesquisar serviço..." value={q} onChange={(e) => setQ(e.target.value)} aria-label="Pesquisar serviço" className="flex-1" />
+          <Button variant="outline" onClick={()=>void baixarDocumentoCarta("csv",list.map(s=>s.id)).catch(e=>toast.error(e.message))}>Baixar CSV</Button>
+          <Button variant="outline" onClick={()=>void baixarDocumentoCarta("json",list.map(s=>s.id)).catch(e=>toast.error(e.message))}>Baixar JSON</Button>
           <Button variant="outline" asChild><Link to="/servicos/ficha"><Printer />Ficha em branco</Link></Button>
         </div>
         {tags.length > 0 && (
@@ -71,6 +75,7 @@ function Servicos() {
                     {s.anexo_url ? <a href={String(s.anexo_url)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary"><FileText className="size-4" />Formulário</a> : null}
                   </div>
                   {s.parecer_status ? <p className="text-xs text-muted-foreground">Parecer do Ouvidor Geral: {String(s.parecer_status)}</p> : null}
+                  <SolicitarServico id={s.id} />
                   <Avaliar id={s.id} />
                 </AccordionContent>
               </AccordionItem>

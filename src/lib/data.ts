@@ -1,4 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
+import { collectPages } from "./pagination";
+import { validateRecord } from "./record-validation";
 import { normalizeField } from "./normalization";
 export { normalizeField } from "./normalization";
 import type { ModuleDef } from "./modules";
@@ -13,9 +15,8 @@ export async function fetchModule(mod: ModuleDef): Promise<Row[]> {
   let q = db.from(mod.table).select("*");
   if (mod.filtro) q = q.eq(mod.filtro.column, mod.filtro.value);
   if (mod.orderBy) q = q.order(mod.orderBy, { ascending: mod.orderBy === "nome" || mod.orderBy === "ordem" || mod.orderBy === "placa" });
-  const { data, error } = await q.limit(1000);
-  if (error) throw error;
-  return data as Row[];
+  q = q.order("id");
+  return collectPages<Row>((from, to) => q.range(from, to));
 }
 
 export const slugify = (s: string) =>
@@ -33,6 +34,15 @@ export function normalizeValues(mod: ModuleDef, values: Record<string, unknown>)
 
 export async function saveRow(mod: ModuleDef, values: Record<string, unknown>, id?: string) {
   const payload = normalizeValues(mod, values);
+  validateRecord(mod, payload);
+  if (['convenios','plano-diretor'].includes(mod.key)) {
+    const complementos = mod.key === 'convenios'
+      ? (values._parcela_valor !== undefined && values._parcela_valor !== '' ? { parcela: { valor: normalizeField({name:'valor',label:'Valor',type:'money'}, values._parcela_valor), vencimento: values._parcela_vencimento } } : {})
+      : { fase: values._fase, integrante: values._integrante, eixo: values._eixo, acao: values._acao };
+    const { error } = await db.rpc('salvar_cadastro_composto', { _modulo: mod.key, _dados: payload, _id: id ?? null, _complementos: complementos });
+    if (error) throw new Error(error.message);
+    return;
+  }
   const { error } = id ? await db.from(mod.table).update(payload).eq("id", id) : await db.from(mod.table).insert(payload);
   if (error) throw new Error(error.message);
 }
