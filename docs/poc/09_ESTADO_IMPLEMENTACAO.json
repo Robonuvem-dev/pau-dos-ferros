@@ -1,12 +1,12 @@
 {
   "data": "2026-10-25",
-  "codigo_testado": "c54b236d0d42f9d710539c6c80c98ea50418d510",
+  "codigo_testado": "147d6e05edec8b69f0857df097e4affaa5b3d131",
   "desenvolvimento": "Vette",
   "integracao_autorizada": "main",
   "planilha": "https://docs.google.com/spreadsheets/d/19OCXec6gPubvd0RXAOXf78aVK_-U8SFKG70d_fUS9I0/edit",
-  "ci_qualidade": "https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40165059394",
+  "ci_qualidade": "https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40200735959",
   "ci_mobile": "https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40165059417",
-  "testes_unitarios": 203,
+  "testes_unitarios": 216,
   "migracoes_testadas": 26,
   "implementados": 137,
   "parciais": 6,
@@ -1364,7 +1364,7 @@
       "/version.json",
       "/transparencia"
     ],
-    "limite": "Não confirma fluxos administrativos autenticados ou homologação."
+    "limite": "Versão anterior 1.3.0 e portal confirmados; publicação das correções 80be36e iniciada, em verificação. Fluxos administrativos autenticados e homologação não confirmados."
   },
   "revisao_local": {
     "data": "2026-10-25",
@@ -1375,5 +1375,11 @@
     "lint_arquivos_alterados": "aprovado",
     "limite": "Não substitui compatibilidade com fornecedor efetivo ou homologação.",
     "atricon": "88 registros de coleta; não equivale à aferição integral dos 88 critérios."
-  }
+  },
+  "integracao_revisao": "80be36e5b3830896c07f3cfc8f343293bd0e8403",
+  "prs_revisao": [
+    12,
+    13,
+    14
+  ]
 }
