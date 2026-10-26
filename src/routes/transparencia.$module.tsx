@@ -13,7 +13,7 @@ import { moduleQuery } from "@/lib/queries";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/transparencia/$module")({
-  validateSearch: (s: Record<string, unknown>): { registro?: string; q?: string } => ({ ...(typeof s.registro === 'string' && /^[0-9a-f-]{36}$/i.test(s.registro) ? { registro: s.registro } : {}), ...(typeof s.q === 'string' ? { q: s.q.slice(0, 300) } : {}) }),
+  validateSearch: (s: Record<string, unknown>): { registro?: string; q?: string; filtros?: Record<string, string> } => ({ ...(typeof s.registro === 'string' && /^[0-9a-f-]{36}$/i.test(s.registro) ? { registro: s.registro } : {}), ...(typeof s.q === 'string' ? { q: s.q.slice(0, 300) } : {}), ...(s.filtros && typeof s.filtros === 'object' && !Array.isArray(s.filtros) ? { filtros: Object.fromEntries(Object.entries(s.filtros).filter(([k,v]) => /^[a-z_]+$/.test(k) && typeof v === 'string').slice(0, 30).map(([k,v]) => [k, String(v).slice(0,300)])) } : {}) }),
   loader: async ({ context, params }) => {
     const mod = getModule(params.module);
     if (!mod || !mod.publico) throw notFound();
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/transparencia/$module")({
 
 function Consulta() {
   const { module } = Route.useParams();
-  const { registro, q } = Route.useSearch();
+  const { registro, q, filtros } = Route.useSearch();
   const mod = getModule(module);
   if (!mod) return <QueryNotFound />;
   return (
@@ -39,7 +39,7 @@ function Consulta() {
       <div className="mx-auto max-w-6xl px-4 py-8">
         {["receitas","despesas"].includes(mod.key) && <ResumoFiscal />}
         {mod.key === "servidores" && <ResumoPessoal />}
-        <PublicTable key={`${mod.key}-${registro ?? ''}-${q ?? ''}`} mod={mod} registro={registro} initialSearch={q} />
+        <PublicTable key={`${mod.key}-${registro ?? ''}-${q ?? ''}-${JSON.stringify(filtros)}`} mod={mod} registro={registro} initialSearch={q} initialFilters={filtros} />
         {mod.key === "covid" && <CovidDetalhado />}
         {mod.key === "obras" && <ObrasDetalhadas />}
         {mod.key === "conselhos" && <ConselhosDetalhados registro={registro} />}
