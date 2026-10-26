@@ -545,6 +545,7 @@ export type Database = {
           arquivo_url: string | null
           cnpj: string | null
           contrato_origem: string | null
+          contrato_origem_id: string | null
           convenio_id: string | null
           created_at: string
           data_fim: string | null
@@ -566,6 +567,7 @@ export type Database = {
           arquivo_url?: string | null
           cnpj?: string | null
           contrato_origem?: string | null
+          contrato_origem_id?: string | null
           convenio_id?: string | null
           created_at?: string
           data_fim?: string | null
@@ -587,6 +589,7 @@ export type Database = {
           arquivo_url?: string | null
           cnpj?: string | null
           contrato_origem?: string | null
+          contrato_origem_id?: string | null
           convenio_id?: string | null
           created_at?: string
           data_fim?: string | null
@@ -605,7 +608,52 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "contratos_contrato_origem_id_fkey"
+            columns: ["contrato_origem_id"]
+            isOneToOne: false
+            referencedRelation: "contratos"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "contratos_convenio_id_fkey"
+            columns: ["convenio_id"]
+            isOneToOne: false
+            referencedRelation: "convenios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      convenio_aplicacoes: {
+        Row: {
+          convenio_id: string
+          created_at: string
+          descricao: string
+          id: string
+          natureza: string
+          updated_at: string
+          valor: number
+        }
+        Insert: {
+          convenio_id: string
+          created_at?: string
+          descricao: string
+          id?: string
+          natureza: string
+          updated_at?: string
+          valor: number
+        }
+        Update: {
+          convenio_id?: string
+          created_at?: string
+          descricao?: string
+          id?: string
+          natureza?: string
+          updated_at?: string
+          valor?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "convenio_aplicacoes_convenio_id_fkey"
             columns: ["convenio_id"]
             isOneToOne: false
             referencedRelation: "convenios"
@@ -650,6 +698,7 @@ export type Database = {
           cumprida_em: string | null
           descricao: string | null
           id: string
+          parte_obrigada: string | null
           situacao: string
           titulo: string
           updated_at: string
@@ -661,6 +710,7 @@ export type Database = {
           cumprida_em?: string | null
           descricao?: string | null
           id?: string
+          parte_obrigada?: string | null
           situacao?: string
           titulo: string
           updated_at?: string
@@ -672,6 +722,7 @@ export type Database = {
           cumprida_em?: string | null
           descricao?: string | null
           id?: string
+          parte_obrigada?: string | null
           situacao?: string
           titulo?: string
           updated_at?: string
@@ -992,6 +1043,33 @@ export type Database = {
         }
         Relationships: []
       }
+      documentos_carta_gerados: {
+        Row: {
+          conteudo: string
+          created_at: string
+          formato: string
+          id: string
+          mime: string
+          sha256: string | null
+        }
+        Insert: {
+          conteudo: string
+          created_at?: string
+          formato: string
+          id?: string
+          mime: string
+          sha256?: string | null
+        }
+        Update: {
+          conteudo?: string
+          created_at?: string
+          formato?: string
+          id?: string
+          mime?: string
+          sha256?: string | null
+        }
+        Relationships: []
+      }
       empresas_inidoneas: {
         Row: {
           cnpj: string | null
@@ -1060,6 +1138,41 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      licitacao_publicacoes: {
+        Row: {
+          evento: string
+          id: string
+          licitacao_id: string | null
+          numero: string
+          objeto: string | null
+          publicado_em: string
+        }
+        Insert: {
+          evento: string
+          id?: string
+          licitacao_id?: string | null
+          numero: string
+          objeto?: string | null
+          publicado_em?: string
+        }
+        Update: {
+          evento?: string
+          id?: string
+          licitacao_id?: string | null
+          numero?: string
+          objeto?: string | null
+          publicado_em?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "licitacao_publicacoes_licitacao_id_fkey"
+            columns: ["licitacao_id"]
+            isOneToOne: false
+            referencedRelation: "licitacoes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       licitacoes: {
         Row: {
@@ -2187,6 +2300,53 @@ export type Database = {
           },
         ]
       }
+      servico_solicitacoes: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          mensagem: string
+          nome: string
+          protocolo: string
+          resposta: string | null
+          servico_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          mensagem: string
+          nome: string
+          protocolo?: string
+          resposta?: string | null
+          servico_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          mensagem?: string
+          nome?: string
+          protocolo?: string
+          resposta?: string | null
+          servico_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "servico_solicitacoes_servico_id_fkey"
+            columns: ["servico_id"]
+            isOneToOne: false
+            referencedRelation: "servicos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       servicos: {
         Row: {
           anexo_url: string | null
@@ -2582,7 +2742,17 @@ export type Database = {
           avaliacoes: number
           media: number
           servico_id: string
+          solicitacoes: number
           uteis: number
+        }[]
+      }
+      gerar_documento_carta: {
+        Args: { _formato: string; _ids?: string[] }
+        Returns: {
+          conteudo: string
+          documento_id: string
+          mime: string
+          nome: string
         }[]
       }
       has_role: {
@@ -2605,7 +2775,9 @@ export type Database = {
         Args: { _id: string; _justificativa: string }
         Returns: undefined
       }
-      recalcular_contrato: { Args: { _numero: string }; Returns: undefined }
+      recalcular_contrato:
+        | { Args: { _id: string }; Returns: undefined }
+        | { Args: { _numero: string }; Returns: undefined }
       registrar_acesso: { Args: { _evento: string }; Returns: undefined }
       registrar_atendimento: {
         Args: {
@@ -2632,6 +2804,28 @@ export type Database = {
       responder_atendimento: {
         Args: { _id: string; _resposta: string }
         Returns: undefined
+      }
+      salvar_cadastro_composto: {
+        Args: {
+          _complementos?: Json
+          _dados: Json
+          _id?: string
+          _modulo: string
+        }
+        Returns: string
+      }
+      sincronizar_dados_poc: {
+        Args: { _linhas: Json; _modulo: string; _origem: string }
+        Returns: number
+      }
+      solicitar_servico: {
+        Args: {
+          _email: string
+          _mensagem: string
+          _nome: string
+          _servico: string
+        }
+        Returns: string
       }
     }
     Enums: {

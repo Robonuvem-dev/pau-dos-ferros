@@ -250,8 +250,8 @@ export const MODULES: ModuleDef[] = [
       { name: "data_inicio", label: "Início", type: "date" },
       { name: "data_fim", label: "Fim da vigência", type: "date" },
       { name: "contrato_origem_id", label: "Contrato/ata de origem (aditivos e adesões)", type: "relation", ref: { module: "contratos", column: "id", displayColumn: "numero" }, hideInTable: true },
-      { name: "valor_atualizado", label: "Valor atualizado (automático)", type: "money" },
-      { name: "data_fim_atualizada", label: "Vigência atualizada (automática)", type: "date", hideInTable: true },
+      { name: "valor_atualizado", label: "Valor atualizado (automático)", type: "money", readOnly: true },
+      { name: "data_fim_atualizada", label: "Vigência atualizada (automática)", type: "date", readOnly: true, hideInTable: true },
       { name: "convenio_id", label: "Convênio de origem", type: "relation", ref: { module: "convenios", column: "id", displayColumn: "numero" }, hideInTable: true },
       { name: "licitacao_numero", label: "Licitação de origem", type: "relation", ref: { module: "licitacoes", column: "numero" }, hideInTable: true },
       { name: "secretaria", label: "Secretaria", hideInTable: true },
@@ -600,6 +600,13 @@ export const MODULES: ModuleDef[] = [
 ];
 
 export const modulePermissionTable = (mod: ModuleDef) => mod.permissionTable ?? mod.table;
+
+// Named links are also relations: preserve their stored text while sharing public navigation.
+for (const mod of MODULES) for (const field of mod.fields) {
+  if (field.ref) continue;
+  if (['secretaria', 'orgao', 'lotacao'].includes(field.name) && mod.key !== 'secretarias') field.ref = { module: 'secretarias', column: 'nome' };
+  if (field.name === 'empresa' && mod.key === 'obras') field.ref = { module: 'credores', column: 'nome' };
+}
 
 // Preserve the evaluation-sheet URLs while sharing the canonical schema and policies.
 const camposObrigatorios: Record<string, string[]> = {

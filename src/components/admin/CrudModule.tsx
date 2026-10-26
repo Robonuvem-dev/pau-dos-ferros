@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+
 import { adminModuleQuery } from "@/lib/admin-queries";
 import { deleteRow, saveRow, uploadFile, type Row } from "@/lib/data";
 import { formatCell, type Field, type ModuleDef } from "@/lib/modules";
@@ -55,6 +55,8 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
     setEditing({ id: r.id, values });
   };
 
+  if (editing) return <section className="mx-auto max-w-5xl"><div className="mb-6 flex flex-wrap items-center justify-between gap-3"><h1 className="font-display text-2xl font-bold">{editing.id ? "Editar" : "Novo registro"} — {mod.label}</h1><Button variant="outline" onClick={() => setEditing(null)}>Voltar aos registros</Button></div><RowForm key={editing.id ?? "novo"} mod={mod} initial={editing.values} id={editing.id} onDone={() => { setEditing(null); refresh(); }} /></section>;
+
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
@@ -100,12 +102,7 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
           </table>
         </div>
       </div>
-      <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
-        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
-          <DialogHeader><DialogTitle>{editing?.id ? "Editar" : "Novo"} — {mod.label}</DialogTitle></DialogHeader>
-          {editing && <RowForm mod={mod} initial={editing.values} id={editing.id} onDone={() => { setEditing(null); refresh(); }} />}
-        </DialogContent>
-      </Dialog>
+
     </div>
   );
 }
@@ -114,7 +111,7 @@ function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values
   const [values, setValues] = useState<Values>(initial);
   const [saving, setSaving] = useState(false);
   const [uploads, setUploads] = useState(0);
-  const set = (name: string, v: unknown) => setValues((p) => ({ ...p, [name]: v }));
+  const set = (name: string, v: unknown) => setValues((p) => ({ ...p, [name]: v, ...(mod.key === "contratos" && name === "tipo" && !["Aditivo", "Adesão (Carona)"].includes(String(v)) ? { contrato_origem_id: "" } : {}) }));
 
   const submit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -129,7 +126,8 @@ function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values
 
   return (
     <form onSubmit={submit} className="grid gap-4">
-      {mod.fields.map((f) => <FieldInput key={f.name} field={f} value={values[f.name]} onChange={(v) => set(f.name, v)} onUploadBusy={(busy) => setUploads(n => Math.max(0, n + (busy ? 1 : -1)))} />)}
+      {mod.key === 'convenios' && <fieldset className="grid gap-4 border-b pb-5"><legend className="mb-3 font-display text-xl font-bold">Metas e especificações técnicas — item 4.7</legend>{mod.fields.filter(f => ['metas', 'especificacoes_tecnicas'].includes(f.name)).map(f => <FieldInput key={f.name} field={f} value={values[f.name]} onChange={v => set(f.name, v)} onUploadBusy={() => {}} />)}</fieldset>}
+      {mod.fields.filter(f => !(mod.key === 'convenios' && ['metas', 'especificacoes_tecnicas'].includes(f.name)) && (f.name !== 'contrato_origem_id' || ['Aditivo', 'Adesão (Carona)'].includes(String(values.tipo)))).map((f) => <FieldInput key={f.name} field={f} recordId={id} instrumentType={String(values.tipo ?? '')} value={values[f.name]} onChange={(v) => set(f.name, v)} onUploadBusy={(busy) => setUploads(n => Math.max(0, n + (busy ? 1 : -1)))} />)}
       {mod.key === 'convenios' && <fieldset className="grid gap-3 rounded border p-3"><legend>Parcela {id ? 'adicional (opcional)' : 'inicial (obrigatória)'}</legend>
         <label>Valor da parcela<Input aria-label="Valor da parcela inicial" required={!id} inputMode="decimal" value={String(values._parcela_valor ?? '')} onChange={e=>set('_parcela_valor',e.target.value)} /></label>
         <label>Vencimento<Input aria-label="Vencimento da parcela inicial" required={!id || !!values._parcela_valor} type="date" value={String(values._parcela_vencimento ?? '')} onChange={e=>set('_parcela_vencimento',e.target.value)} /></label>
@@ -146,7 +144,7 @@ function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values
   );
 }
 
-function FieldInput({ field: f, value, onChange, onUploadBusy }: { field: Field; value: unknown; onChange: (v: unknown) => void; onUploadBusy: (busy: boolean) => void }) {
+function FieldInput({ field: f, recordId, instrumentType, value, onChange, onUploadBusy }: { field: Field; recordId?: string | undefined; instrumentType?: string | undefined; value: unknown; onChange: (v: unknown) => void; onUploadBusy: (busy: boolean) => void }) {
   const [busy, setBusy] = useState(false);
   const id = `f-${f.name}`;
   const label = <Label htmlFor={id}>{f.label}{f.required && " *"}</Label>;
@@ -206,7 +204,7 @@ function FieldInput({ field: f, value, onChange, onUploadBusy }: { field: Field;
       </div>
     );
   }
-  if (f.type === "relation" && f.ref) return <RelationInput field={f} value={value} onChange={onChange} label={label} id={id} />;
+  if (f.type === "relation" && f.ref) return <RelationInput field={f} recordId={recordId} instrumentType={instrumentType} value={value} onChange={onChange} label={label} id={id} />;
   const type = f.type === "date" ? "date" : f.type === "int" || f.type === "number" || f.type === "money" ? "number" : "text";
   return (
     <div className="grid gap-1.5">{label}
@@ -215,14 +213,15 @@ function FieldInput({ field: f, value, onChange, onUploadBusy }: { field: Field;
   );
 }
 
-function RelationInput({ field: f, value, onChange, label, id }: { field: Field; value: unknown; onChange: (v: unknown) => void; label: React.ReactNode; id: string }) {
-  const ref = f.ref!;
-  const { data = [] } = useQuery({ ...adminModuleQuery(ref.module) });
+function RelationInput({ field: f, recordId, instrumentType, value, onChange, label, id }: { field: Field; recordId?: string | undefined; instrumentType?: string | undefined; value: unknown; onChange: (v: unknown) => void; label: React.ReactNode; id: string }) {
+  const ref = f.ref;
+  const { data = [] } = useQuery({ ...adminModuleQuery(ref?.module ?? ''), enabled: !!ref });
+  if (!ref) return null;
   const opts = Array.from(
     new Map<string, { value: string; label: string }>(
-      data.filter((r) => r[ref.column] != null).map((r) => [
+      data.filter((r) => r[ref.column] != null && (f.name !== "contrato_origem_id" || (r.id !== recordId && (instrumentType === 'Adesão (Carona)' ? r.tipo === 'Ata de Registro de Preços' : ["Contrato", "Ata de Registro de Preços"].includes(String(r.tipo ?? "Contrato")))))).map((r) => [
         String(r[ref.column]),
-        { value: String(r[ref.column]), label: String(r[ref.displayColumn ?? ref.column] ?? r[ref.column]) },
+        { value: String(r[ref.column]), label: String(r[ref.displayColumn ?? ref.column] ?? r[ref.column]) + (f.name === 'contrato_origem_id' ? ` — ${String(r.fornecedor ?? '')} · ${String(r.objeto ?? '').slice(0, 80)}` : '') },
       ] as const),
     ).values(),
   ).sort((a, b) => a.label.localeCompare(b.label, "pt-BR"));
