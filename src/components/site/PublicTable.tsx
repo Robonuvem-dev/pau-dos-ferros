@@ -2,7 +2,7 @@ import { baixarDocumentoCarta } from '@/lib/documentos-carta';
 import { toast } from 'sonner';
 import { useMemo, useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { useQueries, useSuspenseQuery } from '@tanstack/react-query';
+import { useQueries, useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { Download, FileText, Search, SlidersHorizontal } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -12,13 +12,13 @@ import { formatCell, toCSV, getModule, dataBR, type Field, type ModuleDef } from
 import { filterPublicRows } from '@/lib/transparency-filters';
 import { moduleReport } from '@/lib/pdf-report';
 
-export function PublicTable({ mod, registro, initialSearch = '' }: { mod: ModuleDef; registro?: string; initialSearch?: string }) {
+export function PublicTable({ mod, registro, initialSearch = '' }: { mod: ModuleDef; registro?: string | undefined; initialSearch?: string | undefined }) {
   const { data } = useSuspenseQuery(moduleQuery(mod.key));
   const [q, setQ] = useState(initialSearch);
   const [filters, setFilters] = useState<Record<string, string>>({});
   const relations = useMemo(() => [...new Set(mod.fields.filter(f => f.ref && getModule(f.ref.module)?.publico).map(f => f.ref?.module ?? ''))], [mod]);
   const related = useQueries({ queries: relations.map(moduleQuery) });
-  const timeline = useQueries({ queries: mod.key === 'licitacoes' ? [moduleQuery('andamentos-licitacao')] : [] });
+  const timeline = useQuery({ ...moduleQuery('andamentos-licitacao'), enabled: mod.key === 'licitacoes' });
   const relationRows = (module: string) => related[relations.indexOf(module)]?.data ?? [];
   const label = (f: Field, value: unknown) => {
     const ref = f.ref;
@@ -38,7 +38,7 @@ export function PublicTable({ mod, registro, initialSearch = '' }: { mod: Module
       const match = relationRows(ref.module).find(row => String(row[ref.column]) === String(value));
       return <Link className="text-primary underline underline-offset-2" to="/transparencia/$module" params={{ module: ref.module }} search={match ? { registro: match.id } : { q: String(value) }}>{label(f, value)}</Link>;
     }
-    if (f.type === 'file') return <a href={String(value)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary underline"><FileText className="size-4" />{f.label}</a>;
+    if (f.type === 'file') return <a href={String(value)} aria-label={`Abrir ${f.label}: ${String(r.titulo ?? r.numero ?? r.nome ?? r.id)}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary underline">{f.name === 'foto_url' ? <img src={String(value)} alt={String(r.modelo ?? r.legenda ?? 'Foto do registro')} loading="lazy" className="h-24 w-36 rounded object-cover" /> : <><FileText className="size-4" />{f.label}</>}</a>;
     if (f.type === 'files' && Array.isArray(value)) return <ul>{value.map((url, i) => <li key={String(url)}><a className="text-primary underline" href={String(url)} target="_blank" rel="noreferrer">Arquivo {i + 1}</a></li>)}</ul>;
     return formatCell(f, value);
   };
