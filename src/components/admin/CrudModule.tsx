@@ -126,7 +126,7 @@ function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values
 
   return (
     <form onSubmit={submit} className="grid gap-4">
-      {mod.fields.map((f) => <FieldInput key={f.name} field={f} value={values[f.name]} onChange={(v) => set(f.name, v)} onUploadBusy={(busy) => setUploads(n => Math.max(0, n + (busy ? 1 : -1)))} />)}
+      {mod.fields.filter(f => f.name !== 'contrato_origem_id' || ['Aditivo', 'Adesão (Carona)'].includes(String(values.tipo))).map((f) => <FieldInput key={f.name} field={f} recordId={id} instrumentType={String(values.tipo ?? '')} value={values[f.name]} onChange={(v) => set(f.name, v)} onUploadBusy={(busy) => setUploads(n => Math.max(0, n + (busy ? 1 : -1)))} />)}
       {mod.key === 'convenios' && <fieldset className="grid gap-3 rounded border p-3"><legend>Parcela {id ? 'adicional (opcional)' : 'inicial (obrigatória)'}</legend>
         <label>Valor da parcela<Input aria-label="Valor da parcela inicial" required={!id} inputMode="decimal" value={String(values._parcela_valor ?? '')} onChange={e=>set('_parcela_valor',e.target.value)} /></label>
         <label>Vencimento<Input aria-label="Vencimento da parcela inicial" required={!id || !!values._parcela_valor} type="date" value={String(values._parcela_vencimento ?? '')} onChange={e=>set('_parcela_vencimento',e.target.value)} /></label>
@@ -143,7 +143,7 @@ function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values
   );
 }
 
-function FieldInput({ field: f, value, onChange, onUploadBusy }: { field: Field; value: unknown; onChange: (v: unknown) => void; onUploadBusy: (busy: boolean) => void }) {
+function FieldInput({ field: f, recordId, instrumentType, value, onChange, onUploadBusy }: { field: Field; recordId?: string | undefined; instrumentType?: string | undefined; value: unknown; onChange: (v: unknown) => void; onUploadBusy: (busy: boolean) => void }) {
   const [busy, setBusy] = useState(false);
   const id = `f-${f.name}`;
   const label = <Label htmlFor={id}>{f.label}{f.required && " *"}</Label>;
@@ -203,7 +203,7 @@ function FieldInput({ field: f, value, onChange, onUploadBusy }: { field: Field;
       </div>
     );
   }
-  if (f.type === "relation" && f.ref) return <RelationInput field={f} value={value} onChange={onChange} label={label} id={id} />;
+  if (f.type === "relation" && f.ref) return <RelationInput field={f} recordId={recordId} instrumentType={instrumentType} value={value} onChange={onChange} label={label} id={id} />;
   const type = f.type === "date" ? "date" : f.type === "int" || f.type === "number" || f.type === "money" ? "number" : "text";
   return (
     <div className="grid gap-1.5">{label}
@@ -212,15 +212,15 @@ function FieldInput({ field: f, value, onChange, onUploadBusy }: { field: Field;
   );
 }
 
-function RelationInput({ field: f, value, onChange, label, id }: { field: Field; value: unknown; onChange: (v: unknown) => void; label: React.ReactNode; id: string }) {
+function RelationInput({ field: f, recordId, instrumentType, value, onChange, label, id }: { field: Field; recordId?: string | undefined; instrumentType?: string | undefined; value: unknown; onChange: (v: unknown) => void; label: React.ReactNode; id: string }) {
   const ref = f.ref;
   if (!ref) return null;
   const { data = [] } = useQuery({ ...adminModuleQuery(ref.module) });
   const opts = Array.from(
     new Map<string, { value: string; label: string }>(
-      data.filter((r) => r[ref.column] != null && (f.name !== "contrato_origem_id" || (r.id !== value && ["Contrato", "Ata de Registro de Preços"].includes(String(r.tipo ?? "Contrato"))))).map((r) => [
+      data.filter((r) => r[ref.column] != null && (f.name !== "contrato_origem_id" || (r.id !== recordId && (instrumentType === 'Adesão (Carona)' ? r.tipo === 'Ata de Registro de Preços' : ["Contrato", "Ata de Registro de Preços"].includes(String(r.tipo ?? "Contrato")))))).map((r) => [
         String(r[ref.column]),
-        { value: String(r[ref.column]), label: String(r[ref.displayColumn ?? ref.column] ?? r[ref.column]) },
+        { value: String(r[ref.column]), label: String(r[ref.displayColumn ?? ref.column] ?? r[ref.column]) + (f.name === 'contrato_origem_id' ? ` — ${String(r.fornecedor ?? '')} · ${String(r.objeto ?? '').slice(0, 80)}` : '') },
       ] as const),
     ).values(),
   ).sort((a, b) => a.label.localeCompare(b.label, "pt-BR"));

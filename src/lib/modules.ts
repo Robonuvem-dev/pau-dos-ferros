@@ -601,6 +601,13 @@ export const MODULES: ModuleDef[] = [
 
 export const modulePermissionTable = (mod: ModuleDef) => mod.permissionTable ?? mod.table;
 
+// Named links are also relations: preserve their stored text while sharing public navigation.
+for (const mod of MODULES) for (const field of mod.fields) {
+  if (field.ref) continue;
+  if (['secretaria', 'orgao', 'lotacao'].includes(field.name) && mod.key !== 'secretarias') field.ref = { module: 'secretarias', column: 'nome' };
+  if (field.name === 'empresa' && mod.key === 'obras') field.ref = { module: 'credores', column: 'nome' };
+}
+
 // Preserve the evaluation-sheet URLs while sharing the canonical schema and policies.
 const camposObrigatorios: Record<string, string[]> = {
  obras: ['data_inicio','previsao_fim','descricao','valor','aditivo_acrescimo','aditivo_supressao','origem_recurso','numero_processo','tipo_guarda_chuva','secretaria','local','objeto_contrato','justificativa'],

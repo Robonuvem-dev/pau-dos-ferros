@@ -26,7 +26,7 @@ export function PublicTable({ mod, registro, initialSearch = '' }: { mod: Module
     const match = relationRows(ref.module).find(r => String(r[ref.column]) === String(value));
     return match ? String(match[ref.displayColumn ?? ref.column] ?? value) : formatCell(f, value);
   };
-  const rows = filterPublicRows(data, mod.fields, q, filters, registro);
+  const rows = filterPublicRows(data, mod.fields, q, filters, registro, label);
   const cols = mod.fields.filter(f => !f.hideInTable);
   const details = mod.fields.filter(f => f.hideInTable);
   const filterFields = mod.fields.filter(f => !['file', 'files', 'tags'].includes(f.type ?? '') && !f.readOnly);
