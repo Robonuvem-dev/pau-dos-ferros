@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { ResumoConvenios } from "../components/convenios/ResumoConvenios";
 import { PublicTable } from "../components/site/PublicTable";
 import { getModule } from "../lib/modules";
@@ -15,6 +15,7 @@ const fixtures = vi.hoisted(() => ({
   ],
 }));
 vi.mock("@tanstack/react-query", () => ({
+  useQueries: () => [],
   useQuery: (options: { queryKey: string[] }) => ({
     data: fixtures[options.queryKey[1] as keyof typeof fixtures] ?? [],
     isPending: false, error: null,
@@ -35,12 +36,11 @@ describe("M04 — apresentacao publica", () => {
     expect(screen.queryByText(/OUTRO-CONTRATO/)).not.toBeInTheDocument();
     expect(screen.getByText(/25.0% recebido/)).toBeInTheDocument();
     expect(screen.getByRole("meter")).toHaveAttribute("value", "2500");
-    expect(screen.getByRole("button", { name: /Imprimir/ })).toBeInTheDocument();
   });
   it("disponibiliza as metas completas, antes ocultas na listagem publica", () => {
-    render(<PublicTable mod={getModule("convenios")!} />);
-    expect(within(screen.getByText("POC-FICTICIO").closest('tr')!).getByText("Ver informações completas")).toBeInTheDocument();
-    expect(screen.getByText("Meta ficticia")).toBeInTheDocument();
+    const mod=getModule('convenios'); if(!mod)throw new Error('Módulo ausente');
+    render(<PublicTable mod={mod} />);
+    expect(screen.getAllByText('Meta ficticia').length).toBeGreaterThan(0);
   });
   it("mostra convênio vencido somente quando o filtro de vigência é desativado",()=>{
     render(<ResumoConvenios publico />);

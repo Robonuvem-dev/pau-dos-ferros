@@ -1,3 +1,5 @@
+import { downloadReport } from '@/lib/pdf-report';
+import { getModule, formatCell } from '@/lib/modules';
 import { useState } from "react";
 import { filtrarConvenios } from "@/lib/convenios/relatorios";
 import { municipalDate } from "@/lib/public-content";
@@ -39,7 +41,7 @@ export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
           <h2 className="font-display text-xl font-bold">Acompanhamento de convênios</h2>
           <p className="text-sm text-muted-foreground">Parcelas, saldo a programar e obrigações vinculadas ao convênio.</p>
         </div>
-        <Button size="sm" variant="outline" onClick={() => window.print()}>Imprimir relatório de convênios</Button>
+        <Button size="sm" variant="outline" onClick={() => void downloadReport("Relatório de convênios", lista.flatMap(c => [{title:String(c.numero),columns:["Campo","Informação"],rows:(getModule("convenios")?.fields??[]).map(f=>[f.label,formatCell(f,c[f.name])])}, ...["convenio-parcelas","convenio-obrigacoes","convenio-aplicacoes"].map(key=>({title:`${String(c.numero)} — ${getModule(key)?.label}`,columns:["Campo","Informação"],rows:(key==="convenio-parcelas"?cronograma:key==="convenio-obrigacoes"?deveres:aplicacoes.data??[]).filter(r=>r.convenio_id===c.id).flatMap(r=>(getModule(key)?.fields??[]).map(f=>[f.label,formatCell(f,r[f.name])]))}))]), `Vigentes: ${vigentes ? "sim" : "todos"} · Período: ${de || "início"} a ${ate || "hoje"}`)}>PDF de convênios</Button>
         {!publico && <div className="flex gap-3 text-sm">
           <Link to="/admin/$module" params={{ module: "convenio-parcelas" }} className="text-primary underline">Gerenciar parcelas</Link>
           <Link to="/admin/$module" params={{ module: "convenio-obrigacoes" }} className="text-primary underline">Gerenciar obrigações</Link>

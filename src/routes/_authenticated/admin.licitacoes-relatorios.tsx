@@ -1,3 +1,4 @@
+import { downloadReport } from '@/lib/pdf-report';
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -71,7 +72,7 @@ function Boletim({ licitacoes }: { licitacoes: LicitacaoLike[] }) {
           <Label htmlFor="data-boletim">Data do boletim</Label>
           <Input id="data-boletim" type="date" value={data} onChange={(e) => setData(e.target.value)} />
         </div>
-        <Button variant="outline" onClick={() => window.print()}><Printer className="size-4" /> Imprimir</Button>
+        <Button variant="outline" onClick={() => void downloadReport("Boletim de licitações", [{title:`Aberturas do dia ${dataBR(data)}`,columns:["Número","Modalidade","Objeto","Valor estimado"],rows:b.doDia.map(l=>[l.numero,l.modalidade,l.objeto,brl(l.valor_estimado)])},{title:"Avisos — próximos 7 dias",columns:["Número","Modalidade","Abertura","Objeto"],rows:b.proximas.map(l=>[l.numero,l.modalidade,dataBR(l.data_abertura),l.objeto])}])}><Printer className="size-4" /> PDF do boletim e avisos</Button>
       </div>
       <div className="mt-6">
         <h2 className="font-display text-xl font-bold">Boletim de licitações — {dataBR(data)}</h2>
@@ -136,6 +137,7 @@ function Mapa({ licitacoes }: { licitacoes: LicitacaoLike[] }) {
         <div className="grid gap-1.5"><Label>até</Label><Input type="date" value={f.ate} onChange={(e) => setF({ ...f, ate: e.target.value })} /></div>
         <Button variant="outline" onClick={exportar}><Download className="size-4" /> Exportar CSV</Button>
       </div>
+      <Button variant="outline" className="mt-3" onClick={() => void downloadReport("Mapa de licitações", [{title:"Processos filtrados",columns:["Número","Modalidade","Situação","Secretaria","Abertura","Valor"],rows:rows.map(r=>[r.numero,r.modalidade,r.situacao,r.secretaria,dataBR(r.data_abertura),brl(r.valor_estimado)])}],JSON.stringify(f))}>PDF do mapa</Button>
       <p className="mt-4 text-sm"><strong>{rows.length}</strong> processo(s) · valor estimado total: <strong>{brl(total)}</strong></p>
       <div className="mt-2 overflow-x-auto">
         <table className="w-full text-sm">
@@ -173,6 +175,7 @@ function AVencer({ contratos }: { contratos: ContratoLike[] }) {
         </div>
         <Button variant="outline" onClick={exportar}><Download className="size-4" /> Exportar CSV</Button>
       </div>
+      <Button className="mt-3" variant="outline" onClick={() => void downloadReport("Contratos a vencer",[{title:`Vencimento em até ${dias} dias`,columns:["Contrato","Fornecedor","Vigência","Dias restantes","Valor"],rows:rows.map(r=>[r.numero,r.fornecedor,dataBR(r.fim),r.diasRestantes,brl(r.valor_atualizado??r.valor)])}])}>PDF de contratos a vencer</Button>
       <div className="mt-4 overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-secondary text-left"><tr><th className="p-2">Alerta</th><th className="p-2">Contrato</th><th className="p-2">Fornecedor</th><th className="p-2">Vigência atualizada</th><th className="p-2 text-right">Valor atualizado</th></tr></thead>
@@ -203,7 +206,7 @@ function Publicacoes({rows}:{rows:Row[]}) {
  return <section className="space-y-4"><h2 className="text-xl font-bold">Relatório de publicações</h2>
  <p>Histórico gerado no servidor a cada cadastro e atualização de licitação, desde a ativação deste registro.</p>
  <div className="flex gap-3"><label>De<Input type="date" value={de} onChange={e=>setDe(e.target.value)} /></label><label>Até<Input type="date" value={ate} onChange={e=>setAte(e.target.value)} /></label></div>
- <Button variant="outline" onClick={()=>window.print()}>Imprimir publicações</Button>
+ <Button variant="outline" onClick={()=>void downloadReport("Relatório de publicações",[{title:"Publicações de licitações",columns:["Data","Licitação","Evento","Objeto"],rows:lista.map(r=>[new Date(String(r.publicado_em)).toLocaleString("pt-BR",{timeZone:"America/Fortaleza"}),r.numero,r.evento,r.objeto])}],`Período: ${de || "início"} a ${ate || "hoje"}`)}>PDF de publicações</Button>
  <table className="w-full text-left text-sm"><thead><tr><th>Data da publicação</th><th>Licitação</th><th>Evento</th><th>Objeto</th></tr></thead><tbody>{lista.map(r=><tr key={r.id} className="border-t"><td>{new Date(String(r.publicado_em)).toLocaleString('pt-BR',{timeZone:'America/Fortaleza'})}</td><td>{String(r.numero)}</td><td>{String(r.evento)}</td><td>{String(r.objeto??'')}</td></tr>)}</tbody></table>
  {!lista.length&&<p>Nenhuma publicação registrada neste período.</p>}</section>;
 }

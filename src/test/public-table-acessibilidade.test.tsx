@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen, within } from '@testing-library/rea
 import { PublicTable } from '@/components/site/PublicTable';
 import type { ModuleDef } from '@/lib/modules';
 
-vi.mock('@tanstack/react-query', () => ({ useSuspenseQuery: () => ({ data: [
+vi.mock('@tanstack/react-query', () => ({ useQueries: () => [], useQuery: () => ({ data: [] }), useSuspenseQuery: () => ({ data: [
   { id: '1', titulo: 'Orçamento fictício', arquivo_url: 'https://example.invalid/loa.pdf' },
   { id: '2', titulo: 'Diretrizes fictícias', arquivo_url: 'https://example.invalid/ldo.pdf' },
 ] }) }));

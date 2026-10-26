@@ -219,7 +219,7 @@
       "requisito": "Cadastro de Termos Aditivos vinculados aos contratos de origem.",
       "pagina_pdf": 34,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Aditivo usa identificador do contrato e recalcula valor e vigência sem confundir números duplicados."
+      "observacao": "https://pau-dos-ferros.lovable.app/admin/contratos e https://pau-dos-ferros.lovable.app/transparencia/contratos — IMPLEMENTADO. Novo registro > Aditivo > contrato/ata de origem; formulário no corpo, seleção de origens válidas e links públicos por UUID. Gravação/leitura pública conferidas em 26/10/2026 e registro temporário excluído. 221 testes locais passaram; compilação OK; base Git 8f6caca; CI/publicação desta alteração não verificados. Evidência: docs/poc/11."
     },
     {
       "id": "3.8",
@@ -227,7 +227,7 @@
       "requisito": "Cadastro de andamentos, fases, cronograma e andamento dos processos licitatórios.",
       "pagina_pdf": 34,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Andamentos vinculados à licitação, com fase/data/descrição e linha do tempo pública. O motor de transições de situação portado não controla o formulário genérico."
+      "observacao": "https://pau-dos-ferros.lovable.app/admin/andamentos-licitacao e https://pau-dos-ferros.lovable.app/transparencia/licitacoes — IMPLEMENTADO. Cadastre fase/data vinculada ao número da licitação; a linha do tempo aparece dentro do processo e acompanha os filtros. Gravação/leitura pública conferidas em 26/10/2026, registro temporário excluído. 221 testes locais passaram; compilação OK; base Git 8f6caca; CI/publicação não verificados. O motor de transições não controla o formulário. Evidência: docs/poc/11."
     },
     {
       "id": "3.9",
@@ -275,7 +275,7 @@
       "requisito": "Impressão de relatórios consolidados (Boletim do dia, Avisos, Relatórios de Publicações).",
       "pagina_pdf": 35,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Histórico real de cadastro/atualização publicado pelo servidor e relatório próprio por data de publicação, além do boletim e avisos."
+      "observacao": "https://pau-dos-ferros.lovable.app/admin/licitacoes-relatorios — IMPLEMENTADO. Selecione data/período e baixe PDF do boletim/avisos ou publicações. Documentos estruturados com texto e tabelas, sem impressão da tela. Downloads verificados em 26/10/2026; boletim com dados, publicações sem eventos disponíveis. 221 testes locais passaram; compilação OK; base Git 8f6caca; CI/publicação não verificados. Evidência: docs/poc/11."
     },
     {
       "id": "3.15",
@@ -283,7 +283,7 @@
       "requisito": "Visualização pública e direta de todos os dados de licitações no Portal da Transparência.",
       "pagina_pdf": 35,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Consulta percorre todas as páginas, sem o corte de mil registros; teste preservou 1.203 linhas e recusou falha intermediária."
+      "observacao": "https://pau-dos-ferros.lovable.app/transparencia/licitacoes — IMPLEMENTADO. Abra Filtros para modalidade, situação, órgão/secretaria e datas; detalhes e linha do tempo ficam no processo filtrado. Relações navegam para registros públicos por UUID ou pesquisa. Consulta preserva paginação integral. Filtros e leitura pública verificados em 26/10/2026; 221 testes locais passaram; compilação OK; base Git 8f6caca; CI/publicação não verificados. Evidência: docs/poc/11."
     },
     {
       "id": "3.16",
@@ -363,7 +363,7 @@
       "requisito": "Cadastro de Metas e Especificações Técnicas do Convênio.",
       "pagina_pdf": 36,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Metas e especificações técnicas persistem no convênio como texto; atalhos de navegação reutilizam esse cadastro."
+      "observacao": "https://pau-dos-ferros.lovable.app/admin/convenios e https://pau-dos-ferros.lovable.app/transparencia/convenios — IMPLEMENTADO. Edite a seção Metas e especificações técnicas — item 4.7; os dois campos ficam destacados na consulta pública. Gravação/leitura pública testadas em 26/10/2026 e valores restaurados. Campos textuais, sem coleção estruturada adicional. 221 testes locais passaram; compilação OK; base Git 8f6caca; CI/publicação não verificados. Evidência: docs/poc/11."
     },
     {
       "id": "4.8",
