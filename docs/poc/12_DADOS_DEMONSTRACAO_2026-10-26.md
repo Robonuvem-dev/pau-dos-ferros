@@ -1,8 +1,8 @@
 # População de demonstração — 26/10/2026
 
-- Acrescentados 20 registros em cada um dos 50 cadastros abrangidos: 1.000 registros principais, preservando os existentes.
+- Acrescentados 20 registros em cada um dos 62 cadastros/categorias abrangidos, distribuídos em 50 tabelas: 1.240 registros principais, preservando os existentes.
 - Publicações receberam 20 por categoria (12 categorias; 240 linhas). Concedentes e convenentes receberam 20 de cada papel (40 linhas na tabela compartilhada).
-- As demais 36 tabelas de cadastros receberam 20 linhas cada, incluindo atendimentos, solicitações, avaliações de serviços, medicamentos e pedidos de melhoria.
+- As demais 48 tabelas de cadastros receberam 20 linhas cada, incluindo atendimentos, solicitações, avaliações de serviços, medicamentos e pedidos de melhoria.
 - Identificadores determinísticos: `md5('poc-20261026:<tabela ou cadastro>:<índice>')::uuid`; publicações incluem categoria antes do índice. Concedentes/convenentes têm namespaces separados. Operações usam conflitos para evitar duplicação.
 - Vínculos completos entre secretarias, credores, licitações, contratos, convênios, parcelas, aplicações, obrigações, processos, obras, medições, ARTs, conselhos e planos diretores.
 - Contratos incluem 16 instrumentos-base, dois aditivos e duas adesões a atas; gatilhos recalcularam os valores dos instrumentos-base.
