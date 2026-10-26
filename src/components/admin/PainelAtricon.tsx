@@ -1,3 +1,4 @@
+import { downloadReport } from '@/lib/pdf-report';
 import { useState } from "react";
 import { useQuery,useQueryClient } from "@tanstack/react-query";
 import { db } from "@/lib/data";
@@ -53,7 +54,7 @@ export function PainelAtricon({pendencias}:{pendencias:Pendencia[]}){
  <div className="my-3 flex flex-wrap gap-3">
  <label>Mostrar <select className="rounded border p-2" aria-label="Filtrar pontos ATRICON" value={filtro} onChange={e=>setFiltro(e.target.value)}><option value="todos">Todos</option>{Object.entries(STATUS_LABEL).map(([k,v])=><option value={k} key={k}>{v}</option>)}</select></label>
  <Button disabled={busy||!!error} onClick={()=>void gerar()}>{busy?"Executando análise local...":"Executar varredura com IA local e gerar anexo"}</Button>
- {texto&&<><Button variant="outline" onClick={baixar}>Baixar anexo técnico</Button><Button variant="outline" onClick={()=>window.print()}>Imprimir avaliação</Button></>}
+ {texto&&<><Button variant="outline" onClick={baixar}>Baixar anexo técnico</Button><Button variant="outline" onClick={()=>void downloadReport("Avaliação ATRICON",[{title:"Anexo técnico",columns:["Conteúdo"],rows:texto.split("\n").map(l=>[l])}])}>PDF da avaliação</Button></>}
  </div>
  {status&&<p role="status" className="my-2">{status}</p>}
  {(erro||error)&&<p role="alert" className="my-2 text-destructive">{erro||"Não foi possível carregar as evidências."}</p>}
