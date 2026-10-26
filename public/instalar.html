@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0064ad">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pau dos Ferros">
+  <meta name="description" content="Instale o portal de Pau dos Ferros na tela inicial do Android ou iPhone.">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/app-icons/apple-touch-icon.png">
+  <link rel="icon" href="/app-icons/icon-192.png">
+  <title>Instalar aplicativo | Pau dos Ferros</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f2f6fa;color:#153047;font:17px/1.6 system-ui,sans-serif;overflow-wrap:anywhere}main{max-width:780px;margin:auto;padding:32px 20px 64px}header{display:flex;align-items:center;gap:16px;margin-bottom:32px}header img{width:80px;height:80px;border-radius:20px;background:white}h1{font-size:clamp(1.7rem,5vw,2.4rem);line-height:1.2;margin:0}h2{font-size:1.35rem;margin:0 0 12px}p{margin:12px 0}section{background:white;padding:24px;border:1px solid #d6e2ed;border-radius:20px;margin:20px 0}a{color:#005a9f}button,.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 20px;border-radius:12px;border:0;background:#0064ad;color:white;font:inherit;font-weight:650;text-decoration:none;cursor:pointer}button[hidden]{display:none}.secondary{background:#eaf2f9;color:#005a9f}.actions{display:flex;flex-wrap:wrap;gap:12px}.muted{color:#526b7c;font-size:.9rem}.badge{font-size:.8rem;color:#005a9f;font-weight:700;text-transform:uppercase;letter-spacing:.06em}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:20px}ol{padding-left:24px}summary{cursor:pointer;font-weight:650;min-height:44px}footer{margin-top:32px}.status{min-height:1.6em}@media(max-width:380px){main{padding:24px 16px}section{padding:20px}.actions>*{width:100%}}
+  </style>
+</head>
+<body>
+<main>
+  <header><img src="/app-icons/icon-192.png" alt="Brasão de Pau dos Ferros"><div><span class="badge">Aplicativo municipal</span><h1>Pau dos Ferros no seu celular</h1></div></header>
+  <section>
+    <span class="badge">Instalação pelo navegador</span>
+    <h2>Adicione à tela inicial</h2>
+    <p>Acesse o portal, notícias, serviços, transparência e o painel autorizado em uma janela de aplicativo, com o brasão na tela inicial.</p>
+    <p>Esta versão acompanha as atualizações publicadas no site e precisa de conexão com a internet.</p>
+    <div class="actions"><button id="install" hidden>Instalar aplicativo</button><a class="button secondary" href="/">Abrir portal</a></div>
+    <p id="status" class="status muted" role="status" aria-live="polite">Siga abaixo as instruções do seu celular.</p>
+    <div class="grid">
+      <div><h2>Android</h2><ol><li>Abra esta página no Chrome.</li><li>Toque em <strong>Instalar aplicativo</strong>, quando disponível, ou no menu ⋮.</li><li>Escolha <strong>Instalar aplicativo</strong> ou <strong>Adicionar à tela inicial</strong> e confirme.</li></ol></div>
+      <div><h2>iPhone / iPad</h2><ol><li>Abra esta página no Safari.</li><li>Toque em <strong>Compartilhar</strong>.</li><li>Escolha <strong>Adicionar à Tela de Início</strong> e confirme em Adicionar.</li></ol></div>
+    </div>
+    <p class="muted">A instalação pelo navegador não exige habilitar fontes desconhecidas ou desativar o Play Protect. A opção e o nome do menu dependem do navegador e do aparelho.</p>
+  </section>
+  <section>
+    <details><summary>Pacote Android para ensaio técnico</summary>
+      <p>O APK é o aplicativo nativo de demonstração, com notícias nativas e acesso ao portal. A instalação fora da loja pode exibir avisos do Android. Não desative as proteções do aparelho; para acesso simples, use a instalação pelo navegador acima.</p>
+      <p><a class="button secondary" href="/downloads/PauDosFerros-Android.apk" download>Baixar APK Android</a></p>
+      <p id="apk-version" class="muted">Pacote de ensaio; distribuição definitiva depende da assinatura e do canal da organização.</p>
+      <p class="muted">O aplicativo nativo para iPhone depende de assinatura Apple e distribuição autorizada. Um APK não instala no iPhone.</p>
+    </details>
+  </section>
+  <footer><a href="/">Voltar ao portal</a> · <a href="/sobre">Sobre o sistema</a><p class="muted">Ambiente de demonstração: os registros de ensaio utilizam dados fictícios, sem validade administrativa.</p></footer>
+</main>
+<script src="/install.js" defer></script>
+</body>
+</html>

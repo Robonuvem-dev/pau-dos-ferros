@@ -2,7 +2,14 @@
 
 Aplicativos híbridos com contêineres nativos Android (WebView) e iOS (WKWebView). Acessam a solução publicada por HTTPS e a autenticação/RLS existente. Não são telas estáticas e não incluem senha, token ou acesso automático de administrador.
 
-O menu nativo abre notícias, gestão, nova notícia, editais, relatórios fiscais, leis, decretos e estatísticas. A edição das notícias existentes é feita pelo painel autenticado. O seletor nativo de arquivos permite anexar documentos e fotos. Operações exigem conexão; o aplicativo não armazena dados administrativos offline. Links externos abrem no navegador do aparelho.
+O aplicativo inicia no portal publicado. O menu compacto mantém acesso a notícias nativas, gestão, serviços, transparência, e-SIC, nova notícia, editais, relatórios fiscais, leis e decretos. A edição e as estatísticas usam o painel autenticado atual. O seletor nativo de arquivos permite anexar documentos e fotos. Operações exigem conexão; o aplicativo não armazena dados administrativos offline. Links externos abrem no navegador do aparelho.
+
+## Instalação e atualização
+- `/instalar.html` oferece a instalação web na tela inicial em Android/iOS, sem habilitar fontes desconhecidas. Essa versão acompanha o portal publicado; depende do suporte do navegador e de conexão.
+- Android/iOS nativos: versão 1.1.0, build 3. Abrem o mesmo portal, sem o rótulo fixo nativo de PoC no topo. Mudanças no site aparecem ao navegar/recarregar; mudanças no contêiner exigem instalar novo binário.
+- O manifest e os ícones web são servidos pelo mesmo domínio. O service worker não armazena páginas, sessões, APIs ou dados administrativos em cache; não há promessa de operação offline.
+- O APK de ensaio continua assinado com chave de debug do CI; não é distribuição definitiva por loja. Uma página de download não remove avisos do Android. Não orientar a desativação de Play Protect. Chaves de debug de execuções diferentes podem exigir reinstalação em vez de atualização; publicação definitiva precisa de assinatura estável da organização.
+- A instalação web é alternativa de acesso; não substitui a avaliação dos requisitos de aplicativo nativo do edital.
 
 Android: o CI compila um APK de demonstração assinado com chave de debug, instala em emulador e registra a abertura. Esse APK é para a PoC; distribuição definitiva precisa de chave de assinatura da organização.
 

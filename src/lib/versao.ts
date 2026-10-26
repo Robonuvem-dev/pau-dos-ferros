@@ -1,7 +1,8 @@
 /** Versão e histórico do sistema, exibidos na página "Sobre" e no aviso de atualização do painel. */
-export const VERSAO = "1.3.1";
+export const VERSAO = "1.4.0";
 
 export const HISTORICO: { versao: string; data: string; itens: string[] }[] = [
+  { versao: "1.4.0", data: "2026-10-26", itens: ["Aplicativos iniciam no portal atualizado e usam menu compacto, sem faixa fixa no topo.", "Navegação e formulários adaptados ao celular; instalação pela tela inicial em Android e iPhone."] },
   { versao: "1.3.1", data: "2026-10-25", itens: ["Consultas públicas com pesquisa, tabelas e documentos identificados para leitores de tela.", "Importação manual e remota com escolha explícita UTF-8 ou Windows-1252 e descarte de prévias antigas.", "Coleta ATRICON com 88 pontos rastreados, fontes ausentes e falhas explicitadas, sem aprovação automática por similaridade."] },
   { versao: "1.3.0", data: "2026-10-25", itens: ["Verificação remota de versão no acesso ao painel.", "Correções de integridade, relatórios e cadastros da PoC na Vette."] },
   {
