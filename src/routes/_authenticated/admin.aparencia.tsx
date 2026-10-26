@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_authenticated/admin/aparencia")({
   component: Aparencia,
 });
 
-const CHAVES = ["tema", "cor_primaria", "cor_destaque", "facebook_url"] as const;
+const CHAVES = ["tema", "cor_primaria", "cor_destaque", "cor_fundo", "facebook_url"] as const;
 
 function Aparencia() {
   const { isAdmin } = useSession();
@@ -42,17 +42,18 @@ function Aparencia() {
       <fieldset className="grid gap-3 sm:grid-cols-3">
         <legend className="mb-2 text-sm font-semibold">Tema</legend>
         {Object.entries(TEMAS).map(([k, t]) => (
-          <button key={k} type="button" onClick={() => setV((o) => ({ ...o, tema: k, cor_primaria: "", cor_destaque: "" }))}
-            className={`rounded-lg border-2 p-3 text-left text-sm ${v.tema === k ? "border-primary" : "border-border"}`} aria-pressed={v.tema === k}>
+          <Button variant="outline" key={k} type="button" onClick={() => setV((o) => ({ ...o, tema: k, cor_primaria: "", cor_destaque: "", cor_fundo: "" }))}
+            className={`rounded-lg border-2 h-auto flex-col items-start p-3 text-left text-sm ${v.tema === k ? "border-primary" : "border-border"}`} aria-pressed={v.tema === k}>
             <div className="mb-2 flex gap-1">{[t.primary, t.accent, t.highlight].map((c) => <span key={c} className="size-6 rounded" style={{ background: c }} />)}</div>
             {t.nome}
-          </button>
+          </Button>
         ))}
       </fieldset>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-1.5"><Label htmlFor="cp">Cor principal (opcional)</Label><Input id="cp" type="color" value={v.cor_primaria || TEMAS[v.tema ?? "institucional"]?.primary || "#0b5ea8"} onChange={(e) => set("cor_primaria", e.target.value)} /></div>
         <div className="grid gap-1.5"><Label htmlFor="cd">Cor de destaque (opcional)</Label><Input id="cd" type="color" value={v.cor_destaque || TEMAS[v.tema ?? "institucional"]?.accent || "#f08a1c"} onChange={(e) => set("cor_destaque", e.target.value)} /></div>
       </div>
+      <div className="flex items-end gap-3"><div className="grid flex-1 gap-1.5"><Label htmlFor="cf">Cor de fundo (opcional)</Label><Input id="cf" type="color" value={v.cor_fundo || TEMAS[v.tema ?? "institucional"]?.background || "#f7f8fa"} onChange={e => set("cor_fundo", e.target.value)} /></div><Button variant="outline" onClick={() => set("cor_fundo", "")}>Restaurar fundo do tema</Button></div>
       <div className="grid gap-1.5">
         <Label htmlFor="fb">Endereço da página oficial no Facebook</Label>
         <Input id="fb" placeholder="https://www.facebook.com/prefeituradepaudosferros" value={v.facebook_url ?? ""} onChange={(e) => set("facebook_url", e.target.value)} />

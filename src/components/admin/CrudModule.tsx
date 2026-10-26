@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+
 import { adminModuleQuery } from "@/lib/admin-queries";
 import { deleteRow, saveRow, uploadFile, type Row } from "@/lib/data";
 import { formatCell, type Field, type ModuleDef } from "@/lib/modules";
@@ -55,6 +55,8 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
     setEditing({ id: r.id, values });
   };
 
+  if (editing) return <section className="mx-auto max-w-5xl"><div className="mb-6 flex flex-wrap items-center justify-between gap-3"><h1 className="font-display text-2xl font-bold">{editing.id ? "Editar" : "Novo registro"} — {mod.label}</h1><Button variant="outline" onClick={() => setEditing(null)}>Voltar aos registros</Button></div><RowForm key={editing.id ?? "novo"} mod={mod} initial={editing.values} id={editing.id} onDone={() => { setEditing(null); refresh(); }} /></section>;
+
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
@@ -100,12 +102,7 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
           </table>
         </div>
       </div>
-      <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
-        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
-          <DialogHeader><DialogTitle>{editing?.id ? "Editar" : "Novo"} — {mod.label}</DialogTitle></DialogHeader>
-          {editing && <RowForm mod={mod} initial={editing.values} id={editing.id} onDone={() => { setEditing(null); refresh(); }} />}
-        </DialogContent>
-      </Dialog>
+
     </div>
   );
 }
@@ -114,7 +111,7 @@ function RowForm({ mod, initial, id, onDone }: { mod: ModuleDef; initial: Values
   const [values, setValues] = useState<Values>(initial);
   const [saving, setSaving] = useState(false);
   const [uploads, setUploads] = useState(0);
-  const set = (name: string, v: unknown) => setValues((p) => ({ ...p, [name]: v }));
+  const set = (name: string, v: unknown) => setValues((p) => ({ ...p, [name]: v, ...(mod.key === "contratos" && name === "tipo" && !["Aditivo", "Adesão (Carona)"].includes(String(v)) ? { contrato_origem_id: "" } : {}) }));
 
   const submit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -216,11 +213,12 @@ function FieldInput({ field: f, value, onChange, onUploadBusy }: { field: Field;
 }
 
 function RelationInput({ field: f, value, onChange, label, id }: { field: Field; value: unknown; onChange: (v: unknown) => void; label: React.ReactNode; id: string }) {
-  const ref = f.ref!;
+  const ref = f.ref;
+  if (!ref) return null;
   const { data = [] } = useQuery({ ...adminModuleQuery(ref.module) });
   const opts = Array.from(
     new Map<string, { value: string; label: string }>(
-      data.filter((r) => r[ref.column] != null).map((r) => [
+      data.filter((r) => r[ref.column] != null && (f.name !== "contrato_origem_id" || (r.id !== value && ["Contrato", "Ata de Registro de Preços"].includes(String(r.tipo ?? "Contrato"))))).map((r) => [
         String(r[ref.column]),
         { value: String(r[ref.column]), label: String(r[ref.displayColumn ?? ref.column] ?? r[ref.column]) },
       ] as const),
