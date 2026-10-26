@@ -6,7 +6,7 @@ import WebKit
 }
 @MainActor final class PortalModel: NSObject,ObservableObject,WKNavigationDelegate,WKUIDelegate {
  let web: WKWebView
- @Published var message = "Pau dos Ferros — PoC · dados fictícios"
+ @Published var message = ""
  let host = "pau-dos-ferros.lovable.app"
  override init(){
   let config=WKWebViewConfiguration()
@@ -16,7 +16,7 @@ import WebKit
   web.navigationDelegate=self
   web.uiDelegate=self
   web.allowsBackForwardNavigationGestures=true
-  open("/noticias")
+  open("/")
  }
  func open(_ path:String){ if let url=URL(string:"https://"+host+path){web.load(URLRequest(url:url))} }
  func webView(_ webView:WKWebView,decidePolicyFor action:WKNavigationAction,decisionHandler:@escaping(WKNavigationActionPolicy)->Void){
@@ -33,7 +33,7 @@ import WebKit
   return nil
  }
  func webView(_ webView:WKWebView,didFailProvisionalNavigation navigation:WKNavigation!,withError error:Error){message="Sem conexão. Toque em Atualizar."}
- func webView(_ webView:WKWebView,didFinish navigation:WKNavigation!){message="Pau dos Ferros — PoC · dados fictícios"}
+ func webView(_ webView:WKWebView,didFinish navigation:WKNavigation!){message=""}
 }
 struct PortalWebView:UIViewRepresentable {
  let model:PortalModel
@@ -42,15 +42,23 @@ struct PortalWebView:UIViewRepresentable {
 }
 struct PortalView:View {
  @StateObject private var model=PortalModel()
- @State private var nativeNews=true
+ @State private var nativeNews=false
  @State private var newsRefresh=UUID()
- let links:[(String,String)]=[("Notícias","/noticias"),("Painel","/admin"),("Nova notícia","/admin/noticias?novo=1"),("Editais","/admin/edital"),("Fiscal","/admin/lrf"),("Leis","/admin/lei"),("Decretos","/admin/decreto"),("Estatísticas","/admin")]
+ let links:[(String,String)]=[("Painel administrativo","/admin"),("Serviços","/servicos"),("Transparência","/transparencia"),("Ouvidoria / e-SIC","/esic"),("Nova notícia","/admin/noticias?novo=1"),("Editais","/admin/edital"),("Fiscal","/admin/lrf"),("Leis","/admin/lei"),("Decretos","/admin/decreto")]
  var body:some View {
   VStack(spacing:0){
-   Text(model.message).font(.caption).padding(10).frame(maxWidth:.infinity).background(Color.yellow.opacity(0.25))
-   ScrollView(.horizontal,showsIndicators:false){
-    HStack{ForEach(links,id:\.0){item in Button(item.0){if item.0 == "Notícias" {nativeNews=true} else {nativeNews=false;model.open(item.1)}}};Button("Voltar"){model.web.goBack()};Button("Atualizar"){if nativeNews {newsRefresh=UUID()} else {model.web.reload()}};Button("Navegador"){if let u=model.web.url{UIApplication.shared.open(u)}}}.padding(10)
-   }
+   if !model.message.isEmpty {Text(model.message).font(.caption).padding(10).frame(maxWidth:.infinity).background(Color.yellow.opacity(0.25))}
+   HStack {
+    Button("Portal"){nativeNews=false;model.open("/")}.frame(maxWidth:.infinity,minHeight:44)
+    Button("Notícias"){nativeNews=true}.frame(maxWidth:.infinity,minHeight:44)
+    Menu {
+     ForEach(links,id:\.0){item in Button(item.0){nativeNews=false;model.open(item.1)}}
+     Divider()
+     Button("Voltar"){if nativeNews {nativeNews=false;model.open("/")} else {model.web.goBack()}}
+     Button("Atualizar"){if nativeNews {newsRefresh=UUID()} else {model.web.reload()}}
+     Button("Abrir no navegador"){if let u=model.web.url{UIApplication.shared.open(u)}}
+    } label: {Text("Menu").frame(maxWidth:.infinity,minHeight:44)}
+   }.padding(.horizontal,8)
    if nativeNews { NativeNewsList().id(newsRefresh) } else { PortalWebView(model:model) }
   }
  }

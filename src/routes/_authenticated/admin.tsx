@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useSession } from "@/hooks/use-session";
 import { supabase } from "@/integrations/supabase/client";
 import { MODULES, modulePermissionTable } from "@/lib/modules";
@@ -35,6 +35,7 @@ function AvisoAtualizacao() {
 }
 
 function AdminLayout() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const home = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, '') === '/admin' });
   const { ready, isStaff, isAdmin, user } = useSession();
   const { data: perms } = useQuery({
@@ -56,8 +57,9 @@ function AdminLayout() {
   );
   const visiveis = MODULES.filter((m) => isAdmin || !perms?.length || perms.includes(modulePermissionTable(m)));
   return (
-    <div className={`mx-auto grid max-w-7xl gap-6 px-4 py-8 ${home ? '' : 'md:grid-cols-[230px_1fr]'}`}>
-      {!home && <aside className="space-y-4 rounded-lg border bg-card p-3 md:sticky md:top-4 md:max-h-[90vh] md:overflow-y-auto">
+    <div className={`mx-auto grid w-full min-w-0 max-w-7xl gap-4 px-4 py-4 sm:gap-6 sm:py-8 ${home ? '' : 'md:grid-cols-[230px_minmax(0,1fr)]'}`}>
+      {!home && <Button variant="outline" className="justify-start md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="menu-administrativo"><Menu />Módulos e ferramentas</Button>}
+      {!home && <aside id="menu-administrativo" onClick={(event) => { if ((event.target as HTMLElement).closest('a')) setMenuOpen(false); }} className={`${menuOpen ? 'block' : 'hidden'} min-w-0 space-y-4 rounded-lg border bg-card p-3 md:sticky md:top-4 md:block md:max-h-[90vh] md:overflow-y-auto`}>
         <nav aria-label="Painel">
           <Link to="/admin" className={item} activeOptions={{ exact: true }} activeProps={{ className: "bg-secondary font-semibold" }}>Visão geral</Link>
           {isAdmin && <Link to="/admin/usuarios" className={item}>Usuários e perfis</Link>}

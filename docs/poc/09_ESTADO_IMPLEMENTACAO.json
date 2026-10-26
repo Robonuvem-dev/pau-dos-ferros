@@ -963,7 +963,7 @@
       "requisito": "Visualização móvel nativa de Notícias publicadas no portal.",
       "pagina_pdf": 45,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Leitura e listagem de notícias usam componentes nativos Android/SwiftUI; acesso à publicação é contabilizado. Assinatura e ensaio físico iOS continuam necessários para a apresentação."
+      "observacao": "Leitura e listagem de notícias usam componentes nativos Android/SwiftUI; acesso à publicação é contabilizado. Assinatura e ensaio físico iOS continuam necessários para a apresentação. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
     },
     {
       "id": "13.2",
@@ -971,7 +971,7 @@
       "requisito": "Cadastro direto de novas notícias por meio do dispositivo móvel autorizado.",
       "pagina_pdf": 45,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Atalho móvel abre cadastro de notícia no painel web autenticado, com escolha de arquivos. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria."
+      "observacao": "Atalho móvel abre cadastro de notícia no painel web autenticado, com escolha de arquivos. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
     },
     {
       "id": "13.3",
@@ -979,7 +979,7 @@
       "requisito": "Alteração e edição de notícias publicadas utilizando o aplicativo mobile.",
       "pagina_pdf": 45,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Painel web embarcado permite abrir e editar notícias conforme permissões. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria."
+      "observacao": "Painel web embarcado permite abrir e editar notícias conforme permissões. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
     },
     {
       "id": "13.4",
@@ -987,7 +987,7 @@
       "requisito": "Visualização de estatísticas em tempo real de acessos e visualizações das notícias.",
       "pagina_pdf": 45,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Total soma todas as notícias; ranking mostra dez. Leituras da tela nativa entram no contador e falhas são informadas."
+      "observacao": "Total soma todas as notícias; ranking mostra dez. Leituras da tela nativa entram no contador e falhas são informadas. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
     },
     {
       "id": "13.5",
@@ -995,7 +995,7 @@
       "requisito": "Cadastro de Editais e Processos Seletivos por meio do aplicativo de gestão móvel.",
       "pagina_pdf": 45,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Aplicativo dá acesso ao painel e ao cadastro de editais; concursos/seletivos permanecem disponíveis na navegação administrativa. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria."
+      "observacao": "Aplicativo dá acesso ao painel e ao cadastro de editais; concursos/seletivos permanecem disponíveis na navegação administrativa. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
     },
     {
       "id": "13.6",
@@ -1003,7 +1003,7 @@
       "requisito": "Publicação simplificada de relatórios fiscais oficiais de forma direta pelo aplicativo.",
       "pagina_pdf": 45,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Atalho LRF abre publicação de relatórios fiscais no formulário web com envio de arquivo. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria."
+      "observacao": "Atalho LRF abre publicação de relatórios fiscais no formulário web com envio de arquivo. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
     },
     {
       "id": "13.7",
@@ -1011,7 +1011,7 @@
       "requisito": "Publicação e upload rápido de Leis municipais via dispositivo móvel.",
       "pagina_pdf": 46,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Atalho Leis abre formulário web; seletores de arquivos permitem envio pelo dispositivo. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria."
+      "observacao": "Atalho Leis abre formulário web; seletores de arquivos permitem envio pelo dispositivo. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
     },
     {
       "id": "13.8",
@@ -1019,7 +1019,7 @@
       "requisito": "Publicação rápida de Decretos municipais pelo smartphone/tablet.",
       "pagina_pdf": 46,
       "classificacao": "IMPLEMENTADO",
-      "observacao": "Atalho Decretos abre formulário web para cadastro e publicação. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria."
+      "observacao": "Atalho Decretos abre formulário web para cadastro e publicação. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
     },
     {
       "id": "14.1",
@@ -1397,5 +1397,17 @@
     "relatorio": "Salvo e auditado no Cloud, sem aprovações automáticas.",
     "pendencias_cadastrais_observadas": 81
   },
-  "release131": "Publicação e ensaio de atualização entre versões ainda em andamento."
+  "release131": "Publicação e ensaio de atualização entre versões ainda em andamento.",
+  "revisao_apps": {
+    "data": "2026-10-26",
+    "versao_site": "1.4.0",
+    "versao_nativa": "1.1.0",
+    "build": 3,
+    "codigo_testado": "37d5a93406ca7939c5cfec2d53a375695c0c51c4",
+    "ci_mobile": "https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40264587043",
+    "ci_qualidade": "https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40264587002",
+    "instalacao": "/instalar.html",
+    "apk": "/downloads/PauDosFerros-Android.apk",
+    "limites": "Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
+  }
 }

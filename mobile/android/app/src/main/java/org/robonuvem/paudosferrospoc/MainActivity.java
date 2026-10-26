@@ -27,19 +27,19 @@ public final class MainActivity extends Activity {
   super.onCreate(saved);
   LinearLayout root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);
   root.setOnApplyWindowInsetsListener((v,insets)->{v.setPadding(insets.getSystemWindowInsetLeft(),insets.getSystemWindowInsetTop(),insets.getSystemWindowInsetRight(),insets.getSystemWindowInsetBottom());return insets;});
-  message=new TextView(this);message.setText("Pau dos Ferros — PoC · dados fictícios");message.setPadding(16,12,16,12);message.setBackgroundColor(Color.rgb(255,244,198));root.addView(message);
-  HorizontalScrollView scroll=new HorizontalScrollView(this);
+  message=new TextView(this);message.setPadding(16,8,16,8);message.setBackgroundColor(Color.rgb(255,244,198));message.setVisibility(android.view.View.GONE);root.addView(message);
   LinearLayout buttons=new LinearLayout(this);
-  String[] labels={"Notícias","Painel","Nova notícia","Editais","Fiscal","Leis","Decretos","Estatísticas","Voltar","Atualizar","Navegador"};
-  String[] paths={"/noticias","/admin","/admin/noticias?novo=1","/admin/edital","/admin/lrf","/admin/lei","/admin/decreto","/admin",""};
+  String[] labels={"Portal","Notícias","Menu"};
   for(int i=0;i<labels.length;i++){
    final int index=i; Button b=new Button(this);b.setText(labels[i]);b.setAllCaps(false);
-   b.setOnClickListener(v->{if(index==0){showNews();}else if(index==8){if(web.canGoBack())web.goBack();}else if(index==9){if(nativeNews.getVisibility()==android.view.View.VISIBLE)showNews();else web.reload();}else if(index==10)external(Uri.parse(web.getUrl()==null?BASE:web.getUrl()));else open(paths[index]);});
-   buttons.addView(b);
+   b.setOnClickListener(v->{if(index==0)open("/");else if(index==1)showNews();else showMenu(b);});
+   buttons.addView(b,new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT,1));
   }
-  scroll.addView(buttons);root.addView(scroll);
+  root.addView(buttons,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
   web=new WebView(this);web.setContentDescription("Portal e gestão municipal");
   web.getSettings().setJavaScriptEnabled(true);web.getSettings().setDomStorageEnabled(true);
+  web.getSettings().setUseWideViewPort(true);web.getSettings().setLoadWithOverviewMode(true);
+  web.getSettings().setBuiltInZoomControls(true);web.getSettings().setDisplayZoomControls(false);
   web.getSettings().setAllowFileAccess(false);web.getSettings().setAllowContentAccess(true);
   web.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
   web.getSettings().setSupportMultipleWindows(false);
@@ -47,8 +47,8 @@ public final class MainActivity extends Activity {
   CookieManager.getInstance().setAcceptThirdPartyCookies(web,false);
   web.setWebViewClient(new WebViewClient(){
    @Override public boolean shouldOverrideUrlLoading(WebView v,WebResourceRequest req){Uri u=req.getUrl();if(trusted(u))return false;if(req.isForMainFrame())external(u);return true;}
-   @Override public void onPageFinished(WebView v,String url){message.setText("Pau dos Ferros — PoC · dados fictícios");}
-   @Override public void onReceivedError(WebView v,WebResourceRequest r,WebResourceError e){if(r.isForMainFrame())message.setText("Sem conexão. Use Atualizar para tentar novamente.");}
+   @Override public void onPageFinished(WebView v,String url){message.setVisibility(android.view.View.GONE);}
+   @Override public void onReceivedError(WebView v,WebResourceRequest r,WebResourceError e){if(r.isForMainFrame()){message.setText("Sem conexão. No Menu, toque em Atualizar.");message.setVisibility(android.view.View.VISIBLE);}}
   });
   web.setWebChromeClient(new WebChromeClient(){
    @Override public boolean onShowFileChooser(WebView view,ValueCallback<Uri[]> callback,FileChooserParams params){
@@ -65,7 +65,15 @@ public final class MainActivity extends Activity {
   root.addView(web,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1));
   nativeNews=new ScrollView(this);nativeContent=new LinearLayout(this);nativeContent.setOrientation(LinearLayout.VERTICAL);nativeContent.setPadding(24,16,24,16);nativeNews.addView(nativeContent);
   root.addView(nativeNews,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1));setContentView(root);
-  if(saved==null)showNews();else {open("/noticias");web.restoreState(saved);}
+  if(saved==null)open("/");else {open("/");web.restoreState(saved);}
+ }
+ private void showMenu(android.view.View anchor){
+  PopupMenu menu=new PopupMenu(this,anchor);
+  String[] labels={"Painel administrativo","Serviços","Transparência","Ouvidoria / e-SIC","Nova notícia","Editais","Relatórios fiscais","Leis","Decretos","Atualizar","Voltar","Abrir no navegador"};
+  String[] paths={"/admin","/servicos","/transparencia","/esic","/admin/noticias?novo=1","/admin/edital","/admin/lrf","/admin/lei","/admin/decreto"};
+  for(int i=0;i<labels.length;i++)menu.getMenu().add(0,i,i,labels[i]);
+  menu.setOnMenuItemClickListener(item->{int i=item.getItemId();if(i<paths.length)open(paths[i]);else if(i==9){if(nativeNews.getVisibility()==android.view.View.VISIBLE)showNews();else web.reload();}else if(i==10)onBackPressed();else external(Uri.parse(web.getUrl()==null?BASE:web.getUrl()));return true;});
+  menu.show();
  }
  private void nativeText(String text,int size){TextView t=new TextView(this);t.setText(text);t.setTextSize(size);t.setPadding(0,10,0,14);t.setTextIsSelectable(true);nativeContent.addView(t);}
  private void showList(){
@@ -110,6 +118,6 @@ public final class MainActivity extends Activity {
   if(request==501&&upload!=null){upload.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(result,data));upload=null;}
  }
  @Override protected void onSaveInstanceState(Bundle out){web.saveState(out);super.onSaveInstanceState(out);}
- @Override public void onBackPressed(){if(web.canGoBack())web.goBack();else super.onBackPressed();}
+ @Override public void onBackPressed(){if(nativeNews.getVisibility()==android.view.View.VISIBLE)open("/");else if(web.canGoBack())web.goBack();else super.onBackPressed();}
  @Override protected void onDestroy(){if(upload!=null)upload.onReceiveValue(null);worker.shutdownNow();web.destroy();super.onDestroy();}
 }

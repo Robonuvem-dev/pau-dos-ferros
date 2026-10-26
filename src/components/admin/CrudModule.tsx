@@ -215,8 +215,8 @@ function FieldInput({ field: f, recordId, instrumentType, value, onChange, onUpl
 
 function RelationInput({ field: f, recordId, instrumentType, value, onChange, label, id }: { field: Field; recordId?: string | undefined; instrumentType?: string | undefined; value: unknown; onChange: (v: unknown) => void; label: React.ReactNode; id: string }) {
   const ref = f.ref;
+  const { data = [] } = useQuery({ ...adminModuleQuery(ref?.module ?? ''), enabled: !!ref });
   if (!ref) return null;
-  const { data = [] } = useQuery({ ...adminModuleQuery(ref.module) });
   const opts = Array.from(
     new Map<string, { value: string; label: string }>(
       data.filter((r) => r[ref.column] != null && (f.name !== "contrato_origem_id" || (r.id !== recordId && (instrumentType === 'Adesão (Carona)' ? r.tipo === 'Ata de Registro de Preços' : ["Contrato", "Ata de Registro de Preços"].includes(String(r.tipo ?? "Contrato")))))).map((r) => [
