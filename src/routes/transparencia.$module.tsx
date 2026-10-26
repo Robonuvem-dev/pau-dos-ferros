@@ -14,7 +14,7 @@ import { moduleQuery } from "@/lib/queries";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/transparencia/$module")({
-  validateSearch: (s: Record<string, unknown>): { registro?: string } => typeof s.registro === "string" && /^[0-9a-f-]{36}$/i.test(s.registro) ? { registro: s.registro } : {},
+  validateSearch: (s: Record<string, unknown>): { registro?: string; q?: string } => ({ ...(typeof s.registro === 'string' && /^[0-9a-f-]{36}$/i.test(s.registro) ? { registro: s.registro } : {}), ...(typeof s.q === 'string' ? { q: s.q.slice(0, 300) } : {}) }),
   loader: async ({ context, params }) => {
     const mod = getModule(params.module);
     if (!mod || !mod.publico) throw notFound();
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/transparencia/$module")({
 
 function Consulta() {
   const { module } = Route.useParams();
-  const { registro } = Route.useSearch();
+  const { registro, q } = Route.useSearch();
   const mod = getModule(module);
   if (!mod) return <QueryNotFound />;
   return (
@@ -40,13 +40,11 @@ function Consulta() {
       <div className="mx-auto max-w-6xl px-4 py-8">
         {["receitas","despesas"].includes(mod.key) && <ResumoFiscal />}
         {mod.key === "servidores" && <ResumoPessoal />}
-        <PublicTable mod={mod} />
+        <PublicTable key={`${mod.key}-${registro ?? ''}-${q ?? ''}`} mod={mod} registro={registro} initialSearch={q} />
         {mod.key === "covid" && <CovidDetalhado />}
         {mod.key === "obras" && <ObrasDetalhadas />}
         {mod.key === "conselhos" && <ConselhosDetalhados registro={registro} />}
         {mod.key === "convenios" && <ResumoConvenios publico />}
-        {mod.key === "concurso" && <EtapasConcursos />}
-        {mod.key === "licitacoes" && <LinhaDoTempo />}
         <p className="mt-4 text-xs text-muted-foreground">Dados públicos disponibilizados em formato aberto, nos termos da Lei 12.527/2011 e da LC 131/2009.</p>
       </div>
     </>

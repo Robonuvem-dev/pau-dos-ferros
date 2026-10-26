@@ -16,6 +16,7 @@
 - Mount one session subscriber in the root and share it with the header and account screens to keep identity transitions consistent.
 - Keep PoC navigation grouped by tender module in a shared catalog; evaluation-sheet URL aliases resolve to canonical modules so they reuse existing fields, data and RLS.
 - Public content queries refresh while mounted and admin mutations invalidate shared public caches; resolve publication periods server-side in the municipal timezone to keep SSR and visitors consistent.
+- Generate downloadable PDF reports from structured data using the shared lazy-loaded PDF exporter; public relations and conditional filters derive from the central module fields, and process timelines belong to the filtered record view.
 
 ## PoC checklist maintenance
 - When a code change affects a requirement's implementation classification, update both `docs/poc/09_ESTADO_IMPLEMENTACAO.json` and the existing Google Sheets checklist: https://docs.google.com/spreadsheets/d/19OCXec6gPubvd0RXAOXf78aVK_-U8SFKG70d_fUS9I0/edit . Keep the same spreadsheet, its 168 requirement IDs, five columns, user checkboxes and unrelated notes.
