@@ -2,7 +2,7 @@
 Plano aprovado: .lovable/plan/novo-plano-de-sprints-entrega-completa-do-edital-sem-webmail-2026-10-23.md
 
 ## Atualização de navegação da PoC
-- [ ] Acrescentar e verificar 20 registros simulados realistas por cadastro, preservando dados existentes, relações e cadastros de segurança.
+- [x] Acrescentar e verificar 20 registros simulados realistas por cadastro (50 cadastros, 1.000 linhas principais), preservando dados existentes, relações e cadastros de segurança; evidências em docs/poc/12.
 - [x] Correções M01–M05: temas/fundo, banners 5s, CRUD no corpo, concursos, vínculos/filtros públicos, aditivos 3.7, cronograma 3.8, PDFs 3.14 e metas/especificações 4.7; fluxos autenticados, PDFs e 221 testes verificados (docs/poc/11).
 - [x] Revisar sincronização das páginas públicas com o painel, banners e sobreposição na página inicial; 75 endereços e edição real de banner verificados (docs/poc/07_VERIFICACAO_PUBLICA.md).
 - [x] Organizar /admin em 16 módulos, mantendo visão geral abaixo e sem menu lateral nessa página.
