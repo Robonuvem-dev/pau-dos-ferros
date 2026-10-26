@@ -12,6 +12,7 @@ import { formatCell, toCSV, getModule, dataBR, type Field, type ModuleDef } from
 import { filterPublicRows } from '@/lib/transparency-filters';
 import { moduleReport } from '@/lib/pdf-report';
 import { resolvePublicRelation, reversePublicRelations } from '@/lib/public-relations';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
 
 export function PublicTable({ mod, registro, initialSearch = '', initialFilters = {} }: { mod: ModuleDef; registro?: string | undefined; initialSearch?: string | undefined; initialFilters?: Record<string, string> | undefined }) {
   const { data } = useSuspenseQuery(moduleQuery(mod.key));
@@ -28,7 +29,6 @@ export function PublicTable({ mod, registro, initialSearch = '', initialFilters 
   };
   const rows = filterPublicRows(data, mod.fields, q, filters, registro, label);
   const cols = mod.fields.filter(f => !f.hideInTable);
-  const details = mod.fields.filter(f => f.hideInTable);
   const filterFields = mod.fields.filter(f => !['file', 'files', 'tags'].includes(f.type ?? '') && !f.readOnly);
   const cell = (f: Field, r: Record<string, unknown>) => {
     const value = r[f.name];
@@ -47,7 +47,19 @@ export function PublicTable({ mod, registro, initialSearch = '', initialFilters 
     const url = URL.createObjectURL(new Blob([type === 'csv' ? '\uFEFF' + toCSV(mod.fields, rows) : JSON.stringify(rows, null, 2)], { type: type === 'csv' ? 'text/csv' : 'application/json' }));
     const a = document.createElement('a'); a.href = url; a.download = `${mod.key}.${type}`; a.click(); URL.revokeObjectURL(url);
   };
-  const detailList = (r: Record<string, unknown>, fields: Field[]) => <dl className="grid gap-4 sm:grid-cols-2">{fields.map(f => <div key={f.name} className={f.type === 'textarea' ? 'sm:col-span-2' : ''}><dt className="text-sm font-semibold text-muted-foreground">{f.label}</dt><dd className="mt-1 whitespace-pre-wrap break-words">{cell(f, r)}</dd></div>)}</dl>;
+  const recordDialog = (r: Record<string, unknown>) => <Dialog>
+    <DialogTrigger asChild><Button variant="link" className="h-auto whitespace-normal p-0 text-left" aria-label={`Ver informações completas: ${String(r.titulo ?? r.numero ?? r.nome ?? r.id)}`}><FileText className="shrink-0" />Ver informações completas</Button></DialogTrigger>
+    <DialogContent className="flex max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl flex-col overflow-hidden p-0">
+      <DialogHeader className="shrink-0 border-b bg-secondary px-6 py-5 pr-12 text-left">
+        <DialogDescription className="font-semibold text-primary">{mod.label}</DialogDescription>
+        <DialogTitle className="break-words text-xl leading-snug">{String(r.titulo ?? r.numero ?? r.nome ?? 'Informações completas')}</DialogTitle>
+      </DialogHeader>
+      <div className="min-h-0 overflow-y-auto overscroll-contain px-6 py-5">
+        <dl className="grid min-w-0 gap-x-6 gap-y-5 sm:grid-cols-2">{mod.fields.map(f => <div key={f.name} className={`min-w-0 border-b pb-4 ${['textarea','files'].includes(f.type ?? '') ? 'sm:col-span-2' : ''}`}><dt className="mb-1.5 text-sm font-semibold text-muted-foreground">{f.label}</dt><dd className="whitespace-pre-wrap break-words text-sm leading-relaxed [overflow-wrap:anywhere]">{cell(f,r)}</dd></div>)}</dl>
+      </div>
+      <div className="flex shrink-0 justify-end border-t px-6 py-3"><DialogClose asChild><Button variant="outline">Fechar</Button></DialogClose></div>
+    </DialogContent>
+  </Dialog>;
   return <div className="space-y-4">
     <div className="flex flex-wrap items-center gap-3 border-b pb-4">
       <div className="relative min-w-0 flex-1 basis-60"><Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><Input aria-label={`Pesquisar em ${mod.label}`} placeholder="Pesquisar nesta consulta..." value={q} onChange={e => setQ(e.target.value)} className="pl-9" /></div>
@@ -67,11 +79,11 @@ export function PublicTable({ mod, registro, initialSearch = '', initialFilters 
       <div className="flex flex-wrap items-start justify-between gap-2"><h2 className="font-display text-xl font-bold">{String(r.titulo ?? `${mod.label} ${r.numero ?? ''}`)}</h2><span className="text-sm font-semibold text-primary">{String(r.situacao ?? r.tipo ?? '')}</span></div>
       <dl className="mt-4 grid gap-3 sm:grid-cols-2">{mod.fields.filter(f => f.ref && getModule(f.ref.module)?.publico && r[f.name]).map(f => <div key={f.name}><dt className="text-sm text-muted-foreground">{f.label}</dt><dd>{cell(f, r)}</dd></div>)}</dl>
       {mod.key === 'concurso' && <div className="mt-3 space-y-3"><div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">{r.numero && <span>Edital {String(r.numero)}</span>}{r.data && <span>Publicado em {dataBR(r.data)}</span>}{r.orgao && <span>{String(r.orgao)}</span>}</div>{r.ementa && <p className="whitespace-pre-wrap">{String(r.ementa)}</p>}{r.arquivo_url && <Button asChild variant="outline" size="sm"><a href={String(r.arquivo_url)} target="_blank" rel="noreferrer"><FileText />Abrir edital e documentos</a></Button>}</div>}
-      <details open={!!registro} className="mt-4"><summary className="cursor-pointer text-primary">Ver detalhes completos</summary><div className="mt-4">{detailList(r, mod.fields.filter(f => f.name !== 'etapas'))}</div></details>
+      <div className="mt-4">{recordDialog(r)}</div>
       {mod.key === 'concurso' && <section className="mt-5"><h3 className="font-semibold">Etapas e cronograma</h3><ol className="mt-3 space-y-3 border-l-2 border-primary pl-4">{String(r.etapas ?? '').split('\n').filter(s => s.trim()).map((s, i) => <li key={i} className="whitespace-pre-wrap">{s}</li>)}</ol>{!r.etapas && <p className="text-sm text-muted-foreground">Etapas ainda não publicadas.</p>}</section>}
       {mod.key === 'licitacoes' && <section className="mt-5"><h3 className="font-semibold">Linha do tempo do processo {String(r.numero)}</h3>{timeline.error ? <p role="alert">Não foi possível carregar os andamentos.</p> : <ol className="mt-3 space-y-4 border-l-2 border-primary pl-4">{(timeline.data ?? []).filter(a => a.licitacao_numero === r.numero).sort((a, b) => String(a.data ?? '').localeCompare(String(b.data ?? ''))).map(a => <li key={a.id}><div className="font-semibold">{String(a.fase)} · {dataBR(a.data)}</div><p className="whitespace-pre-wrap text-sm">{String(a.descricao ?? '')}</p>{a.arquivo_url && <a href={String(a.arquivo_url)} className="text-primary underline" target="_blank" rel="noreferrer">Anexo da fase</a>}</li>)}</ol>}{!timeline.isPending && !(timeline.data ?? []).some(a => a.licitacao_numero === r.numero) && <p className="text-sm text-muted-foreground">Nenhum andamento publicado para este processo.</p>}</section>}
       {mod.key === 'contratos' && r.tipo !== 'Aditivo' && <section className="mt-4"><h3 className="font-semibold">Aditivos vinculados</h3><ul className="mt-2 space-y-2">{data.filter(a => a.tipo === 'Aditivo' && a.contrato_origem_id === r.id).map(a => <li key={a.id}><Link className="text-primary underline" to="/transparencia/$module" params={{ module: 'contratos' }} search={{ registro: a.id }}>{String(a.numero)} · {formatCell({name:'valor',label:'Valor',type:'money'},a.valor)} · {dataBR(a.data_fim)}</Link></li>)}</ul>{!data.some(a => a.tipo === 'Aditivo' && a.contrato_origem_id === r.id) && <p className="text-sm text-muted-foreground">Nenhum aditivo vinculado.</p>}</section>}
       {mod.key === 'convenios' && <section className="mt-5 grid gap-4 sm:grid-cols-2"><div><h3 className="font-semibold">Metas do convênio</h3><p className="whitespace-pre-wrap">{String(r.metas || 'Não informadas')}</p></div><div><h3 className="font-semibold">Especificações técnicas</h3><p className="whitespace-pre-wrap">{String(r.especificacoes_tecnicas || 'Não informadas')}</p></div></section>}
-    </article>)}</div> : <div className="overflow-x-auto rounded-lg border bg-card"><table className="w-full text-sm"><caption className="sr-only">{mod.label}: {rows.length} registro(s)</caption><thead className="bg-secondary text-left"><tr>{cols.map(f => <th key={f.name} scope="col" className="px-4 py-3">{f.label}</th>)}{!!details.length && <th scope="col" className="px-4 py-3">Detalhes</th>}<th scope="col" className="px-4 py-3">Vínculos</th></tr></thead><tbody>{rows.map(r => <tr key={r.id} className="border-t align-top">{cols.map(f => <td key={f.name} className="px-4 py-3">{cell(f, r)}</td>)}{!!details.length && <td className="px-4 py-3"><details open={!!registro}><summary className="cursor-pointer text-primary">Ver informações completas</summary><div className="mt-4 min-w-60">{detailList(r, details)}</div></details></td>}<td className="px-4 py-3"><div className="flex min-w-40 flex-col gap-2">{reversePublicRelations(mod.key, r).map(link => <Link key={`${link.module}-${link.field}`} className="text-primary underline" to="/transparencia/$module" params={{ module: link.module }} search={{ filtros: { [link.field]: link.value } }}>{link.label}</Link>)}</div></td></tr>)}</tbody></table></div>}
+    </article>)}</div> : <div className="overflow-x-auto rounded-lg border bg-card"><table className="w-full text-sm"><caption className="sr-only">{mod.label}: {rows.length} registro(s)</caption><thead className="bg-secondary text-left"><tr>{cols.map(f => <th key={f.name} scope="col" className="px-4 py-3">{f.label}</th>)}<th scope="col" className="px-4 py-3">Detalhes</th><th scope="col" className="px-4 py-3">Vínculos</th></tr></thead><tbody>{rows.map(r => <tr key={r.id} className="border-t align-top">{cols.map(f => <td key={f.name} className="px-4 py-3">{cell(f, r)}</td>)}<td className="px-4 py-3">{recordDialog(r)}</td><td className="px-4 py-3"><div className="flex min-w-40 flex-col gap-2">{reversePublicRelations(mod.key, r).map(link => <Link key={`${link.module}-${link.field}`} className="text-primary underline" to="/transparencia/$module" params={{ module: link.module }} search={{ filtros: { [link.field]: link.value } }}>{link.label}</Link>)}</div></td></tr>)}</tbody></table></div>}
   </div>;
 }
