@@ -9,9 +9,12 @@ targets:
     type: application
     platform: iOS
     deploymentTarget: "16.0"
-    sources: [Sources]
+    sources: [Sources, Resources]
     settings:
       base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: 1.0.1
+        CURRENT_PROJECT_VERSION: 2
         PRODUCT_BUNDLE_IDENTIFIER: org.robonuvem.paudosferrospoc
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: Pau dos Ferros PoC
