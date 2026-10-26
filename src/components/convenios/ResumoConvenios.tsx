@@ -75,9 +75,9 @@ export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
                 const pendentes = deveres.filter(o => o.convenio_id === c.id && o.situacao === "Pendente");
                 const atrasadas = pendentes.filter(o => o.vencimento && String(o.vencimento) < hoje);
                 return <tr key={c.id} className="border-t align-top">
-                  <td className="p-2 font-medium">{String(c.numero ?? "Sem número")}</td>
+                  <td className="p-2 font-medium">{publico ? <Link className="text-primary underline" to="/transparencia/$module" params={{module:"convenios"}} search={{registro:c.id}}>{String(c.numero ?? "Sem número")}</Link> : String(c.numero ?? "Sem número")}</td>
                   <td className="p-2">{brl(valor)}</td>
-                  <td className="p-2">{brl(resumo.programado)}</td>
+                  <td className="p-2">{publico ? <Link className="text-primary underline" to="/transparencia/$module" params={{module:"convenio-parcelas"}} search={{filtros:{convenio_id:c.id}}}>{brl(resumo.programado)}</Link> : brl(resumo.programado)}</td>
                   <td className="p-2">{brl(resumo.recebido)}
                     {valor > 0 && <div><meter min={0} max={valor} value={Math.min(resumo.recebido, valor)} aria-label={`Valor recebido do convênio ${String(c.numero)}`} /><span className="block text-xs">{(resumo.recebido / valor * 100).toFixed(1)}% recebido</span></div>}
                   </td>
@@ -89,8 +89,8 @@ export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
                     {pendentes.length} pendente(s)
                     {atrasadas.length > 0 && <span className="block font-semibold text-destructive">{atrasadas.length} vencida(s)</span>}
                   </td>
-                  <td className="p-2">{(() => {const itens=(aplicacoes.data??[]).filter(a=>a.convenio_id===c.id);const total=itens.reduce((s,a)=>s+Number(a.valor??0),0);return <><ul>{itens.map(a=><li key={a.id}>{String(a.natureza)} · {String(a.descricao)} · {brl(a.valor)}</li>)}</ul><p>Aplicado: {brl(total)} · A detalhar: {brl(valor-total)}</p></>;})()}</td>
-                  <td className="p-2">{vinculados.length ? <ul>{vinculados.map(t => <li key={t.id}>{String(t.numero)} · {brl(t.valor_atualizado ?? t.valor)}</li>)}</ul> : "Nenhum vínculo cadastrado"}</td>
+                  <td className="p-2">{(() => {const itens=(aplicacoes.data??[]).filter(a=>a.convenio_id===c.id);const total=itens.reduce((s,a)=>s+Number(a.valor??0),0);return <><ul>{itens.map(a=><li key={a.id}>{publico ? <Link className="text-primary underline" to="/transparencia/$module" params={{module:"convenio-aplicacoes"}} search={{registro:a.id}}>{String(a.natureza)} · {String(a.descricao)}</Link> : <>{String(a.natureza)} · {String(a.descricao)}</>} · {brl(a.valor)}</li>)}</ul><p>Aplicado: {brl(total)} · A detalhar: {brl(valor-total)}</p></>;})()}</td>
+                  <td className="p-2">{vinculados.length ? <ul>{vinculados.map(t => <li key={t.id}>{publico ? <Link className="text-primary underline" to="/transparencia/$module" params={{module:"contratos"}} search={{registro:t.id}}>{String(t.numero)}</Link> : String(t.numero)} · {brl(t.valor_atualizado ?? t.valor)}</li>)}</ul> : "Nenhum vínculo cadastrado"}</td>
                 </tr>;
               })}
             </tbody>

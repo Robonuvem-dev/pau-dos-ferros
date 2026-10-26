@@ -26,6 +26,7 @@ vi.mock("@tanstack/react-query", () => ({
 }));
 vi.mock("@/lib/admin-queries", () => ({ adminModuleQuery: (key: string) => ({ queryKey: ["admin-module", key] }) }));
 vi.mock("@/lib/queries", () => ({ moduleQuery: (key: string) => ({ queryKey: ["public-module", key] }) }));
+vi.mock('@tanstack/react-router', () => ({ Link: ({ children }: { children: React.ReactNode }) => <a>{children}</a> }));
 
 afterEach(cleanup);
 describe("M04 — apresentacao publica", () => {
