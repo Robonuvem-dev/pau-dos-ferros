@@ -1,5 +1,9 @@
+<<<<<<< HEAD
+import { fieldMask, formatMaskedValue, formattedNumber } from "./formatting";
+=======
 import { LICITACAO_MODALIDADES } from "./catalogos";
 
+>>>>>>> origin/main
 // Configuração central dos módulos: dirige o Portal da Transparência e o painel administrativo.
 export type FieldType = "text" | "textarea" | "number" | "money" | "date" | "bool" | "file" | "tags" | "select" | "int" | "files" | "relation";
 
@@ -638,7 +642,7 @@ export const MODULE_ALIASES: Record<string, string> = {
 export const getModule = (key: string) => MODULES.find((m) => m.key === (MODULE_ALIASES[key] ?? key));
 
 export const brl = (v: unknown) =>
-  v == null || v === "" ? "—" : Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  formattedNumber(v, true);
 
 export const dataBR = (v: unknown) => {
   if (!v) return "—";
@@ -648,7 +652,8 @@ export const dataBR = (v: unknown) => {
 };
 
 export function formatCell(f: Field, v: unknown): string {
-  if (f.type === "money") return brl(v);
+  const mask = fieldMask(f);
+  if (mask) return formatMaskedValue(mask, v);
   if (f.type === "date") return dataBR(v);
   if (f.type === "bool") return v ? "Sim" : "Não";
   if (f.type === "files") return Array.isArray(v) ? `${v.length} arquivo(s)` : "";

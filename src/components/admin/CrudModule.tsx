@@ -1,3 +1,5 @@
+import { FormattedInput } from "@/components/ui/formatted-input";
+import { fieldMask } from "@/lib/formatting";
 import { initialValues as emptyValues } from "@/lib/normalization";
 import { useMemo, useState } from "react";
 import { useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
@@ -12,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { adminModuleQuery } from "@/lib/admin-queries";
 import { deleteRow, saveRow, uploadFile, type Row } from "@/lib/data";
 import { formatCell, type Field, type ModuleDef } from "@/lib/modules";
+import { IntegracaoExterna } from "@/components/admin/IntegracaoExterna";
 import { ImportarArquivo } from "@/components/admin/ImportarArquivo";
 import { ResumoFiscal } from "@/components/transparencia/ResumoFiscal";
 import { ResumoPessoal } from "@/components/transparencia/ResumoPessoal";
@@ -29,7 +32,7 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
 
   const rows = useMemo(() => {
     const s = q.trim().toLowerCase();
-    return s ? data.filter((r) => mod.fields.some((f) => String(r[f.name] ?? "").toLowerCase().includes(s))) : data;
+    return s ? data.filter((r) => mod.fields.some((f) => (String(r[f.name] ?? "") + " " + formatCell(f, r[f.name])).toLowerCase().includes(s))) : data;
   }, [data, q, mod.fields]);
 
   const refresh = () => {
@@ -66,6 +69,7 @@ export function CrudModule({ mod, startNew = false }: { mod: ModuleDef; startNew
         </div>
         {mod.allowCreate !== false && <Button onClick={() => setEditing({ values: emptyValues(mod) })}><Plus />Novo registro</Button>}
       </div>
+      <IntegracaoExterna key={mod.key} modulo={mod.key} onDone={refresh} />
       <ImportarArquivo modulo={mod.key} onDone={refresh} />
       {["receitas","despesas"].includes(mod.key) && <ResumoFiscal />}
       {mod.key === "servidores" && <ResumoPessoal />}
@@ -204,8 +208,15 @@ function FieldInput({ field: f, recordId, instrumentType, value, onChange, onUpl
       </div>
     );
   }
+<<<<<<< HEAD
+  if (f.type === "relation" && f.ref) return <RelationInput field={f} value={value} onChange={onChange} label={label} id={id} />;
+  const mask = fieldMask(f);
+  if (mask) return <div className="grid gap-1.5">{label}<FormattedInput id={id} mask={mask} value={value} onValueChange={onChange} required={f.required} /></div>;
+  const type = f.name === "email" ? "email" : f.type === "date" ? "date" : f.type === "int" || f.type === "number" || f.type === "money" ? "number" : "text";
+=======
   if (f.type === "relation" && f.ref) return <RelationInput field={f} recordId={recordId} instrumentType={instrumentType} value={value} onChange={onChange} label={label} id={id} />;
   const type = f.type === "date" ? "date" : f.type === "int" || f.type === "number" || f.type === "money" ? "number" : "text";
+>>>>>>> origin/main
   return (
     <div className="grid gap-1.5">{label}
       <Input id={id} type={type} step={f.type === "money" ? "0.01" : undefined} value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} placeholder={f.type === "tags" ? "separe por vírgulas" : undefined} />

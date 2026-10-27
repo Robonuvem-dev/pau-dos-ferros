@@ -79,7 +79,7 @@ export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
                   <td className="p-2">{brl(valor)}</td>
                   <td className="p-2">{publico ? <Link className="text-primary underline" to="/transparencia/$module" params={{module:"convenio-parcelas"}} search={{filtros:{convenio_id:c.id}}}>{brl(resumo.programado)}</Link> : brl(resumo.programado)}</td>
                   <td className="p-2">{brl(resumo.recebido)}
-                    {valor > 0 && <div><meter min={0} max={valor} value={Math.min(resumo.recebido, valor)} aria-label={`Valor recebido do convênio ${String(c.numero)}`} /><span className="block text-xs">{(resumo.recebido / valor * 100).toFixed(1)}% recebido</span></div>}
+                    {valor > 0 && <div><meter min={0} max={valor} value={Math.min(resumo.recebido, valor)} aria-label={`Valor recebido do convênio ${String(c.numero)}`} /><span className="block text-xs">{(resumo.recebido / valor * 100).toLocaleString("pt-BR", {minimumFractionDigits:1,maximumFractionDigits:1})}% recebido</span></div>}
                   </td>
                   <td className="p-2">
                     <span className={resumo.excedido ? "font-bold text-destructive" : ""}>{brl(resumo.saldo)}</span>
