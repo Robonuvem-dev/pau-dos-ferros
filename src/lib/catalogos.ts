@@ -1,0 +1,1 @@
+export const LICITACAO_MODALIDADES = ["Pregão Eletrônico", "Pregão Presencial", "Concorrência", "Concurso", "Leilão", "Diálogo Competitivo", "Dispensa", "Inexigibilidade", "Credenciamento", "Pré-qualificação", "Manifestação de Interesse"];

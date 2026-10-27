@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Facebook, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { QueryError, QueryNotFound } from "@/components/site/RouteStates";
@@ -13,9 +13,13 @@ export const Route = createFileRoute("/noticias/$slug")({
     const all = await context.queryClient.ensureQueryData(moduleQuery("noticias"));
     const n = all.find((x) => x.slug === params.slug);
     if (!n) throw notFound();
-    return { titulo: String(n.titulo), resumo: String(n.resumo ?? "") };
+    return { titulo: String(n.titulo), resumo: String(n.resumo ?? ""), capa: String(n.capa_url ?? "") };
   },
-  head: ({ loaderData }) => loaderData ? pageHead(loaderData.titulo, loaderData.resumo || loaderData.titulo) : { meta: [{ title: "Notícia indisponível | Prefeitura de Pau dos Ferros" }, { name: "robots", content: "noindex" }] },
+  head: ({ loaderData }) => {
+    const head = pageHead(loaderData?.titulo ?? 'Notícia indisponível', loaderData?.resumo || loaderData?.titulo || 'Notícia não encontrada no portal municipal.');
+    if (loaderData?.capa.startsWith('https://')) head.meta.push({ property: 'og:image', content: loaderData.capa }, { name: 'twitter:image', content: loaderData.capa });
+    return head;
+  },
   component: Noticia,
   errorComponent: QueryError,
   notFoundComponent: QueryNotFound,
@@ -26,11 +30,13 @@ const youtubeId = (url: string) => url.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{1
 function Noticia() {
   const { slug } = Route.useParams();
   const { data } = useSuspenseQuery(moduleQuery("noticias"));
-  const n = data.find((x) => x.slug === slug)!;
+  const n = data.find((x) => x.slug === slug);
+  const [share, setShare] = useState('');
   const outras = data.filter((x) => x.slug !== slug).slice(0, 3);
   useEffect(() => { void supabase.rpc("registrar_visualizacao", { _slug: slug }); }, [slug]);
+  useEffect(() => { setShare(encodeURIComponent(window.location.href)); }, [slug]);
+  if (!n) return <QueryNotFound />;
   const yt = n.video_url ? youtubeId(String(n.video_url)) : undefined;
-  const share = typeof window === "undefined" ? "" : encodeURIComponent(window.location.href);
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">

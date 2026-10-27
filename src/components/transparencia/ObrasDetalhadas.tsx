@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 import { formatMaskedValue } from "@/lib/formatting";
+=======
+import { Button } from '@/components/ui/button';
+import { downloadReport } from '@/lib/pdf-report';
+import { getModule, formatCell } from '@/lib/modules';
+>>>>>>> origin/main
 import { useQueries } from "@tanstack/react-query";
 import { moduleQuery } from "@/lib/queries";
 import { brl,dataBR } from "@/lib/modules";
@@ -15,7 +21,7 @@ export function ObrasDetalhadas() {
  {obras.map(o=>{
   const vinculados=(key:string)=>rows(key).filter(r=>r.obra_id===o.id);
   const contrato=rows("contratos").find(c=>c.id===o.contrato_id);
-  const aditivos=contrato?rows("contratos").filter(c=>c.tipo==="Aditivo"&&c.contrato_origem===contrato.numero):[];
+  const aditivos=contrato?rows("contratos").filter(c=>c.tipo==="Aditivo"&&c.contrato_origem_id===contrato.id):[];
   return <article key={o.id} className="my-4 rounded border bg-card p-5">
    <h3 className="font-display text-xl font-bold">{String(o.nome)}</h3>
    <p>{String(o.situacao??"Não informada")} · {brl(o.valor)} · {formatMaskedValue("percent",o.percentual??0)} executado</p>
@@ -28,6 +34,6 @@ export function ObrasDetalhadas() {
    <div className="mt-4 grid gap-4 sm:grid-cols-3">{vinculados("obra-fotos").map(f=><figure key={f.id}><img loading="lazy" src={String(f.foto_url)} alt={String(f.legenda)} className="aspect-video w-full rounded object-cover"/><figcaption>{dataBR(f.data)} · {String(f.legenda)}</figcaption></figure>)}</div>
   </article>;
  })}
- <button className="rounded border px-4 py-2" onClick={()=>window.print()}>Imprimir relatório de obras</button>
+ <Button variant="outline" onClick={() => void downloadReport("Relatório de obras", obras.flatMap(o=>[ {title:String(o.nome),columns:["Campo","Informação"],rows:(getModule("obras")?.fields??[]).map(f=>[f.label,formatCell(f,o[f.name])])}, ...["obra-andamentos","obra-medicoes","obra-arts"].map(key=>({title:`${String(o.nome)} — ${getModule(key)?.label}`,columns:["Campo","Informação"],rows:rows(key).filter(r=>r.obra_id===o.id).flatMap(r=>(getModule(key)?.fields??[]).map(f=>[f.label,formatCell(f,r[f.name])]))}))]))}>PDF de obras</Button>
  </section>;
 }

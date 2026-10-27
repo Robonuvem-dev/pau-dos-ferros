@@ -2,7 +2,7 @@ name: PoC Mobile - compilacao e abertura
 on:
   push:
     branches: [Vette]
-    paths: ['mobile/**','scripts/mobile-ios-smoke.py','.github/workflows/poc-mobile.yml']
+    paths: ['mobile/**','scripts/mobile-*-smoke.py','.github/workflows/poc-mobile.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -47,15 +47,11 @@ jobs:
           disk-size: 2048M
           ram-size: 2048M
           emulator-boot-timeout: 240
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -dns-server 8.8.8.8,1.1.1.1
           script: |
             adb install mobile/android/app/build/outputs/apk/debug/app-debug.apk
             adb shell am start -W -n org.robonuvem.paudosferrospoc/.MainActivity
-            sleep 12
-            mkdir -p mobile/proof
-            adb shell uiautomator dump /sdcard/window.xml
-            adb pull /sdcard/window.xml mobile/proof/android-window.xml
-            grep -q "Pau dos Ferros" mobile/proof/android-window.xml
-            adb exec-out screencap -p > mobile/proof/android-launch.png
+            python3 scripts/mobile-android-smoke.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:

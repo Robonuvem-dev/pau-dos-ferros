@@ -1,3 +1,4 @@
+import { collectPages } from "./pagination";
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { db, fetchModule } from "./data";
@@ -33,9 +34,8 @@ export const noticiasStatsQuery = queryOptions({
   queryKey: ["admin-noticias-stats"],
   refetchInterval: 15_000,
   queryFn: async () => {
-    const { data, error } = await supabase.from("noticias").select("id,titulo,slug,visualizacoes,publicado_em").order("visualizacoes", { ascending: false }).limit(10);
-    if (error) throw error;
-    return { top: data, total: data.reduce((s, n) => s + n.visualizacoes, 0) };
+    const data = await collectPages((from, to) => supabase.from("noticias").select("id,titulo,slug,visualizacoes,publicado_em").order("visualizacoes", { ascending: false }).order("id").range(from, to));
+    return { top: data.slice(0, 10), total: data.reduce((s, n) => s + n.visualizacoes, 0) };
   },
 });
 

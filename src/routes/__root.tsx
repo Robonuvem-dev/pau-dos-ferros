@@ -14,12 +14,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { SessionContext } from '@/hooks/use-session';
 import { SiteHeader, SiteFooter } from '@/components/site/SiteHeader';
 import { Toaster } from '@/components/ui/sonner';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { configQuery } from '@/lib/queries';
 import { temaCss } from '@/lib/temas';
 
 function TemaSite() {
-  const { data } = useQuery({ ...configQuery, refetchInterval: 15_000 });
+  const { data } = useSuspenseQuery(configQuery);
   const css = data ? temaCss(data) : '';
   return <>
     {css ? <style>{css}</style> : null}
@@ -93,10 +93,14 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: ({ context }) => context.queryClient.ensureQueryData(configQuery),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "theme-color", content: "#0064ad" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-title", content: "Pau dos Ferros" },
       { title: "Prefeitura de Pau dos Ferros" },
       { name: "description", content: "Portal oficial de Pau dos Ferros: serviços, notícias e transparência municipal." },
       { property: "og:title", content: "Prefeitura de Pau dos Ferros" },
@@ -110,6 +114,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/app-icons/apple-touch-icon.png" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Condensed:wght@400;600;700;800&display=swap" },
     ],
   }),
@@ -137,6 +143,11 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   const [identity, setIdentity] = useState<{ session: Session | null; roles: string[]; ready: boolean }>({ session: null, roles: [], ready: false });
+  useEffect(() => {
+    if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+      void navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(() => { /* Instalação opcional; falhas não bloqueiam o portal. */ });
+    }
+  }, []);
   useEffect(() => {
     let active = true;
     let version = 0;

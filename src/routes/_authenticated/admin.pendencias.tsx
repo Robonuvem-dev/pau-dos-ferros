@@ -4,9 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchModule } from "@/lib/data";
 import { getModule } from "@/lib/modules";
 import { avaliarPendencias, REGRAS } from "@/lib/criticas";
+import { pageHead } from '@/lib/seo';
 
 export const Route = createFileRoute("/_authenticated/admin/pendencias")({
-  head: () => ({ meta: [{ title: "Críticas e pendências | Painel" }] }),
+  head: () => pageHead('Críticas e pendências', 'Alertas e verificações dos cadastros municipais e critérios de transparência.'),
   component: Pendencias,
 });
 
@@ -15,6 +16,7 @@ const cor = { alta: "bg-destructive text-destructive-foreground", media: "bg-acc
 function Pendencias() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["pendencias"],
+    refetchInterval: 15_000,
     queryFn: async () => {
       const entries = await Promise.all(REGRAS.map(async (r) => [r.modulo, await fetchModule(getModule(r.modulo)!)] as const));
       return avaliarPendencias(Object.fromEntries(entries));

@@ -10,6 +10,7 @@ import { useSession } from "@/hooks/use-session";
 import { usuariosQuery } from "@/lib/admin-queries";
 import { dataBR, MODULES, modulePermissionTable } from "@/lib/modules";
 import { QueryError, QueryNotFound } from "@/components/site/RouteStates";
+import { pageHead } from '@/lib/seo';
 
 const permissoesQuery = queryOptions({
   queryKey: ["admin-permissoes"],
@@ -21,6 +22,7 @@ const permissoesQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/_authenticated/admin/usuarios")({
+  head: () => pageHead('Usuários e permissões', 'Gestão das contas, perfis e permissões do portal municipal.'),
   loader: ({ context }) => Promise.all([context.queryClient.ensureQueryData(usuariosQuery), context.queryClient.ensureQueryData(permissoesQuery)]),
   component: Usuarios,
   errorComponent: QueryError,

@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/use-session";
 import { MODULES } from "@/lib/modules";
 import { QueryError, QueryNotFound } from "@/components/site/RouteStates";
+import { pageHead } from '@/lib/seo';
 
 const melhoriasQuery = queryOptions({
   queryKey: ["admin-melhorias"],
@@ -20,6 +21,7 @@ const melhoriasQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/_authenticated/admin/melhorias")({
+  head: () => pageHead('Pedidos de melhoria', 'Registro e acompanhamento de solicitações de melhoria do portal.'),
   loader: ({ context }) => context.queryClient.ensureQueryData(melhoriasQuery),
   component: Melhorias,
   errorComponent: QueryError,

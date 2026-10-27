@@ -1,9 +1,11 @@
+import { downloadReport } from '@/lib/pdf-report';
 import { useState } from "react";
 import { useQuery,useQueryClient } from "@tanstack/react-query";
 import { db } from "@/lib/data";
 import { avaliar,STATUS_LABEL,type AtriconStatus,type EvidenciaAtricon } from "@/lib/atricon";
 import { montarAnexo } from "@/lib/atricon-anexo";
-import { analisarLocalmente,MODELO_LOCAL } from "@/lib/ai-browser";
+import { readFiscalEvidence } from "@/lib/public-scan";
+import { analisarEvidenciasPublicas,MODELO_LOCAL } from "@/lib/ai-browser";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,7 +33,8 @@ export function PainelAtricon({pendencias}:{pendencias:Pendencia[]}){
  const gerar=async()=>{
   setBusy(true);setErro("");setTexto("");
   try{
-   const analise=await analisarLocalmente(pendencias.map(p=>p.problema).join("; ")||"Conferir individualmente as evidências dos 88 itens. Não presumir atendimento.",setStatus);
+   const cases=await readFiscalEvidence();
+   const analise=await analisarEvidenciasPublicas(cases,setStatus);
    const anexo=montarAnexo(itens,pendencias,analise,MODELO_LOCAL,new Date().toISOString());
    const {error}=await db.from("atricon_relatorios").insert({modelo:MODELO_LOCAL,texto:anexo,analise_ia:analise,resultados:itens});
    if(error)throw error;
@@ -46,12 +49,12 @@ export function PainelAtricon({pendencias}:{pendencias:Pendencia[]}){
  return <section className="mb-8 rounded border bg-card p-5" id="atricon">
  <h2 className="font-display text-2xl font-bold">Transparência — avaliação dos 88 pontos</h2>
  <p className="my-2 text-sm">A contagem de cadastros não comprova atendimento. Registre URL, passo executado e resultado de cada ponto. A IA produz sugestões; não aprova requisitos.</p>
- <p className="my-2 text-sm">A análise semântica usa modelo neural gratuito no próprio dispositivo e classifica até 50 alertas por execução. No primeiro uso há download dos arquivos do modelo; não há prompts nem API de IA paga.</p>
+ <p className="my-2 text-sm">A varredura registra os 88 pontos e lê as páginas públicas com fonte configurada, usando modelo neural gratuito no dispositivo. Fontes não configuradas, páginas indisponíveis e conteúdo vazio ficam explicitamente pendentes. Indício textual não aprova atendimento; PDFs, atualização, acessibilidade e conformidade jurídica exigem conferência própria. No primeiro uso há download dos arquivos do modelo; não há prompts nem API de IA paga.</p>
  <p className="my-3 font-semibold">{itens.filter(i=>i.status==="atende").length} atendem · {itens.filter(i=>i.status==="nao_atende").length} não atendem · {itens.filter(i=>i.status==="terceiro").length} em portal de terceiro</p>
  <div className="my-3 flex flex-wrap gap-3">
  <label>Mostrar <select className="rounded border p-2" aria-label="Filtrar pontos ATRICON" value={filtro} onChange={e=>setFiltro(e.target.value)}><option value="todos">Todos</option>{Object.entries(STATUS_LABEL).map(([k,v])=><option value={k} key={k}>{v}</option>)}</select></label>
  <Button disabled={busy||!!error} onClick={()=>void gerar()}>{busy?"Executando análise local...":"Executar varredura com IA local e gerar anexo"}</Button>
- {texto&&<><Button variant="outline" onClick={baixar}>Baixar anexo técnico</Button><Button variant="outline" onClick={()=>window.print()}>Imprimir avaliação</Button></>}
+ {texto&&<><Button variant="outline" onClick={baixar}>Baixar anexo técnico</Button><Button variant="outline" onClick={()=>void downloadReport("Avaliação ATRICON",[{title:"Anexo técnico",columns:["Conteúdo"],rows:texto.split("\n").map(l=>[l])}])}>PDF da avaliação</Button></>}
  </div>
  {status&&<p role="status" className="my-2">{status}</p>}
  {(erro||error)&&<p role="alert" className="my-2 text-destructive">{erro||"Não foi possível carregar as evidências."}</p>}

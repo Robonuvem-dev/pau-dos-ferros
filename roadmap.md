@@ -1,6 +1,14 @@
 # Sistema municipal — entrega completa do edital (sem Webmail M16)
 Plano aprovado: .lovable/plan/novo-plano-de-sprints-entrega-completa-do-edital-sem-webmail-2026-10-23.md
 
+## Atualização de navegação da PoC
+- [x] Acrescentar e verificar 20 registros simulados realistas por cadastro/categoria (62 cadastros em 50 tabelas, 1.240 linhas principais), preservando dados existentes, relações e cadastros de segurança; evidências em docs/poc/12.
+- [x] Correções M01–M05: temas/fundo, banners 5s, CRUD no corpo, concursos, vínculos/filtros públicos, aditivos 3.7, cronograma 3.8, PDFs 3.14 e metas/especificações 4.7; fluxos autenticados, PDFs e 221 testes verificados (docs/poc/11).
+- [x] Revisar sincronização das páginas públicas com o painel, banners e sobreposição na página inicial; 75 endereços e edição real de banner verificados (docs/poc/07_VERIFICACAO_PUBLICA.md).
+- [x] Organizar /admin em 16 módulos, mantendo visão geral abaixo e sem menu lateral nessa página.
+- [x] Corrigir e verificar todos os endereços do anexo com sessão administrativa (docs/poc/06_VERIFICACAO_ROTAS.md).
+- [x] Vincular M16 ao webmail externo informado.
+
 - [x] Sprint 1 — Fundação, acesso, painel, auditoria, versão, melhorias
 - [ ] Sprint 2 — Auditoria dos 145 itens, fechamento M01, vínculos entre cadastros, motor de críticas
   - [x] Vínculos entre cadastros; motor e tela de críticas; classificação por módulo (docs/poc/04)

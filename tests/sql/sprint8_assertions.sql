@@ -14,7 +14,7 @@ INSERT INTO public.user_roles(user_id,role) VALUES ('00000000-0000-0000-0000-000
 INSERT INTO public.permissoes_modulo(user_id,tabela) VALUES ('00000000-0000-0000-0000-000000000022','noticias');
 SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000021',true);
-INSERT INTO public.obras(id,nome,numero_processo,secretaria,origem_recurso) VALUES('80000000-0000-0000-0000-000000000001','POC obra','POC-1','POC Secretaria','Recurso ficticio');
+INSERT INTO public.obras(id,nome,numero_processo,secretaria,origem_recurso,data_inicio,previsao_fim,descricao,valor,aditivo_acrescimo,aditivo_supressao,tipo_guarda_chuva,local,objeto_contrato,justificativa) VALUES('80000000-0000-0000-0000-000000000001','POC obra','POC-1','POC Secretaria','Recurso ficticio','2026-01-01','2027-01-01','Descricao ficticia',1000,0,0,'Obra','Local ficticio','Objeto ficticio','Justificativa ficticia');
 INSERT INTO public.obra_andamentos(obra_id,data,descricao,percentual,valor_executado) VALUES ('80000000-0000-0000-0000-000000000001','2026-10-23','POC andamento',40,400);
 INSERT INTO public.obra_medicoes(obra_id,numero,data,descricao,valor,aprovada) VALUES ('80000000-0000-0000-0000-000000000001','M1','2026-10-23','POC medicao',400,true);
 INSERT INTO public.obra_arts(obra_id,numero,responsavel) VALUES ('80000000-0000-0000-0000-000000000001','ART-POC','Engenheiro ficticio');
@@ -31,7 +31,7 @@ INSERT INTO public.plano_diretor_equipe(plano_id,nome) VALUES('80000000-0000-000
 SELECT pg_temp.assert_true((SELECT count(*)=1 FROM public.plano_diretor_acoes),'strategic actions persist');
 INSERT INTO public.planos_diretores(id,nome) VALUES('80000000-0000-0000-0000-000000000005','POC outro plano');
 SELECT pg_temp.expect_error($q$INSERT INTO public.plano_diretor_acoes(plano_id,eixo_id,nome) VALUES('80000000-0000-0000-0000-000000000005','80000000-0000-0000-0000-000000000003','Eixo de outro plano')$q$,'23503','axis from other plan rejected');
-INSERT INTO public.conselhos(id,nome,lei_criacao,competencias,data_criacao) VALUES('80000000-0000-0000-0000-000000000004','POC conselho','POC lei','Competencias ficticias','2026-10-23');
+INSERT INTO public.conselhos(id,nome,lei_criacao,competencias,data_criacao,descricao,vigencia_inicio,vigencia_fim) VALUES('80000000-0000-0000-0000-000000000004','POC conselho','POC lei','Competencias ficticias','2026-10-23','Descricao ficticia','2026-10-23','2027-10-23');
 INSERT INTO public.conselho_membros(conselho_id,nome,tipo,representacao,ativo) VALUES('80000000-0000-0000-0000-000000000004','POC membro','Titular','Sociedade civil',true);
 INSERT INTO public.conselho_acoes(conselho_id,tipo,titulo,data) VALUES('80000000-0000-0000-0000-000000000004','Ata','POC reuniao','2026-10-23');
 INSERT INTO public.publicacoes(categoria,titulo,conselho_id) VALUES('conselho-doc','POC documento','80000000-0000-0000-0000-000000000004');

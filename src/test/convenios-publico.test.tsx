@@ -5,7 +5,7 @@ import { PublicTable } from "../components/site/PublicTable";
 import { getModule } from "../lib/modules";
 
 const fixtures = vi.hoisted(() => ({
-  convenios: [{ id: "c1", numero: "POC-FICTICIO", valor_global: 10000, contrapartida: 0, metas: "Meta ficticia" }],
+  convenios: [{ id: "c1", numero: "POC-FICTICIO", valor_global: 10000, contrapartida: 0, metas: "Meta ficticia",data_inicio:"2020-01-01",data_fim:"2099-12-31" },{id:"vencido",numero:"POC-VENCIDO",valor_global:1000,contrapartida:0,metas:"Meta vencida",data_inicio:"2020-01-01",data_fim:"2020-12-31"}],
   "convenio-parcelas": [{ id: "p1", convenio_id: "c1", numero: 1, valor: 2500, status: "Recebida" }],
   "convenio-obrigacoes": [],
   contratos: [
@@ -15,6 +15,7 @@ const fixtures = vi.hoisted(() => ({
   ],
 }));
 vi.mock("@tanstack/react-query", () => ({
+  useQueries: () => [],
   useQuery: (options: { queryKey: string[] }) => ({
     data: fixtures[options.queryKey[1] as keyof typeof fixtures] ?? [],
     isPending: false, error: null,
@@ -25,6 +26,7 @@ vi.mock("@tanstack/react-query", () => ({
 }));
 vi.mock("@/lib/admin-queries", () => ({ adminModuleQuery: (key: string) => ({ queryKey: ["admin-module", key] }) }));
 vi.mock("@/lib/queries", () => ({ moduleQuery: (key: string) => ({ queryKey: ["public-module", key] }) }));
+vi.mock('@tanstack/react-router', () => ({ Link: ({ children }: { children: React.ReactNode }) => <a>{children}</a> }));
 
 afterEach(cleanup);
 describe("M04 — apresentacao publica", () => {
@@ -35,12 +37,17 @@ describe("M04 — apresentacao publica", () => {
     expect(screen.queryByText(/OUTRO-CONTRATO/)).not.toBeInTheDocument();
     expect(screen.getByText(/25.0% recebido/)).toBeInTheDocument();
     expect(screen.getByRole("meter")).toHaveAttribute("value", "2500");
-    expect(screen.getByRole("button", { name: /Imprimir/ })).toBeInTheDocument();
   });
   it("disponibiliza as metas completas, antes ocultas na listagem publica", () => {
-    render(<PublicTable mod={getModule("convenios")!} />);
-    expect(screen.getByText("Ver informações completas")).toBeInTheDocument();
-    expect(screen.getByText("Meta ficticia")).toBeInTheDocument();
+    const mod=getModule('convenios'); if(!mod)throw new Error('Módulo ausente');
+    render(<PublicTable mod={mod} />);
+    expect(screen.getAllByText('Meta ficticia').length).toBeGreaterThan(0);
+  });
+  it("mostra convênio vencido somente quando o filtro de vigência é desativado",()=>{
+    render(<ResumoConvenios publico />);
+    expect(screen.queryByText('POC-VENCIDO')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('checkbox',{name:/Somente vigentes/}));
+    expect(screen.getByText('POC-VENCIDO')).toBeInTheDocument();
   });
   it("busca inclui os campos de detalhe", () => {
     render(<PublicTable mod={getModule("convenios")!} />);

@@ -1,0 +1,1413 @@
+{
+  "data": "2026-10-25",
+  "codigo_testado": "147d6e05edec8b69f0857df097e4affaa5b3d131",
+  "desenvolvimento": "Vette",
+  "integracao_autorizada": "main",
+  "planilha": "https://docs.google.com/spreadsheets/d/19OCXec6gPubvd0RXAOXf78aVK_-U8SFKG70d_fUS9I0/edit",
+  "ci_qualidade": "https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40200735959",
+  "ci_mobile": "https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40165059417",
+  "testes_unitarios": 216,
+  "migracoes_testadas": 26,
+  "implementados": 137,
+  "parciais": 6,
+  "nao_verificados": 25,
+  "homologacao_oficial": "Não demonstrada por esta validação técnica",
+  "itens": [
+    {
+      "id": "1.1",
+      "modulo": 1,
+      "requisito": "Interação com o usuário por meio de janelas (Padrão Windows) no ambiente de gerenciamento.",
+      "pagina_pdf": 31,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Painel usa formulários em janelas modais, com criação, edição e exclusão por módulo."
+    },
+    {
+      "id": "1.2",
+      "modulo": 1,
+      "requisito": "Atualização automática de versão remota: ao iniciar o sistema, verificar e atualizar automaticamente sem intervenção local.",
+      "pagina_pdf": 31,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Controle remoto de versão implementado; versão publicada 1.3.0 confirmada por /version.json no navegador. Ensaio de atualização entre versões na sessão autenticada ainda pendente."
+    },
+    {
+      "id": "1.3",
+      "modulo": 1,
+      "requisito": "Instalação e acesso direto via internet através de ambiente web centralizado.",
+      "pagina_pdf": 32,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Aplicação centralizada acessível pelo navegador, com rotas públicas e painel autenticado."
+    },
+    {
+      "id": "1.4",
+      "modulo": 1,
+      "requisito": "Conexão direta e segura com o banco de dados hospedado remotamente em nuvem.",
+      "pagina_pdf": 32,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cliente Supabase remoto, autenticação e políticas RLS no banco; acesso de escrita condicionado a permissões. A configuração do ambiente publicado não foi auditada nesta execução."
+    },
+    {
+      "id": "1.5",
+      "modulo": 1,
+      "requisito": "Aprimoramentos, adequações e inovações do sistema disponibilizados sob demanda da contratante.",
+      "pagina_pdf": 32,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Não é falta de uma tela: há canal de melhorias. Disponibilizar aprimoramentos sob demanda é obrigação continuada, comprovada por contrato/SLA e registros de atendimento; o código não garante sua execução futura."
+    },
+    {
+      "id": "2.1",
+      "modulo": 2,
+      "requisito": "Cadastro, edição e publicação de Notícias com suporte a mídias.",
+      "pagina_pdf": 32,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro, edição, publicação, agendamento e mídias da notícia têm campos persistidos e página de leitura."
+    },
+    {
+      "id": "2.2",
+      "modulo": 2,
+      "requisito": "Cadastro e gerenciamento de Galeria de Fotos organizadas por álbuns.",
+      "pagina_pdf": 32,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Álbuns armazenam fotos, capa e legendas; galeria abre o álbum em janela."
+    },
+    {
+      "id": "2.3",
+      "modulo": 2,
+      "requisito": "Cadastro e publicação de Vídeos vinculados diretamente às publicações.",
+      "pagina_pdf": 32,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Vídeo por URL/arquivo vinculado à notícia e reproduzido na página da publicação."
+    },
+    {
+      "id": "2.4",
+      "modulo": 2,
+      "requisito": "Cadastro e disponibilização de Áudios informativos no site.",
+      "pagina_pdf": 32,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de mídia do tipo áudio e reprodução pública por controle de áudio."
+    },
+    {
+      "id": "2.5",
+      "modulo": 2,
+      "requisito": "Cadastro de Agentes Políticos com cargos e perfis (Prefeito, Vice-Prefeito, Secretários).",
+      "pagina_pdf": 32,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Agentes têm cargo, biografia, imagem e contatos, com apresentação institucional pública."
+    },
+    {
+      "id": "2.6",
+      "modulo": 2,
+      "requisito": "Integração direta com o Facebook para exibição da página do município no site.",
+      "pagina_pdf": 32,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Página inicial incorpora o plugin de página do Facebook com URL configurável; disponibilidade do conteúdo depende da plataforma externa."
+    },
+    {
+      "id": "2.7",
+      "modulo": 2,
+      "requisito": "Configuração e alteração em tempo real de temas e cores visuais do layout do site.",
+      "pagina_pdf": 33,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Configuração persistida de temas e cores, aplicada por variáveis CSS e consulta pública periódica. O controle Contraste é separado e não comprova acessibilidade integral."
+    },
+    {
+      "id": "2.8",
+      "modulo": 2,
+      "requisito": "Criação e publicação dinâmica combinada de notícias, eventos, fotos e vídeos.",
+      "pagina_pdf": 33,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Notícia combina texto, fotos, vídeo e campos de evento; a página pública renderiza esses conteúdos. Não é necessário sincronizar automaticamente a galeria para cumprir esta combinação."
+    },
+    {
+      "id": "2.9",
+      "modulo": 2,
+      "requisito": "Disponibilização livre de links externos úteis e atalhos na página inicial.",
+      "pagina_pdf": 33,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Links úteis configuráveis são apresentados na página inicial."
+    },
+    {
+      "id": "2.10",
+      "modulo": 2,
+      "requisito": "Publicação de Banners rotativos de destaque na página frontal do site.",
+      "pagina_pdf": 33,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Banners têm imagem, link, ordem e período; há rotação e filtragem por data municipal no carregamento público."
+    },
+    {
+      "id": "2.11",
+      "modulo": 2,
+      "requisito": "Publicação e upload de qualquer documento digital em formato JPG ou PDF.",
+      "pagina_pdf": 33,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Upload aceita documentos PDF/JPG; caminho é persistido e há cópia binária administrativa no banco."
+    },
+    {
+      "id": "2.12",
+      "modulo": 2,
+      "requisito": "Tela dedicada para cadastro e exibição de Concursos Públicos e Processos Seletivos.",
+      "pagina_pdf": 33,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Categoria específica para concursos/seletivos, com situação, etapas e consulta pública."
+    },
+    {
+      "id": "2.13",
+      "modulo": 2,
+      "requisito": "Cadastro de Unidades Gestoras e Executoras da Prefeitura.",
+      "pagina_pdf": 33,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de unidades com código, CNPJ, responsável, secretaria e tipo."
+    },
+    {
+      "id": "2.14",
+      "modulo": 2,
+      "requisito": "Geração automática de relatórios de críticas, alertas e pendências do site para gestão de informações.",
+      "pagina_pdf": 33,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Há regras específicas para este módulo, executadas na tela de críticas com identificação do registro e acesso à correção."
+    },
+    {
+      "id": "3.1",
+      "modulo": 3,
+      "requisito": "Cadastro completo de Licitações com anexos digitais em PDF.",
+      "pagina_pdf": 33,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de licitação com número, objeto, modalidade, datas, valores e anexo digital."
+    },
+    {
+      "id": "3.2",
+      "modulo": 3,
+      "requisito": "Cadastro de Processos de Dispensa de Licitação com justificativas legais.",
+      "pagina_pdf": 34,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Dispensa é modalidade cadastrável, com fundamentação legal e alertas de ausência."
+    },
+    {
+      "id": "3.3",
+      "modulo": 3,
+      "requisito": "Cadastro de Processos de Inexigibilidade de Licitação.",
+      "pagina_pdf": 34,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Inexigibilidade é modalidade cadastrável no mesmo cadastro, com fundamentação legal."
+    },
+    {
+      "id": "3.4",
+      "modulo": 3,
+      "requisito": "Cadastro de Atas de Registro de Preço (ARP) e Adesão (Carona).",
+      "pagina_pdf": 34,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Ata e adesão vinculadas por identificador com chave estrangeira; adesão aceita somente ata como origem."
+    },
+    {
+      "id": "3.5",
+      "modulo": 3,
+      "requisito": "Cadastro e gerenciamento de Empresas Inidôneas punidas ou impedidas de licitar.",
+      "pagina_pdf": 34,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de empresas sancionadas com motivo, sanção e vigência, e alerta no motor de críticas."
+    },
+    {
+      "id": "3.6",
+      "modulo": 3,
+      "requisito": "Cadastro completo de Contratos Administrativos com campos de valor, prazos e objeto.",
+      "pagina_pdf": 34,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Contrato possui objeto, valor, fornecedor e prazos, além de documento e valores atualizados."
+    },
+    {
+      "id": "3.7",
+      "modulo": 3,
+      "requisito": "Cadastro de Termos Aditivos vinculados aos contratos de origem.",
+      "pagina_pdf": 34,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "https://pau-dos-ferros.lovable.app/admin/contratos e https://pau-dos-ferros.lovable.app/transparencia/contratos — IMPLEMENTADO. Novo registro > Aditivo > contrato/ata de origem; formulário no corpo, seleção de origens válidas e links públicos por UUID. Gravação/leitura pública conferidas em 26/10/2026 e registro temporário excluído. 221 testes locais passaram; compilação OK; base Git 8f6caca; CI/publicação desta alteração não verificados. Evidência: docs/poc/11."
+    },
+    {
+      "id": "3.8",
+      "modulo": 3,
+      "requisito": "Cadastro de andamentos, fases, cronograma e andamento dos processos licitatórios.",
+      "pagina_pdf": 34,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "https://pau-dos-ferros.lovable.app/admin/andamentos-licitacao e https://pau-dos-ferros.lovable.app/transparencia/licitacoes — IMPLEMENTADO. Cadastre fase/data vinculada ao número da licitação; a linha do tempo aparece dentro do processo e acompanha os filtros. Gravação/leitura pública conferidas em 26/10/2026, registro temporário excluído. 221 testes locais passaram; compilação OK; base Git 8f6caca; CI/publicação não verificados. O motor de transições não controla o formulário. Evidência: docs/poc/11."
+    },
+    {
+      "id": "3.9",
+      "modulo": 3,
+      "requisito": "Cadastro e histórico de Credores (Fornecedores e prestadores de serviços).",
+      "pagina_pdf": 34,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro público de fornecedores/credores e auditoria das alterações. Não confundir o leiaute próprio de importação com integração oficial TCE."
+    },
+    {
+      "id": "3.10",
+      "modulo": 3,
+      "requisito": "Cadastro de Membros das equipes de apoio e de contratação.",
+      "pagina_pdf": 34,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de integrantes das equipes, vinculado a comissões."
+    },
+    {
+      "id": "3.11",
+      "modulo": 3,
+      "requisito": "Cadastro de Comissões de Contratação e equipes técnicas permanentes ou especiais.",
+      "pagina_pdf": 34,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de comissões e equipes, com portaria e período de atuação."
+    },
+    {
+      "id": "3.12",
+      "modulo": 3,
+      "requisito": "Cadastro de Parcerias e Acordos do Município.",
+      "pagina_pdf": 35,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de parcerias/acordos com objeto, participantes, prazo e documento."
+    },
+    {
+      "id": "3.13",
+      "modulo": 3,
+      "requisito": "Cadastro de Termos de Fomento celebrados com Organizações da Sociedade Civil (OSC).",
+      "pagina_pdf": 35,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de termos de fomento com OSC, valor, objeto, vigência e documento."
+    },
+    {
+      "id": "3.14",
+      "modulo": 3,
+      "requisito": "Impressão de relatórios consolidados (Boletim do dia, Avisos, Relatórios de Publicações).",
+      "pagina_pdf": 35,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "https://pau-dos-ferros.lovable.app/admin/licitacoes-relatorios — IMPLEMENTADO. Selecione data/período e baixe PDF do boletim/avisos ou publicações. Documentos estruturados com texto e tabelas, sem impressão da tela. Downloads verificados em 26/10/2026; boletim com dados, publicações sem eventos disponíveis. 221 testes locais passaram; compilação OK; base Git 8f6caca; CI/publicação não verificados. Evidência: docs/poc/11."
+    },
+    {
+      "id": "3.15",
+      "modulo": 3,
+      "requisito": "Visualização pública e direta de todos os dados de licitações no Portal da Transparência.",
+      "pagina_pdf": 35,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "https://pau-dos-ferros.lovable.app/transparencia/licitacoes — IMPLEMENTADO. Abra Filtros para modalidade, situação, órgão/secretaria e datas; detalhes e linha do tempo ficam no processo filtrado. Relações navegam para registros públicos por UUID ou pesquisa. Consulta preserva paginação integral. Filtros e leitura pública verificados em 26/10/2026; 221 testes locais passaram; compilação OK; base Git 8f6caca; CI/publicação não verificados. Evidência: docs/poc/11."
+    },
+    {
+      "id": "3.16",
+      "modulo": 3,
+      "requisito": "Relatório de Mapa de Licitações com filtros avançados.",
+      "pagina_pdf": 35,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Mapa e cadastro usam o mesmo catálogo de modalidades, incluindo dispensa, inexigibilidade e diálogo competitivo."
+    },
+    {
+      "id": "3.17",
+      "modulo": 3,
+      "requisito": "Relatório gerencial de Contratos a Vencer para alerta de planejamento.",
+      "pagina_pdf": 35,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Relatório calcula contratos a vencer em períodos escolhidos, usa vigência atualizada e permite exportação."
+    },
+    {
+      "id": "3.18",
+      "modulo": 3,
+      "requisito": "Geração automática de relatórios de críticas, alertas e pendências em processos de licitação.",
+      "pagina_pdf": 35,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Há regras específicas para este módulo, executadas na tela de críticas com identificação do registro e acesso à correção."
+    },
+    {
+      "id": "4.1",
+      "modulo": 4,
+      "requisito": "Cadastro de Convênios (Campos obrigatórios: Nome Convenente, Responsável Convenente, Número do Convênio, Valor das Parcelas, Nome Concedente, Responsável Concedente, Valor Global do Convênio).",
+      "pagina_pdf": 35,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Convênio e parcela inicial com vencimento são gravados juntos; falha reverte tudo e o último cronograma não pode ser removido."
+    },
+    {
+      "id": "4.2",
+      "modulo": 4,
+      "requisito": "Vinculação direta de contratos oriundos de convênios.",
+      "pagina_pdf": 36,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Contratos possuem convenio_id UUID com FK e o resumo apresenta vínculos."
+    },
+    {
+      "id": "4.3",
+      "modulo": 4,
+      "requisito": "Cadastro de Concedente (Entidade repassadora do recurso).",
+      "pagina_pdf": 36,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Entidades concedentes possuem nome e responsável obrigatórios, com distinção por papel."
+    },
+    {
+      "id": "4.4",
+      "modulo": 4,
+      "requisito": "Cadastro de Convenente (Entidade executora local).",
+      "pagina_pdf": 36,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Entidades convenentes possuem nome e responsável obrigatórios, com distinção por papel."
+    },
+    {
+      "id": "4.5",
+      "modulo": 4,
+      "requisito": "Cadastro de Tipos e Categorias de Convênio.",
+      "pagina_pdf": 36,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Tipos/categorias configuráveis em tabela própria, selecionados no convênio."
+    },
+    {
+      "id": "4.6",
+      "modulo": 4,
+      "requisito": "Relatórios gerenciais completos sobre convênios vigentes.",
+      "pagina_pdf": 36,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Resumo filtra vigência e período; impressão acompanha o conjunto selecionado."
+    },
+    {
+      "id": "4.7",
+      "modulo": 4,
+      "requisito": "Cadastro de Metas e Especificações Técnicas do Convênio.",
+      "pagina_pdf": 36,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "https://pau-dos-ferros.lovable.app/admin/convenios e https://pau-dos-ferros.lovable.app/transparencia/convenios — IMPLEMENTADO. Edite a seção Metas e especificações técnicas — item 4.7; os dois campos ficam destacados na consulta pública. Gravação/leitura pública testadas em 26/10/2026 e valores restaurados. Campos textuais, sem coleção estruturada adicional. 221 testes locais passaram; compilação OK; base Git 8f6caca; CI/publicação não verificados. Evidência: docs/poc/11."
+    },
+    {
+      "id": "4.8",
+      "modulo": 4,
+      "requisito": "Cadastro e controle do Plano de Aplicação de Recursos detalhado.",
+      "pagina_pdf": 36,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Plano de aplicação ganhou itens por natureza, descrição e valor; o banco rejeita total superior ao valor global."
+    },
+    {
+      "id": "4.9",
+      "modulo": 4,
+      "requisito": "Vinculação de Parcelas de desembolso e cronograma de pagamentos.",
+      "pagina_pdf": 36,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Vencimento obrigatório na tela e no banco, com parcelas vinculadas e controle da situação."
+    },
+    {
+      "id": "4.10",
+      "modulo": 4,
+      "requisito": "Cadastro de Obrigações e condições imputadas ao Concedente.",
+      "pagina_pdf": 36,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Campo obrigatório identifica explicitamente a parte obrigada: concedente, convenente ou ambos."
+    },
+    {
+      "id": "4.11",
+      "modulo": 4,
+      "requisito": "Vinculação de múltiplos Contratos vinculados diretamente ao Convênio.",
+      "pagina_pdf": 36,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Vários contratos podem referenciar o mesmo convenio_id; consolidação lista todos por FK."
+    },
+    {
+      "id": "4.12",
+      "modulo": 4,
+      "requisito": "Visualização pública dos dados de convênios na interface web do Portal.",
+      "pagina_pdf": 37,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Convênios, parcelas e obrigações são públicos, com resumo financeiro e contratos associados."
+    },
+    {
+      "id": "4.13",
+      "modulo": 4,
+      "requisito": "Geração automática de relatórios de críticas, alertas e pendências do módulo de Convênios.",
+      "pagina_pdf": 37,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Há regras específicas para este módulo, executadas na tela de críticas com identificação do registro e acesso à correção."
+    },
+    {
+      "id": "5.1",
+      "modulo": 5,
+      "requisito": "Cumprimento integral das diretrizes da LRF e Lei de Acesso à Informação.",
+      "pagina_pdf": 37,
+      "classificacao": "PARCIAL",
+      "observacao": "Pesquisa pública, legenda da tabela, cabeçalhos e anexos com identificação acessível; três testes de componente. Permanecem revisão integral de conteúdos, tempestividade, procedimentos e acessibilidade; não há declaração de conformidade integral."
+    },
+    {
+      "id": "5.2",
+      "modulo": 5,
+      "requisito": "Portal específico para visualização pública e detalhada de receitas e despesas.",
+      "pagina_pdf": 37,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Portal detalha receitas/despesas com filtros e consolidação fiscal por natureza e período."
+    },
+    {
+      "id": "5.3",
+      "modulo": 5,
+      "requisito": "Módulo integrado ao e-SIC (Serviço de Informação ao Cidadão) com controle de prazos.",
+      "pagina_pdf": 37,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "e-SIC tem protocolo, consulta protegida, resposta, prorrogação justificada e recurso com cálculo de prazos na gestão atual. A consulta antiga de alertas genéricos está sem consumidor e não foi tratada como comportamento ativo."
+    },
+    {
+      "id": "5.4",
+      "modulo": 5,
+      "requisito": "Publicação estruturada de leis municipais e outros documentos administrativos.",
+      "pagina_pdf": 37,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Leis e documentos administrativos usam categorias persistidas e páginas públicas com busca."
+    },
+    {
+      "id": "5.5",
+      "modulo": 5,
+      "requisito": "Integração completa e funcional com o sistema de Ouvidoria Municipal.",
+      "pagina_pdf": 37,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Ouvidoria interna está integrada ao portal, protocolo, consulta protegida e gestão, com prazo específico de trinta dias. É uma Ouvidoria interna, não um conector a fornecedor externo."
+    },
+    {
+      "id": "5.6",
+      "modulo": 5,
+      "requisito": "Integração do painel público com dados de Licitações e Convênios em tempo real.",
+      "pagina_pdf": 37,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Painel e páginas públicas usam as mesmas tabelas. Consultas públicas atualizam a cada quinze segundos e após foco/montagem, sem cópia manual de dados; não é assinatura instantânea de eventos."
+    },
+    {
+      "id": "5.7",
+      "modulo": 5,
+      "requisito": "Seção institucional 'O Município' (História, A Cidade, Praças, Sítios, Postos de Saúde, Distritos, Escolas, Prédios Públicos e Eventos).",
+      "pagina_pdf": 37,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de seções institucionais cobre história, cidade, praças, sítios, saúde, distritos, escolas, prédios e eventos, com publicação na página do município."
+    },
+    {
+      "id": "5.8",
+      "modulo": 5,
+      "requisito": "Cadastro de Leis com busca avançada no site (pesquisa por número, ano, ementa e palavras- chave).",
+      "pagina_pdf": 38,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Busca pública com número, ano, ementa e pesquisa textual sobre os registros carregados."
+    },
+    {
+      "id": "5.9",
+      "modulo": 5,
+      "requisito": "Cadastro de Portarias com filtros de busca.",
+      "pagina_pdf": 38,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Categoria Portaria com filtros públicos e documentos."
+    },
+    {
+      "id": "5.10",
+      "modulo": 5,
+      "requisito": "Cadastro de Decretos Executivos.",
+      "pagina_pdf": 38,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Categoria Decreto com cadastro, arquivo e consulta pública."
+    },
+    {
+      "id": "5.11",
+      "modulo": 5,
+      "requisito": "Cadastro de Editais públicos de licitação, concursos e convocações.",
+      "pagina_pdf": 38,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Categoria Edital com classificação para licitação, concurso/convocação e documento público."
+    },
+    {
+      "id": "5.12",
+      "modulo": 5,
+      "requisito": "Cadastro de Resoluções de Conselhos e órgãos municipais.",
+      "pagina_pdf": 38,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Categoria Resolução publicada com órgão, descrição e anexo."
+    },
+    {
+      "id": "5.13",
+      "modulo": 5,
+      "requisito": "Cadastro de Processos Seletivos simplificados de contratação temporária.",
+      "pagina_pdf": 38,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de concursos e seletivos simplificados, com etapas e situação."
+    },
+    {
+      "id": "5.14",
+      "modulo": 5,
+      "requisito": "Cadastro de qualquer tipo de documento em ambiente digital público.",
+      "pagina_pdf": 38,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Documentos digitais diversos podem ser anexados e exibidos publicamente; upload limitado a cinquenta MB por arquivo."
+    },
+    {
+      "id": "5.15",
+      "modulo": 5,
+      "requisito": "Cadastro e exibição da Lei de Responsabilidade Fiscal municipal consolidada.",
+      "pagina_pdf": 38,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Categoria LRF, além de RREO/RGF e peças orçamentárias, com publicação dos documentos. Conteúdo consolidado depende da alimentação."
+    },
+    {
+      "id": "5.16",
+      "modulo": 5,
+      "requisito": "Cadastro, controle e justificativa de Diárias de Viagens de agentes públicos.",
+      "pagina_pdf": 38,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Diárias têm beneficiário, destino, justificativa, valor e publicação."
+    },
+    {
+      "id": "5.17",
+      "modulo": 5,
+      "requisito": "Geração automática de relatórios de críticas, alertas e pendências no portal público.",
+      "pagina_pdf": 38,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Críticas do portal existem no painel de gestão, com regras de documentos, cadastro institucional e fiscais. Não são auditoria jurídica completa nem alertas expostos a visitantes anônimos."
+    },
+    {
+      "id": "6.1",
+      "modulo": 6,
+      "requisito": "Vinculação de Diárias decorrentes de ações de enfrentamento emergencial.",
+      "pagina_pdf": 39,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Registros de origem têm marcação explícita de ação emergencial e são reunidos/filtrados na página COVID; não há duplicação manual em tabela separada."
+    },
+    {
+      "id": "6.2",
+      "modulo": 6,
+      "requisito": "Vinculação de Contratos administrativos emergenciais.",
+      "pagina_pdf": 39,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Registros de origem têm marcação explícita de ação emergencial e são reunidos/filtrados na página COVID; não há duplicação manual em tabela separada."
+    },
+    {
+      "id": "6.3",
+      "modulo": 6,
+      "requisito": "Vinculação de Portarias de nomeação ou designação específicas.",
+      "pagina_pdf": 39,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Registros de origem têm marcação explícita de ação emergencial e são reunidos/filtrados na página COVID; não há duplicação manual em tabela separada."
+    },
+    {
+      "id": "6.4",
+      "modulo": 6,
+      "requisito": "Vinculação de Legislação e decretos de calamidade ou emergência em saúde.",
+      "pagina_pdf": 39,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Registros de origem têm marcação explícita de ação emergencial e são reunidos/filtrados na página COVID; não há duplicação manual em tabela separada."
+    },
+    {
+      "id": "6.5",
+      "modulo": 6,
+      "requisito": "Vinculação específica de despesas e receitas relativas ao combate emergencial.",
+      "pagina_pdf": 39,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Registros de origem têm marcação explícita de ação emergencial e são reunidos/filtrados na página COVID; não há duplicação manual em tabela separada."
+    },
+    {
+      "id": "6.6",
+      "modulo": 6,
+      "requisito": "Vinculação de detalhamento de pessoal alocado em ações de emergência.",
+      "pagina_pdf": 39,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Registros de origem têm marcação explícita de ação emergencial e são reunidos/filtrados na página COVID; não há duplicação manual em tabela separada."
+    },
+    {
+      "id": "6.7",
+      "modulo": 6,
+      "requisito": "Cadastro e publicação do boletim epidemiológico diário do município.",
+      "pagina_pdf": 39,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Publicação COVID contém data e campos epidemiológicos numéricos. O código permite boletins diários; não os preenche automaticamente."
+    },
+    {
+      "id": "6.8",
+      "modulo": 6,
+      "requisito": "Página exclusiva unificada com todas as ações, relatórios, despesas e receitas ligadas ao Covid-19.",
+      "pagina_pdf": 39,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Página COVID reúne boletins e registros emergenciais de diárias, contratos, atos, receitas, despesas e pessoal."
+    },
+    {
+      "id": "7.1",
+      "modulo": 7,
+      "requisito": "Realizar integração técnica com sistema contábil de outras empresas contratadas pelo município.",
+      "pagina_pdf": 40,
+      "classificacao": "PARCIAL",
+      "observacao": "Mapeamento contábil e coleta/sincronização HTTPS implementados. Falta comprovar o leiaute do fornecedor efetivo com exportação ou documentação autorizada. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente."
+    },
+    {
+      "id": "7.2",
+      "modulo": 7,
+      "requisito": "Realizar integração técnica com sistema de folha de pagamento de outras empresas.",
+      "pagina_pdf": 40,
+      "classificacao": "PARCIAL",
+      "observacao": "Importação, mapeamento e sincronização de folha implementados. Falta validar campos/rubricas e competências do sistema efetivamente usado. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente."
+    },
+    {
+      "id": "7.3",
+      "modulo": 7,
+      "requisito": "Importar do Tribunal de Contas do Estado (TCE) informações cadastrais básicas como agentes públicos e credores.",
+      "pagina_pdf": 40,
+      "classificacao": "PARCIAL",
+      "observacao": "Agentes/credores podem ser mapeados e importados. Falta prova do leiaute oficial TCE/RN; CSV fictício próprio não comprova essa origem. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente. Documentação Swagger oficial TCE/RN recuperada no navegador; 11 operações, sem cadastro direto de agentes/credores e sem propriedades no esquema de resposta. Não foi inventado leiaute oficial."
+    },
+    {
+      "id": "8.1",
+      "modulo": 8,
+      "requisito": "Cadastro e exibição de Despesas extra-orçamentárias municipais.",
+      "pagina_pdf": 40,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Natureza Extraorçamentária pode ser cadastrada e filtrada publicamente."
+    },
+    {
+      "id": "8.2",
+      "modulo": 8,
+      "requisito": "Cadastro e exibição de Despesas orçamentárias municipais.",
+      "pagina_pdf": 40,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Natureza Orçamentária pode ser cadastrada e filtrada publicamente."
+    },
+    {
+      "id": "8.3",
+      "modulo": 8,
+      "requisito": "Cadastro e exibição de Receitas extra-orçamentárias municipais.",
+      "pagina_pdf": 40,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Receitas têm classificação Extraorçamentária e consulta pública."
+    },
+    {
+      "id": "8.4",
+      "modulo": 8,
+      "requisito": "Cadastro e exibição de Receitas orçamentárias municipais.",
+      "pagina_pdf": 40,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Receitas têm classificação Orçamentária e consulta pública."
+    },
+    {
+      "id": "8.5",
+      "modulo": 8,
+      "requisito": "Cadastro e exibição detalhada de Empenhos com identificação de credor e valor.",
+      "pagina_pdf": 40,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Despesa contém empenho, credor, data e valor empenhado, com detalhamento público."
+    },
+    {
+      "id": "8.6",
+      "modulo": 8,
+      "requisito": "Cadastro e exibição detalhada de Liquidações de despesas municipais.",
+      "pagina_pdf": 40,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Despesa contém número/data da liquidação e valor liquidado. Modelo armazena uma linha consolidada, sem tabela de múltiplas liquidações."
+    },
+    {
+      "id": "8.7",
+      "modulo": 8,
+      "requisito": "Cadastro e exibição detalhada de Pagamentos efetuados com ordem bancária.",
+      "pagina_pdf": 41,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Despesa contém ordem bancária, data e valor pago. Modelo armazena uma linha consolidada, sem tabela de múltiplos pagamentos."
+    },
+    {
+      "id": "8.8",
+      "modulo": 8,
+      "requisito": "Emissão de relatórios gerenciais comparativos em tempo real entre empenho, liquidação e pagamento.",
+      "pagina_pdf": 41,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Resumo fiscal compara valores empenhados, liquidados e pagos, filtrando período/natureza e permitindo impressão; atualização segue a consulta periódica."
+    },
+    {
+      "id": "8.9",
+      "modulo": 8,
+      "requisito": "Importação automatizada de arquivos e dados de outros sistemas contábeis.",
+      "pagina_pdf": 41,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Rotina remota HTTPS com autenticação restrita, mapeamento, repetição e atualização sem duplicar registros. Ativação exige configurar origem e conta no ambiente."
+    },
+    {
+      "id": "8.10",
+      "modulo": 8,
+      "requisito": "Cadastro de Itens de Medicamentos (campos obrigatórios: descrição, unidade de medida de compra, unidade de medida de estoque, grupo, subgrupo, categoria do medicamento e subcategoria do medicamento).",
+      "pagina_pdf": 41,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Os sete campos exigidos são obrigatórios na tela e no banco, com proibição de texto vazio."
+    },
+    {
+      "id": "9.1",
+      "modulo": 9,
+      "requisito": "Importação de dados através de leiaute próprio definido pelo sistema de gerenciamento.",
+      "pagina_pdf": 41,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Importador usa leiaute próprio documentado no modelo CSV, valida colunas/tipos e grava atomicamente via RPC."
+    },
+    {
+      "id": "9.2",
+      "modulo": 9,
+      "requisito": "Importação de dados de pessoal originários de múltiplos sistemas de Folha de Pagamento.",
+      "pagina_pdf": 41,
+      "classificacao": "PARCIAL",
+      "observacao": "Conversão de dois leiautes distintos de folha passou nos testes fictícios. Falta confrontar os perfis com exportações dos múltiplos fornecedores concretos. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente."
+    },
+    {
+      "id": "9.3",
+      "modulo": 9,
+      "requisito": "Disponibilizar detalhamento de despesas de pessoal agregadas por cargo público.",
+      "pagina_pdf": 41,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Resumo de pessoal agrega quantidades e remuneração por cargo."
+    },
+    {
+      "id": "9.4",
+      "modulo": 9,
+      "requisito": "Disponibilizar detalhamento de pessoal agrupado por Secretaria municipal.",
+      "pagina_pdf": 41,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Resumo de pessoal agrega por secretaria/lotação."
+    },
+    {
+      "id": "9.5",
+      "modulo": 9,
+      "requisito": "Disponibilizar detalhamento de pessoal agrupado por Vínculo de trabalho (efetivos, comissionados, temporários, etc.).",
+      "pagina_pdf": 42,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Resumo de pessoal agrega por vínculo de trabalho."
+    },
+    {
+      "id": "9.6",
+      "modulo": 9,
+      "requisito": "Disponibilizar visualização consolidada e detalhamento geral do quadro funcional.",
+      "pagina_pdf": 42,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Resumo geral e linhas detalhadas por competência. Sem filtro, contagem representa registros de competências e pode contar a mesma pessoa mais de uma vez."
+    },
+    {
+      "id": "9.7",
+      "modulo": 9,
+      "requisito": "Disponibilizar detalhamento individualizado por servidor com subsídios, vantagens e descontos nos termos da LAI.",
+      "pagina_pdf": 42,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Detalhes individuais mostram subsídio, vantagens, descontos, remuneração e competência. Legalidade dos dados publicados depende da política e alimentação."
+    },
+    {
+      "id": "10.1",
+      "modulo": 10,
+      "requisito": "Cadastro de Processo de Engenharia (Campos obrigatórios: data do processo, valor do contrato inicial, vinculação do contrato e cadastro da fonte de recurso).",
+      "pagina_pdf": 42,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Processo exige data, valor inicial, contrato e fonte de recurso; SQL impõe NOT NULL e FK de contrato."
+    },
+    {
+      "id": "10.2",
+      "modulo": 10,
+      "requisito": "Cadastro de Obra Pública (Campos obrigatórios: data início, data fim, data prevista, descrição da obra, valor global, aditivo de acréscimo, aditivo de supressão, origem do recurso, número do processo, tipo guarda-chuva, secretaria executora, endereço da obra, objeto do contrato e justificativa).",
+      "pagina_pdf": 42,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Campos obrigatórios validados na gravação e no banco; término efetivo é exigido para obra concluída, sem inventar data para obra em andamento."
+    },
+    {
+      "id": "10.3",
+      "modulo": 10,
+      "requisito": "Vinculação e registro histórico do andamento físico- financeiro da obra.",
+      "pagina_pdf": 42,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Histórico vinculado por UUID contém data, descrição, percentual e valor executado; exibido na página da obra."
+    },
+    {
+      "id": "10.4",
+      "modulo": 10,
+      "requisito": "Vinculação de Credores responsáveis pela execução da obra pública.",
+      "pagina_pdf": 42,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Obra possui credor_id com FK e seleção do credor responsável."
+    },
+    {
+      "id": "10.5",
+      "modulo": 10,
+      "requisito": "Vinculação automática de Contratos e Aditivos originados do módulo de licitação para evitar retrabalho de digitação.",
+      "pagina_pdf": 42,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "A obra recupera contrato e aditivos pelo identificador; número textual repetido não associa aditivo de outro contrato."
+    },
+    {
+      "id": "10.6",
+      "modulo": 10,
+      "requisito": "Vinculação de Medições técnicas de engenharia aprovadas.",
+      "pagina_pdf": 43,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Medições têm obra, número, data, valor, aprovação, responsável e documento; são exibidas no detalhe."
+    },
+    {
+      "id": "10.7",
+      "modulo": 10,
+      "requisito": "Vinculação das Anotações de Responsabilidade Técnica (ART) dos engenheiros responsáveis.",
+      "pagina_pdf": 43,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "ARTs vinculadas por UUID à obra com engenheiro, registro, data e arquivo."
+    },
+    {
+      "id": "10.8",
+      "modulo": 10,
+      "requisito": "Disponibilização pública de gráficos, estatísticas, números e dados bem acessíveis na página de obras.",
+      "pagina_pdf": 43,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Página de obras apresenta contagens, valores, barras de execução/progresso e histórico físico-financeiro."
+    },
+    {
+      "id": "10.9",
+      "modulo": 10,
+      "requisito": "Disponibilização de relatórios gerenciais de listagem e situação das obras.",
+      "pagina_pdf": 43,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Há listagem pública com situação, resumo das obras e opção de impressão gerencial."
+    },
+    {
+      "id": "10.10",
+      "modulo": 10,
+      "requisito": "Cadastro e acompanhamento de múltiplos processos de engenharia concomitantes.",
+      "pagina_pdf": 43,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Tabela admite múltiplos processos e obras vinculadas, sem restrição a um único processo ativo."
+    },
+    {
+      "id": "10.11",
+      "modulo": 10,
+      "requisito": "Disponibilização de upload e envio de fotos datadas para acompanhamento visual da obra no site.",
+      "pagina_pdf": 43,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de foto exige obra, data, legenda e imagem, exibidos publicamente."
+    },
+    {
+      "id": "10.12",
+      "modulo": 10,
+      "requisito": "Geração automática de relatórios de críticas, alertas e pendências do módulo de Obras.",
+      "pagina_pdf": 43,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Crítica verifica ARTs vinculadas na tabela própria; não acusa ausência só porque o campo antigo está vazio."
+    },
+    {
+      "id": "10.13",
+      "modulo": 10,
+      "requisito": "Cadastro de Plano Diretor Municipal (Campos obrigatórios: cadastro de fases, cadastro de equipe, cadastro de eixos de atuação e cadastro de ações estratégicas).",
+      "pagina_pdf": 43,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Plano e quatro componentes iniciais são gravados na mesma transação; ausência ou remoção do último componente é rejeitada."
+    },
+    {
+      "id": "11.1",
+      "modulo": 11,
+      "requisito": "Cadastro detalhado de Veículos (Campos obrigatórios: placa, ano de fabricação, Renavam, modelo, data de entrada na frota, data de saída/baixa, tipo de veículo, situação de uso, secretaria detentora, indicador de máquina de obra e finalidade de uso).",
+      "pagina_pdf": 44,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Campos obrigatórios validados também no banco; veículo baixado exige data de baixa e datas não podem ficar invertidas."
+    },
+    {
+      "id": "11.2",
+      "modulo": 11,
+      "requisito": "Disponibilização de funcionalidade de envio e publicação da foto do veículo correspondente.",
+      "pagina_pdf": 44,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Foto do veículo pode ser enviada e exibida no detalhe público."
+    },
+    {
+      "id": "11.3",
+      "modulo": 11,
+      "requisito": "Geração automática de relatórios de críticas, alertas e pendências de veículos (ex: seguros a vencer, IPVA, manutenção).",
+      "pagina_pdf": 44,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Há regras específicas para este módulo, executadas na tela de críticas com identificação do registro e acesso à correção."
+    },
+    {
+      "id": "11.4",
+      "modulo": 11,
+      "requisito": "Mecanismo de busca avançada no site para o cidadão pesquisar por Modelo/Marca do veículo, por Secretaria detentora ou por Placa do veículo.",
+      "pagina_pdf": 44,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Busca pública permite pesquisar modelo, secretaria e placa sobre os veículos carregados, com apresentação dos detalhes."
+    },
+    {
+      "id": "12.1",
+      "modulo": 12,
+      "requisito": "Cadastro de Conselhos Municipais (Campos obrigatórios: data de criação, descrição do conselho, ato/lei de criação, data de vigência do conselho e detalhamento de competências).",
+      "pagina_pdf": 44,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Criação, descrição, lei, vigência e competências são obrigatórias na tela e no banco."
+    },
+    {
+      "id": "12.2",
+      "modulo": 12,
+      "requisito": "Vinculação de membros ativos, suplentes e representações da sociedade civil ou governo.",
+      "pagina_pdf": 44,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Membros vinculados têm titular/suplente, representação civil/governo, período e situação ativa."
+    },
+    {
+      "id": "12.3",
+      "modulo": 12,
+      "requisito": "Vinculação histórica de ações de conselho (atas, reuniões, palestras, pautas e datas).",
+      "pagina_pdf": 44,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Histórico de reuniões, atas, palestras e pautas por data e conselho, com documento."
+    },
+    {
+      "id": "12.4",
+      "modulo": 12,
+      "requisito": "Geração automática de relatórios de críticas, alertas e pendências ligados ao funcionamento dos Conselhos.",
+      "pagina_pdf": 44,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Há regras específicas para este módulo, executadas na tela de críticas com identificação do registro e acesso à correção."
+    },
+    {
+      "id": "12.5",
+      "modulo": 12,
+      "requisito": "Upload e vinculação direta de documentos próprios emitidos por cada conselho municipal.",
+      "pagina_pdf": 45,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Documentos são associados por conselho_id e apresentados na página individual."
+    },
+    {
+      "id": "12.6",
+      "modulo": 12,
+      "requisito": "Página web individualizada e customizável para cada conselho dentro do site oficial.",
+      "pagina_pdf": 45,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Consulta por identificador individualiza o conselho e exibe imagem, cor, membros, ações e documentos."
+    },
+    {
+      "id": "13.1",
+      "modulo": 13,
+      "requisito": "Visualização móvel nativa de Notícias publicadas no portal.",
+      "pagina_pdf": 45,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Leitura e listagem de notícias usam componentes nativos Android/SwiftUI; acesso à publicação é contabilizado. Assinatura e ensaio físico iOS continuam necessários para a apresentação. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
+    },
+    {
+      "id": "13.2",
+      "modulo": 13,
+      "requisito": "Cadastro direto de novas notícias por meio do dispositivo móvel autorizado.",
+      "pagina_pdf": 45,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Atalho móvel abre cadastro de notícia no painel web autenticado, com escolha de arquivos. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
+    },
+    {
+      "id": "13.3",
+      "modulo": 13,
+      "requisito": "Alteração e edição de notícias publicadas utilizando o aplicativo mobile.",
+      "pagina_pdf": 45,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Painel web embarcado permite abrir e editar notícias conforme permissões. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
+    },
+    {
+      "id": "13.4",
+      "modulo": 13,
+      "requisito": "Visualização de estatísticas em tempo real de acessos e visualizações das notícias.",
+      "pagina_pdf": 45,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Total soma todas as notícias; ranking mostra dez. Leituras da tela nativa entram no contador e falhas são informadas. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
+    },
+    {
+      "id": "13.5",
+      "modulo": 13,
+      "requisito": "Cadastro de Editais e Processos Seletivos por meio do aplicativo de gestão móvel.",
+      "pagina_pdf": 45,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Aplicativo dá acesso ao painel e ao cadastro de editais; concursos/seletivos permanecem disponíveis na navegação administrativa. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
+    },
+    {
+      "id": "13.6",
+      "modulo": 13,
+      "requisito": "Publicação simplificada de relatórios fiscais oficiais de forma direta pelo aplicativo.",
+      "pagina_pdf": 45,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Atalho LRF abre publicação de relatórios fiscais no formulário web com envio de arquivo. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
+    },
+    {
+      "id": "13.7",
+      "modulo": 13,
+      "requisito": "Publicação e upload rápido de Leis municipais via dispositivo móvel.",
+      "pagina_pdf": 46,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Atalho Leis abre formulário web; seletores de arquivos permitem envio pelo dispositivo. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
+    },
+    {
+      "id": "13.8",
+      "modulo": 13,
+      "requisito": "Publicação rápida de Decretos municipais pelo smartphone/tablet.",
+      "pagina_pdf": 46,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Atalho Decretos abre formulário web para cadastro e publicação. Implementação por interface web embarcada; não houve ensaio físico de dispositivo nesta auditoria. Revisão de 26/10/2026: aplicativos 1.1.0 (build 3) iniciam no portal publicado, com menu compacto e sem faixa fixa nativa. Android/iOS aprovados no CI mobile 40264587043, fonte 37d5a934; instalação disponível em /instalar.html. Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
+    },
+    {
+      "id": "14.1",
+      "modulo": 14,
+      "requisito": "Mecanismo interno de varredura automatizada com IA para detecção de pendências fiscais de transparência.",
+      "pagina_pdf": 46,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Modelo neural local compara páginas públicas com critérios; coleta ampliada para fontes institucionais e fiscais. Relatório diferencia leitura concluída de coleta pendente, sem prompts nem API paga. Indícios não aprovam juridicamente requisitos."
+    },
+    {
+      "id": "14.2",
+      "modulo": 14,
+      "requisito": "Aferição e simulação em tempo real da aderência do portal aos 88 pontos de avaliação de transparência da ATRICON.",
+      "pagina_pdf": 46,
+      "classificacao": "PARCIAL",
+      "observacao": "Coleta registra os 88 pontos e distingue página lida, fonte não configurada, falha e conteúdo vazio. Fontes institucionais/e-SIC/serviços/LGPD incluídas; falha isolada não apaga outros resultados. Continua parcial: faltam fontes específicas, confronto com instrumento oficial, PDFs, atualização e aferição integral; similaridade não aprova requisito."
+    },
+    {
+      "id": "14.3",
+      "modulo": 14,
+      "requisito": "Apresentação automática de Anexo Técnico com a solução descrita e o caminho técnico da solução para adequação.",
+      "pagina_pdf": 46,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Gera anexo técnico com critérios, caminhos e ações e permite gravação/saída do relatório; conteúdo é derivado da avaliação/regra existente."
+    },
+    {
+      "id": "14.4",
+      "modulo": 14,
+      "requisito": "Apresentação de relatório indicando o status (Se Atende, Se Não Atende, ou Se é Portal de Terceiro) para cada um dos 88 pontos avaliados.",
+      "pagina_pdf": 46,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Relatório percorre os 88 pontos e apresenta atende/não atende/terceiro. É um relatório de avaliação manual, não comprovação automática do atendimento."
+    },
+    {
+      "id": "15.1",
+      "modulo": 15,
+      "requisito": "Banco de dados da Carta de Serviços hospedado integralmente em servidor em nuvem.",
+      "pagina_pdf": 46,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Serviços e avaliações usam tabelas PostgreSQL no Supabase remoto."
+    },
+    {
+      "id": "15.2",
+      "modulo": 15,
+      "requisito": "Interface administrativa baseada em janelas (Padrão Windows) amigável para o gestor municipal.",
+      "pagina_pdf": 46,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro de serviços usa a janela modal administrativa compartilhada."
+    },
+    {
+      "id": "15.3",
+      "modulo": 15,
+      "requisito": "Atualização automática de versão online executada de forma remota no login.",
+      "pagina_pdf": 47,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Controle remoto de versão implementado; versão publicada 1.3.0 confirmada por /version.json no navegador. Ensaio de atualização entre versões na sessão autenticada ainda pendente."
+    },
+    {
+      "id": "15.4",
+      "modulo": 15,
+      "requisito": "Instalação, parametrização e uso direto do sistema via navegador de internet.",
+      "pagina_pdf": 47,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Cadastro, parametrização e consulta de serviços são acessíveis pelo navegador autenticado/público."
+    },
+    {
+      "id": "15.5",
+      "modulo": 15,
+      "requisito": "Gravação de todos os arquivos, formulários e anexos gerados pelo sistema diretamente no banco de dados para segurança.",
+      "pagina_pdf": 47,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "No M15, CSV/JSON, ficha em branco e estatísticas completas são preservados em bytes no banco antes da saída; uploads e solicitações também ficam registrados."
+    },
+    {
+      "id": "15.6",
+      "modulo": 15,
+      "requisito": "Atualização, aprimoramento tecnológico e adequações legais contínuas fornecidas sem custo adicional.",
+      "pagina_pdf": 47,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Não é funcionalidade faltante: atualização contínua e adequação legal sem custo adicional dependem de condições contratuais, política de suporte e comprovação da prestação; testes de software não provam preço ou cobertura futura."
+    },
+    {
+      "id": "15.7",
+      "modulo": 15,
+      "requisito": "Cadastro estruturado de Serviços municipais com descrição, público-alvo, requisitos e etapas.",
+      "pagina_pdf": 47,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Serviço tem descrição, público, requisitos e etapas persistidos e exibidos na Carta."
+    },
+    {
+      "id": "15.8",
+      "modulo": 15,
+      "requisito": "Cadastro e associação de links úteis para acesso online direto ao serviço.",
+      "pagina_pdf": 47,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Campo link é publicado para acesso ao serviço online."
+    },
+    {
+      "id": "15.9",
+      "modulo": 15,
+      "requisito": "Cadastro e vinculação de Tags de pesquisa para facilitar a indexação e busca pelo usuário.",
+      "pagina_pdf": 47,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Tags são persistidas e usadas para filtrar/pesquisar serviços."
+    },
+    {
+      "id": "15.10",
+      "modulo": 15,
+      "requisito": "Vinculação do perfil e setor de atendimento responsável pelo respectivo serviço.",
+      "pagina_pdf": 47,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Serviço possui setor/secretaria e perfil de atendimento exibidos ao cidadão."
+    },
+    {
+      "id": "15.11",
+      "modulo": 15,
+      "requisito": "Permitir avaliação técnica continuada do Ouvidor Geral do município sobre os cadastros de serviços.",
+      "pagina_pdf": 47,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Há parecer textual e situação técnica do Ouvidor, editáveis continuamente. O código não separa perfil exclusivo de Ouvidor: acesso segue permissão de edição de serviços."
+    },
+    {
+      "id": "15.12",
+      "modulo": 15,
+      "requisito": "Relatórios estatísticos de visualizações, solicitações e satisfação sobre a carta de serviços.",
+      "pagina_pdf": 47,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Solicitação com protocolo e tratamento privado; relatório separa solicitações, visualizações e satisfação. Identidade do solicitante é protegida e visualizações não se repetem por renderização."
+    },
+    {
+      "id": "15.13",
+      "modulo": 15,
+      "requisito": "Relatório dinâmico com modelo em branco padrão de cadastro técnico de serviço municipal.",
+      "pagina_pdf": 48,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Rota de ficha de serviço em branco, com campos do cadastro e impressão."
+    },
+    {
+      "id": "15.14",
+      "modulo": 15,
+      "requisito": "Geração automática de relatórios de críticas, alertas e pendências cadastrais na Carta de Serviços.",
+      "pagina_pdf": 48,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Há regras específicas para este módulo, executadas na tela de críticas com identificação do registro e acesso à correção."
+    },
+    {
+      "id": "15.15",
+      "modulo": 15,
+      "requisito": "Geração e elaboração de página web dedicada integrada ao site oficial exibindo a carta de serviços aos cidadãos.",
+      "pagina_pdf": 48,
+      "classificacao": "IMPLEMENTADO",
+      "observacao": "Página pública dedicada à Carta com busca, tags, detalhes, acesso online e avaliação."
+    },
+    {
+      "id": "16.1",
+      "modulo": 16,
+      "requisito": "Plataforma hospedada em nuvem, dispensando servidores locais ou infraestrutura física municipal.",
+      "pagina_pdf": 48,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.2",
+      "modulo": 16,
+      "requisito": "Acesso completo ao webmail via navegador web (Google Chrome, Firefox, Safari, Edge).",
+      "pagina_pdf": 48,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.3",
+      "modulo": 16,
+      "requisito": "Criação, edição, ativação, desativação e exclusão lógica de caixas de e-mail institucional.",
+      "pagina_pdf": 48,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.4",
+      "modulo": 16,
+      "requisito": "Capacidade técnica para configuração e operação de até 60 contas de e-mail oficiais.",
+      "pagina_pdf": 48,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.5",
+      "modulo": 16,
+      "requisito": "Suporte estrito a domínios de internet personalizados municipais (Exemplo: usuario@nomedoorgao.gov.br).",
+      "pagina_pdf": 48,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.6",
+      "modulo": 16,
+      "requisito": "Envio e recebimento de mensagens de correio eletrônico em tempo real.",
+      "pagina_pdf": 49,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.7",
+      "modulo": 16,
+      "requisito": "Organização estruturada de mensagens através de pastas personalizadas pelo usuário.",
+      "pagina_pdf": 49,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.8",
+      "modulo": 16,
+      "requisito": "Presença obrigatória de pastas padrão: Caixa de Entrada, Itens Enviados, Rascunhos, Spam e Lixeira.",
+      "pagina_pdf": 49,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.9",
+      "modulo": 16,
+      "requisito": "Funcionalidade de recuperação segura de senha com interface administrativa.",
+      "pagina_pdf": 49,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.10",
+      "modulo": 16,
+      "requisito": "Gestão e cadastro de múltiplos usuários com perfil de Administradores Gerais.",
+      "pagina_pdf": 49,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.11",
+      "modulo": 16,
+      "requisito": "Controle e agrupamento de contas de e-mail por secretaria, setor, conselho municipal ou departamento.",
+      "pagina_pdf": 49,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.12",
+      "modulo": 16,
+      "requisito": "Envio, recebimento e armazenamento de arquivos anexos associados às mensagens de e-mail.",
+      "pagina_pdf": 49,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.13",
+      "modulo": 16,
+      "requisito": "Filtros básicos integrados contra mensagens de e-mail indesejadas (Spam).",
+      "pagina_pdf": 49,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.14",
+      "modulo": 16,
+      "requisito": "Autenticação e segurança de acesso reforçada por login individual e senha criptografada.",
+      "pagina_pdf": 49,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.15",
+      "modulo": 16,
+      "requisito": "Painel administrativo dedicado, de uso exclusivo do gestor indicado pelo município.",
+      "pagina_pdf": 49,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.16",
+      "modulo": 16,
+      "requisito": "Compatibilidade nativa e responsividade de visualização em dispositivos móveis (Android e iOS).",
+      "pagina_pdf": 50,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.17",
+      "modulo": 16,
+      "requisito": "Registro, histórico de auditoria e manutenção ativa de contas da entidade.",
+      "pagina_pdf": 50,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.18",
+      "modulo": 16,
+      "requisito": "Prestação de suporte técnico especializado para criação de contas, redefinição de senhas e domínio.",
+      "pagina_pdf": 50,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.19",
+      "modulo": 16,
+      "requisito": "Disponibilização de orientação e treinamento inicial para os administradores do painel SaaS do Webmail.",
+      "pagina_pdf": 50,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.20",
+      "modulo": 16,
+      "requisito": "Painel Administrativo: permitir cadastrar novas contas, alterar dados, bloquear/desbloquear e redefinir senhas em tempo de sessão.",
+      "pagina_pdf": 50,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.21",
+      "modulo": 16,
+      "requisito": "Painel Administrativo: consultar contas ativas/inativas e organizá-las por órgão, secretaria ou setor.",
+      "pagina_pdf": 50,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.22",
+      "modulo": 16,
+      "requisito": "Segurança: ambiente criptografado SSL/TLS para tráfego e proteção contra acessos não autorizados.",
+      "pagina_pdf": 50,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    },
+    {
+      "id": "16.23",
+      "modulo": 16,
+      "requisito": "Conformidade e conformação tecnológica estrita com os princípios da Lei Geral de Proteção de Dados (LGPD).",
+      "pagina_pdf": 50,
+      "classificacao": "NÃO VERIFICADO",
+      "observacao": "Webmail é fornecido por terceiro. O repositório contém apenas link externo; não contém implementação ou evidência suficiente deste requisito específico."
+    }
+  ],
+  "publicacao_verificada": {
+    "versao": "1.3.0",
+    "codigo": "80be36e5b3830896c07f3cfc8f343293bd0e8403",
+    "pontos": [
+      "/version.json",
+      "/transparencia",
+      "/transparencia/lei",
+      "/admin/despesas",
+      "/admin/pendencias"
+    ],
+    "limite": "Pesquisa pública e abertura dos controles administrativos verificadas. Não comprova todos os fluxos ou homologação."
+  },
+  "revisao_local": {
+    "data": "2026-10-25",
+    "testes": 216,
+    "arquivos_teste": 26,
+    "typescript": "aprovado",
+    "build": "aprovado",
+    "lint_arquivos_alterados": "aprovado",
+    "limite": "Não substitui compatibilidade com fornecedor efetivo ou homologação.",
+    "atricon": "88 registros de coleta; não equivale à aferição integral dos 88 critérios.",
+    "versao": "1.3.1",
+    "fonte_agentes": "/prefeitura"
+  },
+  "integracao_revisao": "80be36e5b3830896c07f3cfc8f343293bd0e8403",
+  "prs_revisao": [
+    12,
+    13,
+    14
+  ],
+  "ensaio_atricon_cloud": {
+    "emissao": "2026-10-25T14:13:46.368Z",
+    "modelo": "Xenova/paraphrase-multilingual-MiniLM-L12-v2",
+    "pontos": 88,
+    "leitura_concluida": 61,
+    "coleta_pendente": 27,
+    "relatorio": "Salvo e auditado no Cloud, sem aprovações automáticas.",
+    "pendencias_cadastrais_observadas": 81
+  },
+  "release131": "Publicação e ensaio de atualização entre versões ainda em andamento.",
+  "revisao_apps": {
+    "data": "2026-10-26",
+    "versao_site": "1.4.0",
+    "versao_nativa": "1.1.0",
+    "build": 3,
+    "codigo_testado": "37d5a93406ca7939c5cfec2d53a375695c0c51c4",
+    "ci_mobile": "https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40264587043",
+    "ci_qualidade": "https://github.com/Robonuvem-dev/pau-dos-ferros/actions/runs/40264587002",
+    "instalacao": "/instalar.html",
+    "apk": "/downloads/PauDosFerros-Android.apk",
+    "limites": "Abertura em emulador/simulador comprovada; fluxos autenticados e instalação em aparelhos físicos continuam exigindo ensaio. iOS físico requer assinatura autorizada. Instalação web não substitui prova nativa."
+  }
+}
