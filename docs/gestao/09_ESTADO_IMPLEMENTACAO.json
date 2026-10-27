@@ -1035,7 +1035,7 @@
       "requisito": "Aferição e simulação em tempo real da aderência do portal aos 88 pontos de avaliação de transparência da ATRICON.",
       "pagina_pdf": 46,
       "classificacao": "PARCIAL",
-      "observacao": "Coleta registra os 88 pontos e distingue página lida, fonte não configurada, falha e conteúdo vazio. Fontes institucionais/e-SIC/serviços/LGPD incluídas; falha isolada não apaga outros resultados. Continua parcial: faltam fontes específicas, confronto com instrumento oficial, PDFs, atualização e aferição integral; similaridade não aprova requisito."
+      "observacao": "Coleta registra os 88 pontos e distingue página lida, fonte não configurada, falha e conteúdo vazio. Fontes institucionais/e-SIC/serviços/LGPD incluídas; falha isolada não apaga outros resultados. Continua parcial: faltam fontes específicas, confronto com instrumento oficial, PDFs, atualização e aferição integral; similaridade não aprova requisito. Revisão 27/10/2026: /admin/atricon consulta o catálogo real https://radardatransparencia.atricon.org.br/downloads.html e importa avaliações de 2025/2024/2023/2022, respostas por UF e instrumentos publicados. Após importar, Ver dados baixados abre detalhes pesquisáveis no navegador. Extração por intervalos e integridade validadas com arquivos reais; matriz 2026 preserva 187 descrições distintas reconhecidas. Referência, ciclo e hash integram evidências/anexo. Classificação continua PARCIAL: instrumentos anuais não têm correspondência automática certificada com os 88 pontos internos. Evidências técnicas em docs/gestao/ATRICON_IMPORTACAO_OFICIAL.md; CI desta revisão ainda não executado."
     },
     {
       "id": "14.3",

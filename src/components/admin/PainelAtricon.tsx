@@ -1,23 +1,26 @@
+import { officialReference, type OfficialImport } from "@/lib/atricon-official";
 import { downloadReport } from '@/lib/pdf-report';
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery,useQueryClient } from "@tanstack/react-query";
 import { db } from "@/lib/data";
 import { avaliar,STATUS_LABEL,type AtriconStatus,type EvidenciaAtricon } from "@/lib/atricon";
 import { montarAnexo } from "@/lib/atricon-anexo";
 import { readFiscalEvidence } from "@/lib/public-scan";
-import { analisarEvidenciasPublicas,MODELO_LOCAL } from "@/lib/ai-browser";
+import { analisarEvidenciasPublicas,analisarCriteriosOficiais,MODELO_LOCAL } from "@/lib/ai-browser";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 type Pendencia={modulo:string;problema:string};
 type Registro={criterio:string;status:AtriconStatus;link:string|null;observacao:string|null};
-export function PainelAtricon({pendencias}:{pendencias:Pendencia[]}){
+export function PainelAtricon({pendencias,referencia=null}:{pendencias:Pendencia[];referencia?:OfficialImport|null}){
  const qc=useQueryClient();
  const {data:registros=[],error}=useQuery({queryKey:["atricon-avaliacoes"],queryFn:async():Promise<Registro[]>=>{
   const {data,error}=await db.from("atricon_avaliacoes").select("criterio,status,link,observacao");if(error)throw error;return data;
  }});
  const [filtro,setFiltro]=useState("todos"),[drafts,setDrafts]=useState<Record<string,EvidenciaAtricon>>({});
  const [busy,setBusy]=useState(false),[status,setStatus]=useState(""),[texto,setTexto]=useState(""),[erro,setErro]=useState("");
+ const referenceEpoch=useRef(0);
+ useEffect(()=>{referenceEpoch.current++;setTexto("");},[referencia]);
  const manuais=Object.fromEntries(registros.map(r=>[r.criterio,r]));
  const itens=avaliar({},manuais);
  const mudar=(id:string,p:Partial<EvidenciaAtricon>)=>setDrafts(d=>({...d,[id]:{status:"nao_atende",...manuais[id],...d[id],...p}}));
@@ -27,17 +30,27 @@ export function PainelAtricon({pendencias}:{pendencias:Pendencia[]}){
    try{const u=new URL(v.link??"");if(!["http:","https:"].includes(u.protocol)||u.username||u.password||(v.observacao??"").trim().length<10)throw new Error();}
    catch{setErro("Para marcar atendimento ou terceiro, informe URL válida e verificação com pelo menos 10 caracteres.");return;}
   }
-  const {error}=await db.from("atricon_avaliacoes").upsert({criterio:id,status:v.status,link:v.link||null,observacao:v.observacao||null});
+  const referenceText=referencia?officialReference(referencia):"";
+  const note=v.observacao??"";
+  const observation=referenceText&&!note.includes(referenceText)?note+"\n\n"+referenceText:note;
+  const {error}=await db.from("atricon_avaliacoes").upsert({criterio:id,status:v.status,link:v.link||null,observacao:observation||null});
   if(error){setErro(error.message);return;}setStatus("Evidência "+id+" salva e auditada.");await qc.invalidateQueries({queryKey:["atricon-avaliacoes"]});
  };
  const gerar=async()=>{
+  const epoch=referenceEpoch.current;
   setBusy(true);setErro("");setTexto("");
   try{
    const cases=await readFiscalEvidence();
-   const analise=await analisarEvidenciasPublicas(cases,setStatus);
+   let analise=await analisarEvidenciasPublicas(cases,setStatus);
+   if(referencia) {
+    analise+="\n\n"+officialReference(referencia);
+    analise+="\n\n"+(referencia.criteria.length ? await analisarCriteriosOficiais(referencia.criteria,cases,setStatus) : "A publicação selecionada não contém descrições de critérios reconhecidas. Seus resultados históricos foram registrados como referência; a matriz interna não foi substituída.");
+   }
+   if(epoch!==referenceEpoch.current)throw new Error("A referência oficial mudou. Execute a análise novamente para o ciclo selecionado.");
    const anexo=montarAnexo(itens,pendencias,analise,MODELO_LOCAL,new Date().toISOString());
    const {error}=await db.from("atricon_relatorios").insert({modelo:MODELO_LOCAL,texto:anexo,analise_ia:analise,resultados:itens});
    if(error)throw error;
+   if(epoch!==referenceEpoch.current)return;
    setTexto(anexo);setStatus("IA local executada. Anexo com 88 itens salvo e auditado. Revise o texto antes da apresentação.");
   }catch(e){setErro("Não foi possível concluir a análise local: "+(e as Error).message);}
   finally{setBusy(false);}
@@ -47,7 +60,8 @@ export function PainelAtricon({pendencias}:{pendencias:Pendencia[]}){
   const a=document.createElement("a");a.href=url;a.download="anexo-tecnico-municipal.txt";a.click();URL.revokeObjectURL(url);
  };
  return <section className="mb-8 rounded border bg-card p-5" id="atricon">
- <h2 className="font-display text-2xl font-bold">Transparência — avaliação dos 88 pontos</h2>
+ <h2 className="font-display text-2xl font-bold">Transparência — avaliação interna dos 88 pontos</h2>
+ {referencia&&<p className="my-2 text-sm">Referência selecionada: ciclo {referencia.resource.year} · {referencia.resource.label}. {referencia.criteria.length} descrições de critérios identificadas no conteúdo importado.</p>}
  <p className="my-2 text-sm">A contagem de cadastros não comprova atendimento. Registre URL, passo executado e resultado de cada ponto. A IA produz sugestões; não aprova requisitos.</p>
  <p className="my-2 text-sm">A varredura registra os 88 pontos e lê as páginas públicas com fonte configurada, usando modelo neural gratuito no dispositivo. Fontes não configuradas, páginas indisponíveis e conteúdo vazio ficam explicitamente pendentes. Indício textual não aprova atendimento; PDFs, atualização, acessibilidade e conformidade jurídica exigem conferência própria. No primeiro uso há download dos arquivos do modelo; não há prompts nem API de IA paga.</p>
  <p className="my-3 font-semibold">{itens.filter(i=>i.status==="atende").length} atendem · {itens.filter(i=>i.status==="nao_atende").length} não atendem · {itens.filter(i=>i.status==="terceiro").length} em portal de terceiro</p>
