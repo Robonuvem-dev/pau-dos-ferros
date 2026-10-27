@@ -94,7 +94,7 @@ export function IntegracaoExterna({ modulo, onDone }: { modulo: string; onDone: 
           />
         </label>
         <Button variant="outline" disabled={busy || !competencia} onClick={() => void consultar()}>
-          {busy ? "Processando..." : "Sincronizar API externa"}
+          {busy ? "Processando..." : "Importar da API externa"}
         </Button>
       </div>
       {erro && (

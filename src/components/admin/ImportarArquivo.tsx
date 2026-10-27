@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import { formatCell, getModule } from "@/lib/modules";
-import { useState } from "react";
-=======
 import { useRef, useState } from "react";
->>>>>>> origin/main
 import { db } from "@/lib/data";
 import { cabecalhosExternos, prepararLeiauteExterno } from "@/lib/importacao-mapeamento";
 import { IMPORT_COLUNAS, prepararImportacao } from "@/lib/importacao";

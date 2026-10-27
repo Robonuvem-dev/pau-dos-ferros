@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import { fieldMask, formatMaskedValue, formattedNumber } from "./formatting";
-=======
 import { LICITACAO_MODALIDADES } from "./catalogos";
 
->>>>>>> origin/main
 // Configuração central dos módulos: dirige o Portal da Transparência e o painel administrativo.
 export type FieldType = "text" | "textarea" | "number" | "money" | "date" | "bool" | "file" | "tags" | "select" | "int" | "files" | "relation";
 

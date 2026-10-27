@@ -1,3 +1,4 @@
+import { PainelIntegracoes } from "@/components/admin/PainelIntegracoes";
 import { createFileRoute, Link, notFound } from '@tanstack/react-router';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,7 @@ function ModulePage() {
     <Button asChild variant="ghost" className="mb-4"><Link to="/admin"><ArrowLeft />Todos os módulos</Link></Button>
     <p className="text-sm font-bold text-primary">M{m.id.padStart(2, '0')}</p>
     <h1 className="mb-6 font-display text-3xl font-bold">{m.title}</h1>
+    {(m.id === "7" || m.id === "9") && <PainelIntegracoes key={m.id} somenteFolha={m.id === "9"} />}
     <div className="grid gap-3 sm:grid-cols-2">
       {m.pages?.map(p => <Button asChild key={p.to} variant="outline" className="h-auto min-h-16 justify-between whitespace-normal text-left"><Link to={p.to}>{p.label}<ArrowUpRight /></Link></Button>)}
       {m.keys.map(key => <div key={key} className="flex flex-wrap items-center justify-between gap-2 border-b py-3">
