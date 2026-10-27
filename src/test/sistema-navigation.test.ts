@@ -6,7 +6,7 @@ describe('Municipal navigation', () => {
     expect(ADMIN_MODULES.map(m => Number(m.id))).toEqual(Array.from({ length: 16 }, (_, i) => i + 1));
   });
   it('uses the requested external webmail destination', () => {
-    expect(WEBMAIL_URL).toBe('https://webmail.atllas.org/login');
+    expect(WEBMAIL_URL).toBe('https://webmail.atllas.org/login?domain=paudosferros.rn.gov.br');
   });
   it.each(ADMIN_MODULES.flatMap(m => m.keys))('resolves evaluation resource %s', key => {
     expect(getModule(key)?.table).toBeTruthy();

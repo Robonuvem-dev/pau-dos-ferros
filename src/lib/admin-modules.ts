@@ -1,7 +1,7 @@
 import { getModule } from './modules';
 
-export const WEBMAIL_URL = 'https://webmail.atllas.org/login';
-type Page = '/admin/usuarios' | '/admin/auditoria' | '/admin/melhorias' | '/admin/aparencia' | '/admin/pendencias' | '/admin/licitacoes-relatorios' | '/admin/esic' | '/admin/atricon' | '/admin/servicos-estatisticas' | '/sobre' | '/conta' | '/';
+export const WEBMAIL_URL = 'https://webmail.atllas.org/login?domain=paudosferros.rn.gov.br';
+type Page = '/admin/webmail' | '/admin/usuarios' | '/admin/auditoria' | '/admin/melhorias' | '/admin/aparencia' | '/admin/pendencias' | '/admin/licitacoes-relatorios' | '/admin/esic' | '/admin/atricon' | '/admin/servicos-estatisticas' | '/sobre' | '/conta' | '/';
 export interface AdminModule { id: string; title: string; keys: string[]; pages?: { label: string; to: Page }[]; publicKeys?: string[] }
 export const ADMIN_MODULES: AdminModule[] = [
   { id: '1', title: 'Infraestrutura, instalação e segurança', keys: [], pages: [{ label: 'Usuários e permissões', to: '/admin/usuarios' }, { label: 'Auditoria e acessos', to: '/admin/auditoria' }, { label: 'Pedidos de melhoria', to: '/admin/melhorias' }, { label: 'Minha conta', to: '/conta' }, { label: 'Versão do sistema', to: '/sobre' }] },
@@ -19,6 +19,6 @@ export const ADMIN_MODULES: AdminModule[] = [
   { id: '13', title: 'Aplicativo Android e iOS', keys: ['noticias','leis','decretos','licitacoes','rreo','rgf'], pages: [{ label: 'Portal do cidadão', to: '/' }, { label: 'Estatísticas de acesso aos serviços', to: '/admin/servicos-estatisticas' }] },
   { id: '14', title: 'Inteligência artificial e ATRICON', keys: [], pages: [{ label: 'Avaliação ATRICON e análise com IA', to: '/admin/atricon' }] },
   { id: '15', title: 'Carta de serviços ao cidadão', keys: ['servicos','servico-solicitacoes'], pages: [{ label: 'Estatísticas de acessos e satisfação', to: '/admin/servicos-estatisticas' }] },
-  { id: '16', title: 'Webmail institucional', keys: [] },
+  { id: '16', title: 'Webmail institucional', keys: [], pages: [{ label: 'Abrir webmail', to: '/admin/webmail' }] },
 ];
 export const adminResourceLabel = (key: string) => ({ 'metas-convenio': 'Metas e especificações técnicas', 'planos-aplicacao': 'Planos de aplicação', 'boletim-epidemiologico': 'Boletim epidemiológico' }[key] ?? getModule(key)?.label ?? key);

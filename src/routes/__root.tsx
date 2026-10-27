@@ -6,6 +6,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -139,6 +140,7 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
+  const webmail = useRouterState({ select: state => state.location.pathname.replace(/\/$/, "") === "/admin/webmail" });
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   const [identity, setIdentity] = useState<{ session: Session | null; roles: string[]; ready: boolean }>({ session: null, roles: [], ready: false });
@@ -175,9 +177,9 @@ function RootComponent() {
       <SessionContext.Provider value={identity}>
       <PwaInstallProvider>
         <TemaSite />
-        <SiteHeader />
-        <main id="conteudo" className="min-h-[50vh]"><Outlet /></main>
-        <SiteFooter />
+        {!webmail && <SiteHeader />}
+        <main id="conteudo" className={webmail ? "h-dvh w-full overflow-auto" : "min-h-[50vh]"}><Outlet /></main>
+        {!webmail && <SiteFooter />}
         <Toaster richColors />
       </PwaInstallProvider>
       </SessionContext.Provider>
