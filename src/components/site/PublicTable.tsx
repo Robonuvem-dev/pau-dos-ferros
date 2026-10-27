@@ -15,88 +15,6 @@ import { resolvePublicRelation, reversePublicRelations } from '@/lib/public-rela
 
 export function PublicTable({ mod, registro, initialSearch = '', initialFilters = {} }: { mod: ModuleDef; registro?: string | undefined; initialSearch?: string | undefined; initialFilters?: Record<string, string> | undefined }) {
   const { data } = useSuspenseQuery(moduleQuery(mod.key));
-<<<<<<< HEAD
-  const [q, setQ] = useState("");
-  const [numero, setNumero] = useState("");
-  const [ano, setAno] = useState("");
-  const [ementa, setEmenta] = useState("");
-  const legislacao = ["lei", "decreto", "portaria", "resolucao", "edital", "lrf"].includes(mod.key);
-  const detalhes = mod.fields.filter(f => f.hideInTable);
-  const cols = mod.fields.filter((f) => !f.hideInTable);
-
-  const rows = useMemo(() => {
-    const s = q.trim().toLowerCase();
-    return data.filter((r) => {
-      if (s && !mod.fields.some((f) => (String(r[f.name] ?? "") + " " + formatCell(f, r[f.name])).toLowerCase().includes(s))) return false;
-      if (legislacao && numero.trim() && !String(r.numero ?? "").toLowerCase().includes(numero.trim().toLowerCase())) return false;
-      if (legislacao && ano.trim() && String(r.ano ?? "").trim() !== ano.trim()) return false;
-      if (legislacao && ementa.trim() && !String(r.ementa ?? "").toLowerCase().includes(ementa.trim().toLowerCase())) return false;
-      return true;
-    });
-  }, [data, q, mod.fields, legislacao, numero, ano, ementa]);
-
-  const exportar = (tipo: "csv" | "json") => {
-    const content = tipo === "csv" ? "\uFEFF" + toCSV(mod.fields, rows) : JSON.stringify(rows, null, 2);
-    const blob = new Blob([content], { type: tipo === "csv" ? "text/csv" : "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `${mod.key}.${tipo}`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  };
-
-  return (
-    <div className="rounded-lg border bg-card shadow-card">
-      <div className="flex flex-wrap items-center gap-3 border-b p-4">
-        <div className="relative min-w-60 flex-1">
-          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input placeholder="Pesquisar nesta consulta..." value={q} onChange={(e) => setQ(e.target.value)} className="pl-9" />
-        </div>
-        <span className="text-sm text-muted-foreground">{rows.length} registro(s)</span>
-        <Button variant="outline" size="sm" onClick={() => exportar("csv")}><Download className="size-4" />CSV</Button>
-        <Button variant="outline" size="sm" onClick={() => exportar("json")}><Download className="size-4" />JSON</Button>
-        <Button variant="outline" size="sm" onClick={() => window.print()}>Imprimir</Button>
-      </div>
-      {legislacao && <div className="grid gap-3 border-b p-4 sm:grid-cols-3">
-        <Input aria-label="Número do documento" placeholder="Filtrar por número" value={numero} onChange={e => setNumero(e.target.value)} />
-        <Input aria-label="Ano do documento" placeholder="Ano (ex.: 2026)" inputMode="numeric" value={ano} onChange={e => setAno(e.target.value)} />
-        <Input aria-label="Ementa do documento" placeholder="Palavras da ementa" value={ementa} onChange={e => setEmenta(e.target.value)} />
-      </div>}
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-secondary text-left text-secondary-foreground">
-            <tr>{cols.map((c) => <th key={c.name} className="px-4 py-3 font-semibold">{c.label}</th>)}{detalhes.length > 0 && <th className="px-4 py-3">Detalhes</th>}</tr>
-          </thead>
-          <tbody>
-            {rows.length === 0 && <tr><td className="px-4 py-6 text-muted-foreground" colSpan={cols.length + (detalhes.length ? 1 : 0)}>Nenhum registro encontrado.</td></tr>}
-            {rows.map((r) => (
-              <tr key={r.id} className="border-t align-top hover:bg-muted">
-                {cols.map((c) => (
-                  <td key={c.name} className="px-4 py-3">
-                    {c.type === "file" ? (
-                      r[c.name] ? <a href={String(r[c.name])} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary hover:underline">{c.name === "foto_url" ? <img loading="lazy" src={String(r[c.name])} alt={String(r.modelo ?? r.legenda ?? "Foto do registro")} className="h-24 w-36 rounded object-cover" /> : <><FileText className="size-4" />Abrir</>}</a> : "—"
-                    ) : c.name === "percentual" ? (
-                      <div className="flex items-center gap-2"><div className="h-2 w-20 rounded bg-muted"><div className="h-2 rounded bg-teal" style={{ width: `${Number(r[c.name] ?? 0)}%` }} /></div>{formatCell(c, r[c.name] ?? 0)}</div>
-                    ) : (
-                      formatCell(c, r[c.name])
-                    )}
-                  </td>
-                ))}
-                {detalhes.length > 0 && <td className="px-4 py-3"><details>
-                  <summary className="cursor-pointer text-primary">Ver informações completas</summary>
-                  <dl className="mt-2 min-w-64 space-y-2">{detalhes.map(f => <div key={f.name}>
-                    <dt className="font-semibold">{f.label}</dt>
-                    <dd className="whitespace-pre-wrap">{f.type === "file" && r[f.name]
-                      ? <a href={String(r[f.name])} target="_blank" rel="noreferrer" className="text-primary underline">Abrir documento</a>
-                      : formatCell(f, r[f.name])}</dd>
-                  </div>)}</dl>
-                </details></td>}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-=======
   const [q, setQ] = useState(initialSearch);
   const [filters, setFilters] = useState<Record<string, string>>(initialFilters);
   const relations = useMemo(() => [...new Set(mod.fields.filter(f => f.ref && getModule(f.ref.module)?.publico).map(f => f.ref?.module ?? ''))], [mod]);
@@ -142,7 +60,6 @@ export function PublicTable({ mod, registro, initialSearch = '', initialFilters 
         return <label key={f.name} className="grid gap-1.5 text-sm font-semibold">{title}{['select', 'relation', 'bool', 'int'].includes(f.type ?? '') ? <select aria-label={`Filtrar ${title}`} className="h-10 w-full rounded-md border bg-background px-3 font-normal" value={filters[f.name] ?? ''} onChange={e => set(f.name, e.target.value)}><option value="">Todos</option>{options.map(o => <option key={o} value={o}>{label(f, o)}</option>)}</select> : <Input aria-label={`Filtrar ${title}`} value={filters[f.name] ?? ''} onChange={e => set(f.name, e.target.value)} />}</label>;
       })}<Button variant="outline" onClick={() => { setFilters({}); setQ(''); }}>Limpar filtros</Button></div></SheetContent></Sheet>
       <Button variant="outline" size="sm" onClick={() => exportar('csv')}><Download />CSV</Button><Button variant="outline" size="sm" onClick={() => exportar('json')}><Download />JSON</Button><Button variant="outline" size="sm" onClick={() => void moduleReport(mod, rows.map(r => Object.fromEntries(Object.entries(r).map(([k, v]) => [k, mod.fields.find(f => f.name === k)?.ref ? label(mod.fields.find(f => f.name === k) as Field, v) : v]))), `Pesquisa: ${q || 'todos'} · Filtros: ${JSON.stringify(filters)}`).catch(e => toast.error(e.message))}><FileText />PDF</Button>
->>>>>>> origin/main
     </div>
     {registro && <Link to="/transparencia/$module" params={{ module: mod.key }} search={{}} className="inline-block text-primary underline">Ver todos os registros</Link>}
     {!rows.length && <p className="py-6 text-muted-foreground">Nenhum registro encontrado.</p>}

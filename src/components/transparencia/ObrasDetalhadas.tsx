@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 import { formatMaskedValue } from "@/lib/formatting";
-=======
 import { Button } from '@/components/ui/button';
 import { downloadReport } from '@/lib/pdf-report';
 import { getModule, formatCell } from '@/lib/modules';
->>>>>>> origin/main
 import { useQueries } from "@tanstack/react-query";
 import { moduleQuery } from "@/lib/queries";
 import { brl,dataBR } from "@/lib/modules";

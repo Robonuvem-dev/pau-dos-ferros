@@ -208,15 +208,10 @@ function FieldInput({ field: f, recordId, instrumentType, value, onChange, onUpl
       </div>
     );
   }
-<<<<<<< HEAD
-  if (f.type === "relation" && f.ref) return <RelationInput field={f} value={value} onChange={onChange} label={label} id={id} />;
+  if (f.type === "relation" && f.ref) return <RelationInput field={f} recordId={recordId} instrumentType={instrumentType} value={value} onChange={onChange} label={label} id={id} />;
   const mask = fieldMask(f);
   if (mask) return <div className="grid gap-1.5">{label}<FormattedInput id={id} mask={mask} value={value} onValueChange={onChange} required={f.required} /></div>;
   const type = f.name === "email" ? "email" : f.type === "date" ? "date" : f.type === "int" || f.type === "number" || f.type === "money" ? "number" : "text";
-=======
-  if (f.type === "relation" && f.ref) return <RelationInput field={f} recordId={recordId} instrumentType={instrumentType} value={value} onChange={onChange} label={label} id={id} />;
-  const type = f.type === "date" ? "date" : f.type === "int" || f.type === "number" || f.type === "money" ? "number" : "text";
->>>>>>> origin/main
   return (
     <div className="grid gap-1.5">{label}
       <Input id={id} type={type} step={f.type === "money" ? "0.01" : undefined} value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} placeholder={f.type === "tags" ? "separe por vírgulas" : undefined} />
