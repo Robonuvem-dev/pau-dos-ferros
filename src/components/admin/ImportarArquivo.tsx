@@ -1,3 +1,4 @@
+import { formatCell, getModule } from "@/lib/modules";
 import { useState } from "react";
 import { db } from "@/lib/data";
 import { IMPORT_COLUNAS, prepararImportacao } from "@/lib/importacao";
@@ -47,7 +48,7 @@ export function ImportarArquivo({ modulo, onDone }: { modulo: string; onDone: ()
   {rows.length>0 && <>
    <p className="my-2">{rows.length} registros válidos para revisão.</p>
    <div className="max-h-72 overflow-auto"><table className="w-full text-sm"><thead><tr>{Object.keys(rows[0] ?? {}).map(c=><th key={c} className="border p-2 text-left">{c}</th>)}</tr></thead>
-   <tbody>{rows.slice(0,10).map((r,i)=><tr key={i}>{Object.values(r).map((v,j)=><td key={j} className="border p-2">{String(v??"—")}</td>)}</tr>)}</tbody></table></div>
+   <tbody>{rows.slice(0,10).map((r,i)=><tr key={i}>{Object.entries(r).map(([c,v])=><td key={c} className="border p-2">{formatCell(getModule(modulo)?.fields.find(f=>f.name===c) ?? {name:c,label:c},v)}</td>)}</tr>)}</tbody></table></div>
    <p className="my-2 text-xs">Prévia das primeiras 10 linhas; validação executada em todas.</p>
    <Button disabled={busy||origem.trim().length<3} onClick={()=>void importar()}>{busy?"Importando...":"Confirmar importação"}</Button>
   </>}

@@ -1,3 +1,4 @@
+import { formatMaskedValue } from "@/lib/formatting";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
@@ -28,7 +29,7 @@ function Secretarias() {
             {s.descricao ? <p className="mt-2 text-sm">{String(s.descricao)}</p> : null}
             <ul className="mt-3 space-y-1 text-sm">
               {s.endereco ? <li className="flex gap-2"><MapPin className="size-4 shrink-0 text-accent" />{String(s.endereco)}</li> : null}
-              {s.telefone ? <li className="flex gap-2"><Phone className="size-4 shrink-0 text-accent" />{String(s.telefone)}</li> : null}
+              {s.telefone ? <li className="flex gap-2"><Phone className="size-4 shrink-0 text-accent" />{formatMaskedValue("phone", s.telefone)}</li> : null}
               {s.email ? <li className="flex gap-2"><Mail className="size-4 shrink-0 text-accent" />{String(s.email)}</li> : null}
               {s.horario ? <li className="flex gap-2"><Clock className="size-4 shrink-0 text-accent" />{String(s.horario)}</li> : null}
             </ul>

@@ -1,3 +1,4 @@
+import { FormattedInput } from "@/components/ui/formatted-input";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react";
@@ -135,7 +136,7 @@ export function NovoPedido({ canalFixo }: { canalFixo?: keyof typeof TIPOS }) {
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="grid gap-1.5"><Label htmlFor="nome">Nome *</Label><Input id="nome" maxLength={200} value={form.nome} onChange={(e) => set("nome", e.target.value)} /></div>
           <div className="grid gap-1.5"><Label htmlFor="email">E-mail *</Label><Input id="email" type="email" maxLength={200} value={form.email} onChange={(e) => set("email", e.target.value)} /></div>
-          <div className="grid gap-1.5"><Label htmlFor="telefone">Telefone</Label><Input id="telefone" maxLength={40} value={form.telefone} onChange={(e) => set("telefone", e.target.value)} /></div>
+          <div className="grid gap-1.5"><Label htmlFor="telefone">Telefone</Label><FormattedInput id="telefone" mask="phone" value={form.telefone} onValueChange={(v) => set("telefone", String(v))} /></div>
         </div>
       )}
       <div className="grid gap-1.5"><Label htmlFor="assunto">Assunto *</Label><Input id="assunto" maxLength={300} value={form.assunto} onChange={(e) => set("assunto", e.target.value)} /></div>

@@ -1,3 +1,4 @@
+import { formatMaskedValue } from "@/lib/formatting";
 import { MunicipioInformacoes } from "@/components/site/MunicipioInformacoes";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -34,7 +35,7 @@ function Prefeitura() {
                   {a.biografia ? <p className="mt-1 text-sm text-muted-foreground">{String(a.biografia)}</p> : null}
                   <div className="mt-2 space-y-1 text-sm">
                     {a.email ? <div className="flex items-center gap-1"><Mail className="size-4" />{String(a.email)}</div> : null}
-                    {a.telefone ? <div className="flex items-center gap-1"><Phone className="size-4" />{String(a.telefone)}</div> : null}
+                    {a.telefone ? <div className="flex items-center gap-1"><Phone className="size-4" />{formatMaskedValue("phone", a.telefone)}</div> : null}
                   </div>
                 </div>
               </div>

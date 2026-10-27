@@ -1,3 +1,4 @@
+import { parseLocalizedNumber } from "./formatting";
 import type { Field, ModuleDef } from "./modules";
 export type NormalizedValue = string | number | boolean | null | string[];
 export function normalizeField(f: Field, v: unknown): NormalizedValue {
@@ -7,9 +8,7 @@ export function normalizeField(f: Field, v: unknown): NormalizedValue {
   if (v === undefined || v === null || String(v).trim() === "") return null;
   if (f.type === "int") return Math.trunc(Number(String(v).replace(",", ".")));
   if (f.type === "number" || f.type === "money") {
-    const s = String(v).trim();
-    const n = Number(s.includes(",") ? s.replace(/\./g, "").replace(",", ".") : s);
-    return Number.isFinite(n) ? n : null;
+    return parseLocalizedNumber(v);
   }
   if (f.type === "date") {
     const s = String(v).trim();

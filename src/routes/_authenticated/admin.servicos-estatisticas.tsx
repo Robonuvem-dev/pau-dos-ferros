@@ -27,7 +27,7 @@ function Estatisticas() {
       <div className="overflow-x-auto rounded-lg border bg-card">
         <table className="w-full text-sm">
           <thead className="bg-secondary text-left"><tr><th className="p-3">Serviço</th><th className="p-3">Secretaria</th><th className="p-3 text-right">Visualizações</th><th className="p-3 text-right">Avaliações</th><th className="p-3 text-right">Nota média</th><th className="p-3 text-right">Acharam útil</th></tr></thead>
-          <tbody>{linhas.map((l) => <tr key={l.id} className="border-t"><td className="p-3 font-medium">{l.nome}</td><td className="p-3">{l.secretaria}</td><td className="p-3 text-right">{l.views}</td><td className="p-3 text-right">{l.aval}</td><td className="p-3 text-right">{l.aval ? l.media.toFixed(1) : "—"}</td><td className="p-3 text-right">{l.aval ? `${Math.round((l.uteis / l.aval) * 100)}%` : "—"}</td></tr>)}</tbody>
+          <tbody>{linhas.map((l) => <tr key={l.id} className="border-t"><td className="p-3 font-medium">{l.nome}</td><td className="p-3">{l.secretaria}</td><td className="p-3 text-right">{l.views}</td><td className="p-3 text-right">{l.aval}</td><td className="p-3 text-right">{l.aval ? l.media.toLocaleString("pt-BR", {minimumFractionDigits:1,maximumFractionDigits:1}) : "—"}</td><td className="p-3 text-right">{l.aval ? `${Math.round((l.uteis / l.aval) * 100)}%` : "—"}</td></tr>)}</tbody>
         </table>
       </div>
     </div>
