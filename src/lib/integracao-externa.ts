@@ -141,27 +141,6 @@ export async function consultarApiExterna(modulo: string, origem: string, compet
       }));
       break;
     }
-    case "credores":
-      registros = ["Fornecedor Alfa", "Fornecedor Beta", "Fornecedor Gama"].map((nome, i) => ({
-        nome,
-        tipo: "Pessoa jurídica",
-        municipio: "Aurora das Veredas",
-        uf: "RN",
-        chave_externa: `api-tce-credor-${i + 1}`,
-      }));
-      break;
-    case "agentes-politicos":
-      registros = [
-        { nome: "Daniel Augusto Ferreira", cargo: "Secretário de Administração" },
-        { nome: "Elisa Cristina Souza", cargo: "Secretária de Educação" },
-        { nome: "Fernando José Almeida", cargo: "Secretário de Saúde" },
-      ].map((r, i) => ({
-        ...r,
-        mandato: "2025–2028",
-        ordem: i + 1,
-        chave_externa: `api-tce-agente-${i + 1}`,
-      }));
-      break;
     default:
       throw new Error("Cadastro indisponível.");
   }

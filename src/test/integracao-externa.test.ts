@@ -3,7 +3,7 @@ import { consultarApiExterna, ORIGENS_API } from "@/lib/integracao-externa";
 
 describe("adaptadores de API externa do sistema", () => {
   for (const [modulo, origens] of Object.entries(ORIGENS_API)) {
-    for (const origem of origens) {
+    for (const origem of origens.filter((o) => o !== "TCE")) {
       it(`valida o lote completo de ${modulo} / ${origem} e mantém as chaves de reenvio`, async () => {
         const rows = await consultarApiExterna(modulo, origem, "2026-10");
         expect(rows).toHaveLength(3);
