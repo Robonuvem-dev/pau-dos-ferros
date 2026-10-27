@@ -14,12 +14,18 @@ async function range(url: string, value: string, limit: number, read: typeof fet
   const target = new URL(url);
   if (!isOfficialHost(target)) throw new Error("Arquivo compactado fora da fonte oficial.");
   const response = await read(target, {
-    redirect: "error",
+    redirect: "manual",
     credentials: "omit",
     cache: "no-store",
     headers: { Range: `bytes=${value}`, "Accept-Encoding": "identity" },
     signal: AbortSignal.timeout(30_000),
   });
+  if ([301, 302, 303, 307, 308].includes(response.status)) {
+    await response.body?.cancel();
+    throw new Error(
+      "A fonte redirecionou a leitura parcial do pacote. Atualize o catálogo oficial antes de importar.",
+    );
+  }
   if (response.status !== 206 && response.status !== 200)
     throw new Error(`A leitura parcial da publicação respondeu HTTP ${response.status}.`);
   const rangeHeader = response.headers.get("content-range")?.match(/^bytes (\d+)-(\d+)\/(\d+)$/i);
