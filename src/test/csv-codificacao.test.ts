@@ -4,7 +4,7 @@ import { executarIntegracao } from '@/lib/integracao-remota';
 
 const csv = 'Ano;Mes;Unidade;ID;Valor\n2026;10;Educação fictícia;X1;100,50';
 const latin = Uint8Array.from(Array.from(csv, c => c.charCodeAt(0)));
-const config = { modulo: 'despesas', origem: 'POC fictícia', arquivoUrl: 'https://example.invalid/dados.csv', mapeamento: { ano: 'Ano', mes: 'Mes', orgao: 'Unidade', chave_externa: 'ID', empenhado: 'Valor' } };
+const config = { modulo: 'despesas', origem: 'AVR fictícia', arquivoUrl: 'https://example.invalid/dados.csv', mapeamento: { ano: 'Ano', mes: 'Mes', orgao: 'Unidade', chave_externa: 'ID', empenhado: 'Valor' } };
 const credentials = { backendUrl: 'https://backend.example.invalid', publishableKey: 'ficticia', email: 'poc@example.invalid', password: 'ficticia' };
 
 describe('Codificação explícita dos arquivos contábeis', () => {

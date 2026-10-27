@@ -1,9 +1,9 @@
-import { Headphones, Info, Search, Accessibility, Menu, Facebook, Instagram, LogIn, LogOut } from "lucide-react";
+import { Headphones, Info, Search, Accessibility, Menu, LogIn, LogOut } from "lucide-react";
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
-import logo from '@/assets/prefeitura-logo.png.asset.json';
+import { BRASAO_URL } from "@/lib/municipal-brand";
 import { useState } from "react";
 import { useSession } from "@/hooks/use-session";
 
@@ -42,23 +42,19 @@ export function SiteHeader() {
       </a>
       <div className="bg-primary-deep text-primary-foreground text-sm">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-2">
-          <span className="hidden sm:inline">Prefeitura Municipal de Pau dos Ferros</span>
+          <span className="hidden sm:inline">Prefeitura Municipal de Aurora das Veredas</span>
           <nav className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm" aria-label="Acesso rápido">
             <Link to="/esic" className="flex items-center gap-1 hover:underline"><Headphones className="size-4" />Ouvidoria/e-SIC</Link>
             <Link to="/transparencia" className="flex items-center gap-1 hover:underline"><Info className="size-4" />Transparência</Link>
             <Button variant="ghost" size="sm" onClick={toggleFont} aria-label="Aumentar fonte">A+</Button>
             <Button variant="ghost" size="sm" onClick={toggleContrast}><Accessibility className="size-4" />Contraste</Button>
             <Link to="/busca" search={{ q: "" }} className="flex items-center gap-1 hover:underline"><Search className="size-4" />Pesquisar</Link>
-            <span className="hidden items-center gap-3 md:flex">
-              <a href="https://www.facebook.com/prefeituradepaudosferros" aria-label="Facebook"><Facebook className="size-4" /></a>
-              <a href="https://www.instagram.com/prefeituradepaudosferros" aria-label="Instagram"><Instagram className="size-4" /></a>
-            </span>
           </nav>
         </div>
       </div>
       <div className="border-b bg-card">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:py-5">
-          <Link to="/" aria-label="Prefeitura de Pau dos Ferros — início" className="min-w-0"><img src={logo.url} alt="Prefeitura de Pau dos Ferros — Avançando com você" className="h-14 w-40 max-w-full object-contain sm:h-20 sm:w-64" /></Link>
+          <Link to="/" aria-label="Prefeitura de Aurora das Veredas — início" className="flex min-w-0 items-center gap-3"><img src={BRASAO_URL} alt="Brasão de Aurora das Veredas" className="h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20" /><span className="font-display text-lg font-bold leading-tight sm:text-2xl">Prefeitura de<br />Aurora das Veredas</span></Link>
           <div className="flex flex-wrap justify-end gap-1 sm:gap-2">
             <Button variant="outline" size="sm" asChild><Link to={isStaff ? '/admin' : user ? '/conta' : '/auth'}><LogIn /><span className="sm:hidden">{isStaff ? 'Painel' : user ? 'Conta' : 'Entrar'}</span><span className="hidden sm:inline">{isStaff ? 'Painel administrativo' : user ? 'Minha conta' : 'Área restrita'}</span></Link></Button>
             {user && <Button variant="ghost" size="icon" onClick={signOut} aria-label="Sair da conta" title="Sair da conta"><LogOut /></Button>}
@@ -95,8 +91,8 @@ export function SiteFooter() {
     <footer className="mt-16 bg-primary-deep text-primary-foreground">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3">
         <div>
-          <div className="font-display text-xl font-black uppercase">Prefeitura de Pau dos Ferros</div>
-          <p className="mt-2 text-sm opacity-80">Pau dos Ferros — Rio Grande do Norte</p>
+          <div className="font-display text-xl font-black uppercase">Prefeitura de Aurora das Veredas</div>
+          <p className="mt-2 text-sm opacity-80">Aurora das Veredas</p>
           <Link to="/secretarias" className="text-sm underline">Contatos e horários de atendimento</Link>
         </div>
         <div className="text-sm">
@@ -116,7 +112,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-sidebar-border py-4 text-center text-xs opacity-70">
-        © {new Date().getFullYear()} Prefeitura Municipal de Pau dos Ferros/RN
+        © {new Date().getFullYear()} Prefeitura Municipal de Aurora das Veredas
       </div>
     </footer>
   );

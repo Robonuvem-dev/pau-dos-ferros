@@ -29,6 +29,6 @@
   });
   window.addEventListener('appinstalled', () => {
     pending = null; button.hidden = true;
-    status.textContent = 'Aplicativo instalado. Procure Pau dos Ferros na tela inicial.';
+    status.textContent = 'Aplicativo instalado. Procure Aurora das Veredas na tela inicial.';
   });
 })();

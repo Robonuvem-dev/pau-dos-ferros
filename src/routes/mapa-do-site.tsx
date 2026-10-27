@@ -4,7 +4,7 @@ import { MODULES } from "@/lib/modules";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/mapa-do-site")({
-  head: () => pageHead("Mapa do site", "Todas as páginas e consultas do portal da Prefeitura de Pau dos Ferros."),
+  head: () => pageHead("Mapa do site", "Todas as páginas e consultas do portal da Prefeitura de Aurora das Veredas."),
   component: Mapa,
 });
 

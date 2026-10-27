@@ -11,7 +11,7 @@ import type { Row } from "@/lib/data";
 import hero from "@/assets/hero-cidade.jpg";
 
 export const Route = createFileRoute("/galeria")({
-  head: () => pageHead("Galeria", "Fotos, vídeos e áudios das ações da Prefeitura de Pau dos Ferros."),
+  head: () => pageHead("Galeria", "Fotos, vídeos e áudios das ações da Prefeitura de Aurora das Veredas."),
   loader: ({ context }) => Promise.all([context.queryClient.ensureQueryData(moduleQuery("albuns")), context.queryClient.ensureQueryData(moduleQuery("midias"))]),
   component: Galeria,
   errorComponent: QueryError,

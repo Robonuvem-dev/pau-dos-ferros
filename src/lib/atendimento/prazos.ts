@@ -1,4 +1,4 @@
-/** Prazo em dias corridos para demonstração M05.
+/** Prazo em dias corridos para atendimento municipal.
  * O banco usa America/Fortaleza na data do recebimento; aqui normalizamos
  * explicitamente o calendário para evitar deslocamentos de fuso no browser.
  * Não trata suspensão, feriados ou exceções processuais.

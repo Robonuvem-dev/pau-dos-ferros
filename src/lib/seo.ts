@@ -1,5 +1,5 @@
 export function pageHead(title: string, description: string) {
-  const full = `${title} | Prefeitura de Pau dos Ferros`;
+  const full = `${title} | Prefeitura de Aurora das Veredas`;
   return { meta: [
     { title: full }, { name: "description", content: description },
     { property: "og:title", content: full }, { property: "og:description", content: description },

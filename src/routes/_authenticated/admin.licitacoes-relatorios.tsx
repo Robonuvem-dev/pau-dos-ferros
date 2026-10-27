@@ -76,7 +76,7 @@ function Boletim({ licitacoes }: { licitacoes: LicitacaoLike[] }) {
       </div>
       <div className="mt-6">
         <h2 className="font-display text-xl font-bold">Boletim de licitações — {dataBR(data)}</h2>
-        <p className="text-sm text-muted-foreground">Prefeitura Municipal de Pau dos Ferros/RN</p>
+        <p className="text-sm text-muted-foreground">Prefeitura Municipal de Aurora das Veredas</p>
         <h3 className="mt-4 font-semibold">Aberturas do dia ({b.doDia.length})</h3>
         {b.doDia.length ? (
           <table className="mt-2 w-full text-sm">

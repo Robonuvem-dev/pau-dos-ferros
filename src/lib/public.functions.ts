@@ -1,3 +1,4 @@
+import { municipalRecords, municipalText } from "./municipal-brand";
 import { createServerFn } from '@tanstack/react-start';
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
@@ -35,7 +36,8 @@ export const readPublicModule = createServerFn({ method: 'GET' })
     if (mod.orderBy) query = query.order(mod.orderBy, { ascending: ['nome','ordem','placa'].includes(mod.orderBy) });
     query = query.order('id');
     const result = await collectPages<Row>((from, to) => query.range(from, to));
-    return mod.key === 'banners' ? visibleBanners(result, municipalDate()) : result;
+    const records = municipalRecords(result);
+    return mod.key === 'banners' ? visibleBanners(records, municipalDate()) : records;
   });
 
 export const readEstatisticasAtendimento = createServerFn({ method: 'GET' }).handler(async () => {
@@ -48,7 +50,7 @@ export const readConfiguracoes = createServerFn({ method: 'GET' }).handler(async
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await (publicClient() as any).from('configuracoes_site').select('chave,valor');
   if (error) throw new Error('Não foi possível carregar as configurações do site.');
-  return Object.fromEntries((data as { chave: string; valor: string | null }[]).map((r) => [r.chave, r.valor ?? ''])) as Record<string, string>;
+  return Object.fromEntries((data as { chave: string; valor: string | null }[]).map((r) => [r.chave, municipalText(r.valor ?? '')])) as Record<string, string>;
 });
 
 export const readEstatisticasServicos = createServerFn({ method: 'GET' }).handler(async () => {

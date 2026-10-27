@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
     return { image: String(banners[0]?.imagem_url ?? '') };
   },
   head: ({ loaderData }) => {
-    const head = pageHead("Início", "Portal oficial da Prefeitura de Pau dos Ferros/RN: notícias, serviços ao cidadão, transparência, licitações e ouvidoria.");
+    const head = pageHead("Início", "Portal oficial da Prefeitura de Aurora das Veredas: notícias, serviços ao cidadão, transparência, licitações e ouvidoria.");
     if (loaderData?.image.startsWith('https://')) head.meta.push({ property: 'og:image', content: loaderData.image }, { name: 'twitter:image', content: loaderData.image });
     return head;
   },
@@ -68,11 +68,11 @@ function Home() {
   return (
     <>
       <section className="relative overflow-hidden" aria-roledescription="carrossel" aria-label="Banners da Prefeitura" onMouseEnter={() => setInteracting(true)} onMouseLeave={() => setInteracting(false)} onFocusCapture={() => setInteracting(true)} onBlurCapture={e => { if (!e.currentTarget.contains(e.relatedTarget)) setInteracting(false); }} onTouchStart={() => setInteracting(true)} onTouchEnd={() => setInteracting(false)}>
-        <img src={banner ? String(banner.imagem_url) : hero} alt={banner ? String(banner.titulo) : "Vista da cidade de Pau dos Ferros"} width={1600} height={768} className="absolute inset-0 h-full w-full object-cover" />
+        <img src={banner ? String(banner.imagem_url) : hero} alt={banner ? String(banner.titulo) : "Vista da cidade de Aurora das Veredas"} width={1600} height={768} className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary-deep/95 via-primary-deep/70 to-transparent" />
         <div className="relative mx-auto max-w-6xl px-4 py-20 text-primary-foreground md:py-28">
           <span className="inline-block rounded bg-highlight px-3 py-1 text-sm font-bold uppercase tracking-wide text-highlight-foreground">Avançando com você</span>
-          <h1 className="mt-4 max-w-2xl font-display text-4xl font-black uppercase leading-tight md:text-6xl">Prefeitura de Pau dos Ferros</h1>
+          <h1 className="mt-4 max-w-2xl font-display text-4xl font-black uppercase leading-tight md:text-6xl">Prefeitura de Aurora das Veredas</h1>
           <p className="mt-3 max-w-xl text-lg opacity-95">Serviços, notícias e as contas do município em um só lugar.</p>
           <form className="mt-8 flex max-w-xl gap-2" onSubmit={(e) => { e.preventDefault(); void navigate({ to: "/busca", search: { q } }); }}>
             <label htmlFor="busca-home" className="sr-only">O que você procura?</label>

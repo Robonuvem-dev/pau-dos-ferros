@@ -4,9 +4,9 @@ export function montarAnexo(itens:Avaliacao[],pendencias:{modulo:string;problema
  if(itens.length!==88)throw new Error("O relatório exige exatamente 88 itens.");
  if(!analise.trim())throw new Error("A análise de IA precisa ser executada antes de emitir o anexo.");
  return [
- "ANEXO TÉCNICO — POC PAU DOS FERROS/RN",
+ "ANEXO TÉCNICO — AURORA DAS VEREDAS",
  "Emissão: "+quando,"Modelo executado localmente: "+modelo,
- "Relatório operacional de demonstração. A matriz deve ser confrontada com a edição oficial aplicável do PNTP/ATRICON. Não constitui certificação ou homologação.",
+ "Relatório operacional de transparência. A matriz deve ser confrontada com a edição oficial aplicável do PNTP/ATRICON. Não constitui certificação ou homologação.",
  "",
  "1. Análise gerada por IA local (sujeita à revisão técnica)",analise,
  "",
@@ -24,6 +24,6 @@ export function montarAnexo(itens:Avaliacao[],pendencias:{modulo:string;problema
  "Imediato: corrigir bloqueadores e registros obrigatórios; setor responsável pelo dado valida o conteúdo.",
  "Até 30 dias: revisar documentos, fontes e atualização com Controle Interno.",
  "Até 60 dias: repetir avaliação individual e testes de acessibilidade.",
- "Até 90 dias: revisão periódica das evidências e responsáveis. Esses intervalos não alteram o prazo da convocação da PoC."
+ "Até 90 dias: revisão periódica das evidências e responsáveis. Os prazos devem observar o planejamento e as responsabilidades dos setores municipais."
  ].join("\n");
 }

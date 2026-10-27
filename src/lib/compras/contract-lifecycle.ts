@@ -1,7 +1,7 @@
 // Código de origem: Robonuvem-dev/Celeriflow-Guarama/blob/main/src/lib/compras/contract-lifecycle.ts
 // Blob SHA de origem: 9d1f93575bf589f253a9c3526deb8b03b9c39e6c
-// Cópia para PoC Pau dos Ferros; Celeriflow-Guarama permanece inalterado.
-// Adaptacao do perfil administrativo ao modelo de roles de Pau dos Ferros (admin/editor).
+// Módulo de gestão de Aurora das Veredas; Celeriflow-Guarama permanece inalterado.
+// Adaptacao do perfil administrativo ao modelo de roles de Aurora das Veredas (admin/editor).
 const SYSTEM_ADMIN_PROFILE_CODE = "admin";
 
 export const contractAmendmentTypes = ["Prazo", "Valor", "Ambos", "Suspensão", "Rescisão"] as const;

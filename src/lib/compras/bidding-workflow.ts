@@ -1,6 +1,6 @@
 // Código de origem: Robonuvem-dev/Celeriflow-Guarama/blob/main/src/lib/compras/bidding-workflow.ts
 // Blob SHA de origem: 56b0b7efe01a3f5f7c8155c53b4afc4f98fbe209
-// Cópia para PoC Pau dos Ferros; Celeriflow-Guarama permanece inalterado.
+// Módulo de gestão de Aurora das Veredas; Celeriflow-Guarama permanece inalterado.
 export const BIDDING_MODALITIES = [
   "Pregão Eletrônico",
   "Pregão Presencial",

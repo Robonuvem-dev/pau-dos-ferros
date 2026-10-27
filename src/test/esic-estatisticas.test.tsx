@@ -13,19 +13,19 @@ beforeEach(() => rpc.mockReset());
 describe("M05 — estatistica apos envio", () => {
   it("atualiza o total exibido sem exigir recarregar a pagina", async () => {
     let serverTotal = 0;
-    rpc.mockImplementation(async () => { serverTotal++; return { data: "PF-POC-FICTICIO", error: null }; });
+    rpc.mockImplementation(async () => { serverTotal++; return { data: "PF-AVR-FICTICIO", error: null }; });
     const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     function Stats() {
       const { data } = useQuery({ queryKey: ["public-estatisticas-atendimento"], queryFn: async () => serverTotal, initialData: 0, staleTime: Infinity });
       return <p>Total observado: {data}</p>;
     }
     render(<QueryClientProvider client={qc}><NovoPedido /><Stats /></QueryClientProvider>);
-    fireEvent.change(screen.getByLabelText("Nome *"), { target: { value: "POC Ficticio" } });
+    fireEvent.change(screen.getByLabelText("Nome *"), { target: { value: "AVR Ficticio" } });
     fireEvent.change(screen.getByLabelText("E-mail *"), { target: { value: "poc@teste.invalid" } });
-    fireEvent.change(screen.getByLabelText("Assunto *"), { target: { value: "POC Ficticia" } });
+    fireEvent.change(screen.getByLabelText("Assunto *"), { target: { value: "AVR Ficticia" } });
     fireEvent.change(screen.getByLabelText("Mensagem *"), { target: { value: "Mensagem ficticia para o teste." } });
     fireEvent.click(screen.getByRole("button", { name: "Enviar manifestação" }));
-    await screen.findByText("PF-POC-FICTICIO");
+    await screen.findByText("PF-AVR-FICTICIO");
     await waitFor(() => expect(screen.getByText("Total observado: 1")).toBeInTheDocument());
     expect(rpc).toHaveBeenCalledOnce();
   });

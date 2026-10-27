@@ -119,7 +119,7 @@ function evidenciaValida(m: EvidenciaAtricon): boolean {
 
 /** Contagens localizam cadastros; jamais homologam um ponto ATRICON.
  * Uma marcação positiva é declaração manual com URL e registro de verificação.
- * A execução da matriz da PoC permanece uma etapa independente.
+ * A execução da matriz de avaliação permanece uma etapa independente.
  */
 export function avaliar(counts: Record<string, number>, manuais: Record<string, EvidenciaAtricon>): Avaliacao[] {
   void counts;

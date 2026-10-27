@@ -1,3 +1,4 @@
+import { BRASAO_URL } from "@/lib/municipal-brand";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -100,7 +101,7 @@ export function AdminPwaGate({ children }: { children: ReactNode }) {
       const choice = await prompt.userChoice;
       setMessage(
         choice.outcome === "accepted"
-          ? "Abra Pau dos Ferros pelo ícone na tela inicial para acessar o painel."
+          ? "Abra Aurora das Veredas pelo ícone na tela inicial para acessar o painel."
           : "Instalação cancelada. Para acessar o painel, instale e abra o aplicativo pela tela inicial.",
       );
       setInstructions(true);
@@ -116,7 +117,7 @@ export function AdminPwaGate({ children }: { children: ReactNode }) {
       aria-labelledby="instalar-painel"
       className="mx-auto my-10 max-w-lg rounded-lg border bg-card p-6 shadow-sm"
     >
-      <img src="/favicon.png" alt="" className="mb-4 size-16" />
+      <img src={BRASAO_URL} alt="" className="mb-4 size-16" />
       <h1 id="instalar-painel" className="font-display text-2xl font-bold">
         Instale o aplicativo para acessar o painel
       </h1>
@@ -126,7 +127,7 @@ export function AdminPwaGate({ children }: { children: ReactNode }) {
       </p>
       {state.installed ? (
         <p role="status">
-          Aplicativo instalado. Feche esta aba e abra Pau dos Ferros pelo ícone na Tela de Início.
+          Aplicativo instalado. Feche esta aba e abra Aurora das Veredas pelo ícone na Tela de Início.
         </p>
       ) : (
         <Button className="w-full" disabled={busy} onClick={() => void install()}>
@@ -153,7 +154,7 @@ export function AdminPwaGate({ children }: { children: ReactNode }) {
                 <li>Abra esta página no Safari.</li>
                 <li>Toque em Compartilhar (quadrado com seta para cima).</li>
                 <li>Escolha “Adicionar à Tela de Início” e confirme em “Adicionar”.</li>
-                <li>Abra Pau dos Ferros pelo ícone criado e entre na sua conta.</li>
+                <li>Abra Aurora das Veredas pelo ícone criado e entre na sua conta.</li>
               </ol>
             </>
           ) : (
@@ -165,7 +166,7 @@ export function AdminPwaGate({ children }: { children: ReactNode }) {
                   No menu ⋮, escolha “Instalar aplicativo” ou “Adicionar à tela inicial” e confirme
                   a instalação.
                 </li>
-                <li>Abra Pau dos Ferros pelo ícone criado e entre na sua conta.</li>
+                <li>Abra Aurora das Veredas pelo ícone criado e entre na sua conta.</li>
               </ol>
             </>
           )}

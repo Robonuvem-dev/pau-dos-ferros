@@ -64,7 +64,7 @@ function Esic() {
           </div>
           <div className="rounded-lg border bg-card p-5 text-sm">
             <h2 className="font-display text-lg font-bold">Atendimento presencial (SIC)</h2>
-            <p className="mt-2">Av. Getúlio Vargas, 1323, Centro — Pau dos Ferros/RN</p>
+            <p className="mt-2">Sede administrativa — Aurora das Veredas</p>
             <p>(84) 3351-2000 · Seg a Sex, 7h às 13h</p>
           </div>
         </aside>

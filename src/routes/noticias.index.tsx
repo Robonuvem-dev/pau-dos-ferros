@@ -10,7 +10,7 @@ import { pageHead } from "@/lib/seo";
 import hero from "@/assets/hero-cidade.jpg";
 
 export const Route = createFileRoute("/noticias/")({
-  head: () => pageHead("Notícias", "Notícias, ações e comunicados oficiais da Prefeitura de Pau dos Ferros."),
+  head: () => pageHead("Notícias", "Notícias, ações e comunicados oficiais da Prefeitura de Aurora das Veredas."),
   loader: ({ context }) => context.queryClient.ensureQueryData(moduleQuery("noticias")),
   component: Noticias,
   errorComponent: QueryError,

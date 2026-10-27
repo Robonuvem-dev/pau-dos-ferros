@@ -11,7 +11,7 @@ import { HISTORICO, VERSAO } from "@/lib/versao";
 import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Painel administrativo | Prefeitura de Pau dos Ferros" }] }),
+  head: () => ({ meta: [{ title: "Painel administrativo | Prefeitura de Aurora das Veredas" }] }),
   component: () => <AdminPwaGate><AdminLayout /></AdminPwaGate>,
 });
 

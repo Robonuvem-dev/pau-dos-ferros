@@ -97,7 +97,7 @@ export function ResumoConvenios({ publico = false }: { publico?: boolean }) {
           </table>
         </div>
       )}
-      <p className="mt-3 text-xs text-muted-foreground">Saldo a programar = valor global − parcelas não canceladas. Valores de demonstração dependem da origem e da integridade dos cadastros.</p>
+      <p className="mt-3 text-xs text-muted-foreground">Saldo a programar = valor global − parcelas não canceladas. Os valores dependem da origem e da integridade dos cadastros.</p>
     </section>
   );
 }

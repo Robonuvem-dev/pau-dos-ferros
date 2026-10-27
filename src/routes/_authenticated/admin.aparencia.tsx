@@ -56,7 +56,7 @@ function Aparencia() {
       <div className="flex items-end gap-3"><div className="grid flex-1 gap-1.5"><Label htmlFor="cf">Cor de fundo (opcional)</Label><Input id="cf" type="color" value={v.cor_fundo || TEMAS[v.tema ?? "institucional"]?.background || "#f7f8fa"} onChange={e => set("cor_fundo", e.target.value)} /></div><Button variant="outline" onClick={() => set("cor_fundo", "")}>Restaurar fundo do tema</Button></div>
       <div className="grid gap-1.5">
         <Label htmlFor="fb">Endereço da página oficial no Facebook</Label>
-        <Input id="fb" placeholder="https://www.facebook.com/prefeituradepaudosferros" value={v.facebook_url ?? ""} onChange={(e) => set("facebook_url", e.target.value)} />
+        <Input id="fb" placeholder="URL do Facebook institucional" value={v.facebook_url ?? ""} onChange={(e) => set("facebook_url", e.target.value)} />
       </div>
       <Button onClick={salvar}>Salvar aparência</Button>
     </div>

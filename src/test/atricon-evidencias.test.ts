@@ -14,16 +14,16 @@ describe("M14 — evidências por ponto ATRICON", () => {
     expect(avaliar({}, { "01": { status: "atende", observacao: "Verificado" } })[0]!.status).toBe("nao_atende");
   });
   it("exige registro de verificacao e URL, inclusive para portal de terceiro", () => {
-    expect(avaliar({}, { "01": { status: "terceiro", link: "https://poc.invalid", observacao: "" } })[0]!.status).toBe("nao_atende");
-    expect(avaliar({}, { "01": { status: "terceiro", link: "https://poc.invalid", observacao: "Consulta executada no ensaio ficticio." } })[0]!.status).toBe("terceiro");
+    expect(avaliar({}, { "01": { status: "terceiro", link: "https://municipal.invalid", observacao: "" } })[0]!.status).toBe("nao_atende");
+    expect(avaliar({}, { "01": { status: "terceiro", link: "https://municipal.invalid", observacao: "Consulta executada no ensaio ficticio." } })[0]!.status).toBe("terceiro");
   });
   it("preserva evidencia manual somente para o ponto verificado", () => {
-    const result = avaliar({ receitas: 10 }, { "16": { status: "atende", link: "https://poc.invalid/receitas", observacao: "Registro de verificacao ficticio para teste." } });
+    const result = avaliar({ receitas: 10 }, { "16": { status: "atende", link: "https://municipal.invalid/receitas", observacao: "Registro de verificacao ficticio para teste." } });
     expect(result[15]).toMatchObject({ status: "atende", automatico: false });
     expect(result[16]!.status).toBe("nao_atende");
   });
   it("recusa URL executavel ou com credenciais", () => {
-    for (const link of ["javascript:alert(1)", "https://usuario:senha@poc.invalid"]) {
+    for (const link of ["javascript:alert(1)", "https://usuario:senha@municipal.invalid"]) {
       expect(avaliar({}, { "01": { status: "atende", link, observacao: "Registro ficticio de teste." } })[0]!.status).toBe("nao_atende");
     }
   });
