@@ -1,3 +1,4 @@
+import { PwaInstallProvider } from "@/components/admin/AdminPwaGate";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -115,7 +116,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/app-icons/apple-touch-icon.png" },
+      { rel: "apple-touch-icon", href: "/app-icons/pwa-favicon-apple.png" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Condensed:wght@400;600;700;800&display=swap" },
     ],
   }),
@@ -174,11 +175,13 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContext.Provider value={identity}>
+      <PwaInstallProvider>
         <TemaSite />
         <SiteHeader />
         <main id="conteudo" className="min-h-[50vh]"><Outlet /></main>
         <SiteFooter />
         <Toaster richColors />
+      </PwaInstallProvider>
       </SessionContext.Provider>
     </QueryClientProvider>
   );

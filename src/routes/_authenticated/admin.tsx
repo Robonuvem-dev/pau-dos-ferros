@@ -1,3 +1,4 @@
+import { AdminPwaGate } from "@/components/admin/AdminPwaGate";
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -11,7 +12,7 @@ import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel administrativo | Prefeitura de Pau dos Ferros" }] }),
-  component: AdminLayout,
+  component: () => <AdminPwaGate><AdminLayout /></AdminPwaGate>,
 });
 
 const GRUPOS = ["Site Oficial", "Licitações e Contratos", "Transparência", "Gestão"] as const;
