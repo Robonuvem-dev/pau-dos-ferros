@@ -47,3 +47,15 @@ export async function analisarEvidenciasPublicas(cases:EvidenceInput[],onStatus:
   'Um indício textual não comprova conformidade jurídica, atualização, completude ou conteúdo dos PDFs. Evidência não localizada deve ser revisada pelo setor responsável.',
   ...results.map(r=>r.criterio+'\n'+(r.sinal==='revisao_necessaria'?'COLETA PENDENTE: '+(r.detalhe??r.coleta):r.sinal==='evidencia_nao_localizada'?'PENDÊNCIA: evidência textual não localizada com similaridade suficiente.':'Indício textual localizado; conferir valores, datas e documentos antes de validar.')+'\nURL: '+(r.link||'Fonte específica não configurada')+'\nSimilaridade: '+r.similaridade.toFixed(3)+(r.coleta==='lida'&&r.detalhe?'\nLimitação: '+r.detalhe:''))].join('\n\n');
 }
+
+export async function analisarCriteriosOficiais(criteria:string[],cases:EvidenceInput[],onStatus:(s:string)=>void):Promise<string> {
+  onStatus('Comparando as descrições da publicação ATRICON com o conteúdo público lido...');
+  const extrator=await carregarExtrator(onStatus);
+  const {compareOfficialCriteria}=await import('./ai-evidence');
+  const results=await compareOfficialCriteria(criteria,cases,async texts=>(await extrator(texts,{pooling:'mean',normalize:true})).tolist());
+  return [
+    `Confronto com a publicação importada: ${results.length} de ${criteria.length} descrições analisadas. Até 24 trechos de 700 caracteres por página pública.`,
+    'Esta comparação preserva o texto da publicação de origem. Similaridade não certifica atendimento nem substitui o relatório individual dos 88 pontos.',
+    ...results.map(r=>`${r.criterio}\n${r.sinal==='coleta_pendente'?'Não houve coleta pública suficiente.':r.sinal==='indicio_textual'?'Indício textual localizado; exige verificação individual.':'Evidência textual não localizada; revisar a fonte.'}\nFonte: ${r.link||'indisponível'}\nSimilaridade: ${r.similaridade.toFixed(3)}`),
+  ].join('\n\n');
+}

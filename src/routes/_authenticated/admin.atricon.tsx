@@ -1,5 +1,9 @@
+import { useState } from "react";
+import { AtriconOfficialData } from "@/components/admin/AtriconOfficialData";
+import type { OfficialImport } from "@/lib/atricon-official";
 import { createFileRoute } from '@tanstack/react-router';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
 import { PainelAtricon } from '@/components/admin/PainelAtricon';
 import { fetchModule } from '@/lib/data';
 import { getModule } from '@/lib/modules';
@@ -17,7 +21,10 @@ const pendencias = queryOptions({ queryKey: ['atricon-pendencias'], queryFn: asy
 } });
 export const Route = createFileRoute('/_authenticated/admin/atricon')({
   head: () => pageHead('IA e avaliação ATRICON', 'Evidências dos critérios de transparência e anexo técnico com análise local.'),
-  loader: ({ context }) => context.queryClient.ensureQueryData(pendencias),
   component: Page, errorComponent: QueryError,
 });
-function Page() { const { data } = useSuspenseQuery(pendencias); return <div><h1 className="mb-5 font-display text-3xl font-bold">Inteligência artificial e ATRICON</h1><PainelAtricon pendencias={data} /></div>; }
+function Page() {
+  const { data, error, refetch } = useQuery({...pendencias,retry:false});
+  const [reference,setReference]=useState<OfficialImport|null>(null);
+  return <div><h1 className="mb-5 font-display text-3xl font-bold">Inteligência artificial e ATRICON</h1><AtriconOfficialData onReference={setReference}/>{data?<PainelAtricon pendencias={data} referencia={reference}/>:error?<div role="alert"><p>Não foi possível carregar o diagnóstico dos cadastros. As publicações oficiais continuam disponíveis acima.</p><Button variant="outline" onClick={()=>void refetch()}>Recarregar diagnóstico</Button></div>:<p role="status">Carregando diagnóstico dos cadastros...</p>}</div>;
+}
