@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor, cleanup } from "@testing-library/re
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { IntegracaoExterna } from "@/components/admin/IntegracaoExterna";
 const { rpc } = vi.hoisted(() => ({ rpc: vi.fn() }));
+vi.mock("@/components/admin/TceImport", () => ({ TceImport: () => null }));
 vi.mock("@/lib/data", () => ({ db: { rpc } }));
 afterEach(cleanup);
 beforeEach(() => rpc.mockReset());
@@ -33,12 +34,12 @@ it("revisa valores e só grava ao confirmar, mantendo origem e competência", as
 it("mantém o lote para revisão quando o banco recusa duplicidade", async () => {
   rpc.mockResolvedValue({ data: null, error: { code: "23505" } });
   const onDone = vi.fn();
-  render(<IntegracaoExterna modulo="credores" onDone={onDone} />);
+  render(<IntegracaoExterna modulo="receitas" onDone={onDone} />);
   fireEvent.click(screen.getByRole("button", { name: "Importar da API externa" }));
-  await screen.findByText("Fornecedor Alfa");
+  await screen.findByText("Arrecadação de IPTU");
   fireEvent.click(screen.getByRole("button", { name: "Confirmar sincronização" }));
   expect(await screen.findByRole("alert")).toHaveTextContent("sem duplicar dados");
-  expect(screen.getByText("Fornecedor Alfa")).toBeInTheDocument();
+  expect(screen.getByText("Arrecadação de IPTU")).toBeInTheDocument();
   expect(onDone).not.toHaveBeenCalled();
 });
 

@@ -635,7 +635,7 @@
       "requisito": "Importar do Tribunal de Contas do Estado (TCE) informações cadastrais básicas como agentes públicos e credores.",
       "pagina_pdf": 40,
       "classificacao": "PARCIAL",
-      "observacao": "Agentes/credores podem ser mapeados e importados. Falta prova do leiaute oficial TCE/RN; CSV de referência próprio não comprova essa origem. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente. Documentação Swagger oficial TCE/RN recuperada no navegador; 11 operações, sem cadastro direto de agentes/credores e sem propriedades no esquema de resposta. Não foi inventado leiaute oficial."
+      "observacao": "Agentes/credores podem ser mapeados e importados. Falta prova do leiaute oficial TCE/RN; CSV de referência próprio não comprova essa origem. Leitura de arquivos UTF-8/Windows-1252 explícita e validada; prévia invalidada ao trocar codificação/arquivo, inclusive leitura pendente. Documentação Swagger oficial TCE/RN recuperada no navegador; 11 operações, sem cadastro direto de agentes/credores e sem propriedades no esquema de resposta. Não foi inventado leiaute oficial. Atualização 27/10/2026: consulta autenticada dinâmica ao Swagger, parâmetros documentados, modal de resposta, mapeamento explícito e inclusão seletiva auditada em /admin/credores, /admin/agentes-politicos, /admin/receitas e /admin/despesas, também pelo /admin/modulos/7. Sem fallback gerado para TCE. Testes automatizados de protocolo/interface; acesso real bloqueado por proxy CONNECT 403, portanto classificação PARCIAL mantida."
     },
     {
       "id": "8.1",

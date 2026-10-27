@@ -1,3 +1,4 @@
+import { TceImport } from "./TceImport";
 import { useState } from "react";
 import { db } from "@/lib/data";
 import { consultarApiExterna, ORIGENS_API } from "@/lib/integracao-externa";
@@ -19,6 +20,8 @@ export function IntegracaoExterna({ modulo, onDone }: { modulo: string; onDone: 
   const [busy, setBusy] = useState(false);
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
+  if (["credores", "agentes-politicos"].includes(modulo))
+    return <TceImport modulo={modulo} onDone={onDone} />;
   if (!origens) return null;
   const campos = getModule(modulo)?.fields ?? [];
   const limpar = () => {
@@ -146,6 +149,7 @@ export function IntegracaoExterna({ modulo, onDone }: { modulo: string; onDone: 
           </div>
         </>
       )}
+      {["receitas", "despesas"].includes(modulo) && <TceImport modulo={modulo} onDone={onDone} />}
     </section>
   );
 }
