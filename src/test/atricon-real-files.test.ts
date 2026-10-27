@@ -27,6 +27,9 @@ it("descobre os quatro pacotes históricos e a matriz vigente na página real", 
 it("extrai por intervalos a planilha real, verifica CRC e identifica os critérios oficiais", async () => {
   const zip = readFileSync("src/test/fixtures/atricon-criterios-2026.zip");
   const read = vi.fn(async (_url: unknown, init?: RequestInit) => {
+    // Cloudflare rejeita redirect:error antes de iniciar a requisição.
+    if (init?.redirect === "error") throw new TypeError("Invalid redirect value");
+    expect(init?.redirect).toBe("manual");
     const value = new Headers(init?.headers).get("Range")!.replace("bytes=", "");
     const suffix = value.startsWith("-");
     const [a, b] = value.split("-").map(Number);
@@ -77,4 +80,18 @@ it("mostra percentuais e datas sem alterar valores de origem", () => {
   expect(formatOfficialCell("% das Essenciais", "1")).toBe("100%");
   expect(formatOfficialCell("Data Envio", "2025-04-21T00:00:00.000Z")).toBe("21/04/2025");
   expect(formatOfficialCell("id_avaliacao", "25672")).toBe("25672");
+});
+
+it("recusa redirecionamentos de intervalos sem seguir outro destino ou baixar o arquivo inteiro", async () => {
+  const cancel = vi.fn();
+  const body = new ReadableStream({ cancel });
+  const read = vi
+    .fn()
+    .mockResolvedValue(
+      new Response(body, { status: 302, headers: { location: "https://127.0.0.1/private" } }),
+    );
+  await expect(officialArchiveEntries(url, read)).rejects.toThrow("redirecionou");
+  expect(read).toHaveBeenCalledOnce();
+  expect(read.mock.calls[0]![1].redirect).toBe("manual");
+  expect(cancel).toHaveBeenCalledOnce();
 });
