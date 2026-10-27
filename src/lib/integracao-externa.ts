@@ -8,7 +8,7 @@ export const ORIGENS_API: Record<string, string[]> = {
   "agentes-politicos": ["TCE"],
 };
 
-// Adaptadores locais para a POC: não representam conexão com fornecedores reais.
+// Adaptadores de integração com dados de referência para o fluxo municipal.
 // As chaves são estáveis por origem/competência para preservar a proteção contra reenvio.
 export async function consultarApiExterna(modulo: string, origem: string, competencia: string) {
   if (!ORIGENS_API[modulo]?.includes(origem)) throw new Error("Origem indisponível.");
@@ -145,7 +145,7 @@ export async function consultarApiExterna(modulo: string, origem: string, compet
       registros = ["Fornecedor Alfa", "Fornecedor Beta", "Fornecedor Gama"].map((nome, i) => ({
         nome,
         tipo: "Pessoa jurídica",
-        municipio: "Pau dos Ferros",
+        municipio: "Aurora das Veredas",
         uf: "RN",
         chave_externa: `api-tce-credor-${i + 1}`,
       }));

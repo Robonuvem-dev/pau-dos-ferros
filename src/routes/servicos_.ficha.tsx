@@ -24,7 +24,7 @@ function Ficha() {
       </div>
       {erro&&<p role="alert">{erro}</p>}
       <div className="rounded border bg-card p-6">
-        <p className="mb-4 text-center font-bold uppercase">Prefeitura Municipal de Pau dos Ferros/RN — Carta de Serviços ao Usuário (Lei 13.460/2017)</p>
+        <p className="mb-4 text-center font-bold uppercase">Prefeitura Municipal de Aurora das Veredas — Carta de Serviços ao Usuário (Lei 13.460/2017)</p>
         {CAMPOS.map((c) => <div key={c} className="mb-3"><div className="text-sm font-semibold">{c}</div><div className="h-10 border-b border-dashed" /></div>)}
         <div className="text-sm font-semibold">Etapas</div>
         {[1, 2, 3, 4, 5].map((n) => <div key={n} className="flex h-8 items-end gap-2 border-b border-dashed text-sm">{n}.</div>)}

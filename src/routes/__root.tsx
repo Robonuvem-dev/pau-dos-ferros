@@ -1,3 +1,4 @@
+import { BRASAO_URL } from "@/lib/municipal-brand";
 import { PwaInstallProvider } from "@/components/admin/AdminPwaGate";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
@@ -5,6 +6,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -24,9 +26,6 @@ function TemaSite() {
   const css = data ? temaCss(data) : '';
   return <>
     {css ? <style>{css}</style> : null}
-    {data?.modo_demonstracao === "true" && <div role="note" className="border-b border-amber-500 bg-amber-100 px-4 py-3 text-center text-sm font-semibold text-amber-950">
-      AMBIENTE DE PROVA DE CONCEITO — DADOS FICTÍCIOS. Sem validade administrativa.
-    </div>}
   </>;
 }
 
@@ -101,10 +100,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#0064ad" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-title", content: "Pau dos Ferros" },
-      { title: "Prefeitura de Pau dos Ferros" },
-      { name: "description", content: "Portal oficial de Pau dos Ferros: serviços, notícias e transparência municipal." },
-      { property: "og:title", content: "Prefeitura de Pau dos Ferros" },
+      { name: "apple-mobile-web-app-title", content: "Aurora das Veredas" },
+      { title: "Prefeitura de Aurora das Veredas" },
+      { name: "description", content: "Portal oficial de Aurora das Veredas: serviços, notícias e transparência municipal." },
+      { property: "og:title", content: "Prefeitura de Aurora das Veredas" },
       { property: "og:description", content: "Serviços ao cidadão e transparência municipal." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -114,9 +113,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "icon", href: BRASAO_URL, type: "image/png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/app-icons/pwa-favicon-apple.png" },
+      { rel: "apple-touch-icon", href: BRASAO_URL },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Condensed:wght@400;600;700;800&display=swap" },
     ],
   }),
@@ -141,6 +140,7 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
+  const webmail = useRouterState({ select: state => state.location.pathname.replace(/\/$/, "") === "/admin/webmail" });
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   const [identity, setIdentity] = useState<{ session: Session | null; roles: string[]; ready: boolean }>({ session: null, roles: [], ready: false });
@@ -177,9 +177,9 @@ function RootComponent() {
       <SessionContext.Provider value={identity}>
       <PwaInstallProvider>
         <TemaSite />
-        <SiteHeader />
-        <main id="conteudo" className="min-h-[50vh]"><Outlet /></main>
-        <SiteFooter />
+        {!webmail && <SiteHeader />}
+        <main id="conteudo" className={webmail ? "h-dvh w-full overflow-auto" : "min-h-[50vh]"}><Outlet /></main>
+        {!webmail && <SiteFooter />}
         <Toaster richColors />
       </PwaInstallProvider>
       </SessionContext.Provider>

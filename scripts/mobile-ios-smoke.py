@@ -7,9 +7,9 @@ if not available: raise RuntimeError("No available iPhone simulator")
 d=available[0]
 if d["state"]!="Booted": run("xcrun","simctl","boot",d["udid"])
 run("xcrun","simctl","bootstatus",d["udid"],"-b")
-app="mobile/ios/build/Build/Products/Debug-iphonesimulator/PauDosFerrosPoC.app"
+app="mobile/ios/build/Build/Products/Debug-iphonesimulator/AuroraDasVeredas.app"
 run("xcrun","simctl","install",d["udid"],app)
-launch=run("xcrun","simctl","launch",d["udid"],"org.robonuvem.paudosferrospoc")
+launch=run("xcrun","simctl","launch",d["udid"],"org.robonuvem.auroradasveredas")
 time.sleep(12)
 pathlib.Path("mobile/proof").mkdir(exist_ok=True)
 run("xcrun","simctl","io",d["udid"],"screenshot","mobile/proof/ios-launch.png")

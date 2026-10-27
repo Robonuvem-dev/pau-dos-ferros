@@ -5,7 +5,7 @@ import { MODULES } from "@/lib/modules";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/transparencia/")({
-  head: () => pageHead("Portal da Transparência", "Receitas, despesas, licitações, contratos, servidores, obras e relatórios fiscais de Pau dos Ferros (LAI e LC 131/2009)."),
+  head: () => pageHead("Portal da Transparência", "Receitas, despesas, licitações, contratos, servidores, obras e relatórios fiscais de Aurora das Veredas (LAI e LC 131/2009)."),
   component: Transparencia,
 });
 

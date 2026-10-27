@@ -11,7 +11,7 @@ import { HISTORICO, VERSAO } from "@/lib/versao";
 import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Painel administrativo | Prefeitura de Pau dos Ferros" }] }),
+  head: () => ({ meta: [{ title: "Painel administrativo | Prefeitura de Aurora das Veredas" }] }),
   component: () => <AdminPwaGate><AdminLayout /></AdminPwaGate>,
 });
 
@@ -37,6 +37,7 @@ function AvisoAtualizacao() {
 
 function AdminLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const webmail = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, '') === '/admin/webmail' });
   const home = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, '') === '/admin' });
   const { ready, isStaff, isAdmin, user } = useSession();
   const { data: perms } = useQuery({
@@ -56,6 +57,7 @@ function AdminLayout() {
       <p className="mt-2 text-muted-foreground">Sua conta foi criada, mas ainda precisa ser liberada por um administrador do portal.</p>
     </div>
   );
+  if (webmail) return <Outlet />;
   const visiveis = MODULES.filter((m) => isAdmin || !perms?.length || perms.includes(modulePermissionTable(m)));
   return (
     <div className={`mx-auto grid w-full min-w-0 max-w-7xl gap-4 px-4 py-4 sm:gap-6 sm:py-8 ${home ? '' : 'md:grid-cols-[230px_minmax(0,1fr)]'}`}>
@@ -66,6 +68,7 @@ function AdminLayout() {
           {isAdmin && <Link to="/admin/usuarios" className={item}>Usuários e perfis</Link>}
           {isAdmin && <Link to="/admin/auditoria" className={item}>Auditoria</Link>}
           {isAdmin && <Link to="/admin/aparencia" className={item}>Aparência do site</Link>}
+          <Link to="/admin/webmail" className={item}>Webmail institucional</Link>
           <Link to="/admin/servicos-estatisticas" className={item}>Estatísticas dos serviços</Link>
           <Link to="/admin/pendencias" className={item}>Críticas e pendências</Link>
           <Link to="/admin/licitacoes-relatorios" className={item}>Relatórios de licitações</Link>

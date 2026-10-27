@@ -11,15 +11,15 @@ export const Route = createFileRoute("/lgpd")({
 function Lgpd() {
   return (
     <>
-      <PageHeader title="Proteção de Dados Pessoais" subtitle="Como a Prefeitura de Pau dos Ferros trata seus dados (Lei 13.709/2018)." />
+      <PageHeader title="Proteção de Dados Pessoais" subtitle="Como a Prefeitura de Aurora das Veredas trata seus dados (Lei 13.709/2018)." />
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-10 lg:grid-cols-[3fr_2fr]">
         <article className="space-y-5 leading-relaxed">
           <section>
             <h2 className="section-title">Encarregado de dados (DPO)</h2>
             <div className="mt-4 rounded-lg border bg-card p-4">
               <p><strong>Encarregado:</strong> Controladoria-Geral do Município</p>
-              <p><strong>E-mail:</strong> lgpd@paudosferros.rn.gov.br</p>
-              <p><strong>Endereço:</strong> Av. Getúlio Vargas, 1323, Centro — Pau dos Ferros/RN</p>
+              <p><strong>E-mail:</strong> Consulte os canais de proteção de dados em Secretarias.</p>
+              <p><strong>Endereço:</strong> Sede administrativa — Aurora das Veredas</p>
             </div>
           </section>
           <section>

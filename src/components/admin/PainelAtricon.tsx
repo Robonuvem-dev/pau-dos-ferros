@@ -44,7 +44,7 @@ export function PainelAtricon({pendencias}:{pendencias:Pendencia[]}){
  };
  const baixar=()=>{
   const url=URL.createObjectURL(new Blob([texto],{type:"text/plain;charset=utf-8"}));
-  const a=document.createElement("a");a.href=url;a.download="anexo-tecnico-poc.txt";a.click();URL.revokeObjectURL(url);
+  const a=document.createElement("a");a.href=url;a.download="anexo-tecnico-municipal.txt";a.click();URL.revokeObjectURL(url);
  };
  return <section className="mb-8 rounded border bg-card p-5" id="atricon">
  <h2 className="font-display text-2xl font-bold">Transparência — avaliação dos 88 pontos</h2>

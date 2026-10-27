@@ -16,7 +16,7 @@ describe("Envio de arquivo no formulário",()=>{
   mocks.upload.mockImplementation(()=>new Promise<string>(resolve=>{concluir=resolve}));
   render(<CrudModule mod={{key:"teste",table:"teste",label:"Teste",grupo:"Site Oficial",descricao:"",fields:[{name:"arquivo_url",label:"Arquivo",type:"file"}]}} startNew/>);
   const input=document.querySelector('input[type="file"]')!;
-  fireEvent.change(input,{target:{files:[new File(["POC"],"poc.pdf",{type:"application/pdf"})]}});
+  fireEvent.change(input,{target:{files:[new File(["AVR"],"poc.pdf",{type:"application/pdf"})]}});
   expect(screen.getByRole("button",{name:"Aguarde os arquivos..."})).toBeDisabled();
   expect(mocks.save).not.toHaveBeenCalled();
   concluir("https://example.invalid/poc.pdf");

@@ -46,7 +46,7 @@ describe("Relatórios fiscais e pessoal",()=>{
 
 describe("Carga sintética cadastral",()=>{
  it("importa credores sem documentos de pessoas reais e agentes com e-mail reservado",()=>{
-  expect(prepararImportacao("credores","nome;cpf_cnpj;tipo;municipio;uf;chave_externa\nPOC Fornecedor;POC-SEM-CNPJ;Pessoa jurídica;Cidade ficticia;RN;C1")[0]).toMatchObject({nome:"POC Fornecedor",chave_externa:"C1"});
-  expect(prepararImportacao("agentes-politicos","nome;cargo;email;ordem;chave_externa\nPOC Agente;POC Cargo;agente@teste.invalid;1;A1")[0]).toMatchObject({cargo:"POC Cargo",ordem:1});
+  expect(prepararImportacao("credores","nome;cpf_cnpj;tipo;municipio;uf;chave_externa\nAVR Fornecedor;AVR-SEM-CNPJ;Pessoa jurídica;Cidade ficticia;RN;C1")[0]).toMatchObject({nome:"AVR Fornecedor",chave_externa:"C1"});
+  expect(prepararImportacao("agentes-politicos","nome;cargo;email;ordem;chave_externa\nAVR Agente;AVR Cargo;agente@teste.invalid;1;A1")[0]).toMatchObject({cargo:"AVR Cargo",ordem:1});
  });
 });

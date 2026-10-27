@@ -1,13 +1,13 @@
 plugins { id 'com.android.application' }
 android {
- namespace 'org.robonuvem.paudosferrospoc'
+ namespace 'org.robonuvem.auroradasveredas'
  compileSdk 35
  defaultConfig {
-  applicationId 'org.robonuvem.paudosferrospoc'
+  applicationId 'org.robonuvem.auroradasveredas'
   minSdk 26
   targetSdk 35
   versionCode 3
-  versionName '1.1.0-poc'
+  versionName '1.2.0'
  }
  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }

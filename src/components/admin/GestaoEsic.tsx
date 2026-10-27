@@ -17,7 +17,7 @@ type Atendimento = {
 export function GestaoEsic() {
   const qc = useQueryClient();
   const { data = [], error, isPending } = useQuery({
-    queryKey: ["poc-m05-gestao-esic"],
+    queryKey: ["gestao-esic"],
     queryFn: async (): Promise<Atendimento[]> => {
       const { data, error } = await db.from("atendimentos")
         .select("id,protocolo,canal,tipo,assunto,status,created_at,prorrogado,justificativa_prorrogacao,setor_destino,resposta,respondido_em")
@@ -35,7 +35,7 @@ export function GestaoEsic() {
       const { error } = await db.rpc(rpc, { _id: id, ...args });
       if (error) throw error;
       toast.success("Registro atualizado e auditado.");
-      await qc.invalidateQueries({ queryKey: ["poc-m05-gestao-esic"] });
+      await qc.invalidateQueries({ queryKey: ["gestao-esic"] });
       await qc.invalidateQueries({ queryKey: ["admin-atendimentos"] });
       await qc.invalidateQueries({ queryKey: ["public-estatisticas-atendimento"] });
     } catch (e) { toast.error((e as Error).message); }

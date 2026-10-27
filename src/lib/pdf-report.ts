@@ -6,7 +6,7 @@ export async function downloadReport(title: string, sections: ReportSection[], c
   const doc = new jsPDF({ orientation: sections.some(s => s.columns.length > 5) ? 'landscape' : 'portrait' });
   const width = doc.internal.pageSize.getWidth();
   doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
-  doc.text('Prefeitura Municipal de Pau dos Ferros/RN', 14, 16);
+  doc.text('Prefeitura Municipal de Aurora das Veredas', 14, 16);
   doc.setFontSize(16);
   const heading = doc.splitTextToSize(title, width - 28);
   doc.text(heading, 14, 26);

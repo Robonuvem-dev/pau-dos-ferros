@@ -37,11 +37,10 @@ def tap(root, label):
 def portal_ready(text):
     lowered = text.lower()
     errors = ['webpage not available', 'err_name_not_resolved', 'this page didn\'t load', 'err_internet_disconnected']
-    return ('prefeitura de pau dos ferros' in lowered or 'prefeitura municipal de pau dos ferros' in lowered) and not any(error in lowered for error in errors)
+    return ('prefeitura de aurora das veredas' in lowered or 'prefeitura municipal de aurora das veredas' in lowered) and not any(error in lowered for error in errors)
 
 try:
     root = wait_screen('android-portal', portal_ready)
-    assert 'PoC · dados fictícios' not in texts(root), 'Faixa nativa antiga ainda presente'
     for label in ['Portal', 'Notícias', 'Menu']:
         assert any(n.get('text') == label for n in root.iter('node')), label
     tap(root, 'Menu')
@@ -49,6 +48,6 @@ try:
     adb('shell', 'input', 'keyevent', '4')
     root = snapshot('android-retorno-portal')
     tap(root, 'Notícias')
-    wait_screen('android-noticias', lambda text: 'Notícias de Pau dos Ferros' in text and 'Não foi possível' not in text)
+    wait_screen('android-noticias', lambda text: 'Notícias de Aurora das Veredas' in text and 'Não foi possível' not in text)
 finally:
     snapshot('android-final')

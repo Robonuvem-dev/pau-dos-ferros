@@ -1,3 +1,4 @@
+import { municipalRecords } from "./municipal-brand";
 import { supabase } from "@/integrations/supabase/client";
 import { collectPages } from "./pagination";
 import { validateRecord } from "./record-validation";
@@ -16,7 +17,7 @@ export async function fetchModule(mod: ModuleDef): Promise<Row[]> {
   if (mod.filtro) q = q.eq(mod.filtro.column, mod.filtro.value);
   if (mod.orderBy) q = q.order(mod.orderBy, { ascending: mod.orderBy === "nome" || mod.orderBy === "ordem" || mod.orderBy === "placa" });
   q = q.order("id");
-  return collectPages<Row>((from, to) => q.range(from, to));
+  return municipalRecords(await collectPages<Row>((from, to) => q.range(from, to)));
 }
 
 export const slugify = (s: string) =>

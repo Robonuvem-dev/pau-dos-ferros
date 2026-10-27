@@ -60,7 +60,7 @@ it("bloqueia o navegador Android e abre o prompt somente pelo clique", async () 
   fireEvent.click(screen.getByRole("button", { name: "Instalar aplicativo" }));
   await waitFor(() => expect(prompt).toHaveBeenCalledOnce());
   expect(
-    await screen.findByText(/Abra Pau dos Ferros pelo ícone na tela inicial/),
+    await screen.findByText(/Abra Aurora das Veredas pelo ícone na tela inicial/),
   ).toBeInTheDocument();
   expect(screen.queryByText("Conteúdo administrativo")).not.toBeInTheDocument();
 });
@@ -117,12 +117,11 @@ it("oferece instruções quando o navegador ainda não fornece o prompt", () => 
   expect(screen.getByText(/No menu ⋮/)).toBeInTheDocument();
   expect(screen.queryByText("Conteúdo administrativo")).not.toBeInTheDocument();
 });
-it("usa ícones da favicon em tamanhos instaláveis", () => {
+it("usa o brasão institucional no manifesto instalável", () => {
   const manifest = JSON.parse(readFileSync("public/manifest.webmanifest", "utf8"));
-  expect(manifest.icons.map((i: { src: string }) => i.src)).toEqual([
-    "/app-icons/pwa-favicon-192.png",
-    "/app-icons/pwa-favicon-512.png",
-  ]);
-  for (const icon of manifest.icons)
-    expect(readFileSync("public" + icon.src).length).toBeGreaterThan(0);
+  expect(manifest.name).toBe("Prefeitura de Aurora das Veredas");
+  expect(manifest.display).toBe("standalone");
+  expect(manifest.icons).toHaveLength(1);
+  expect(manifest.icons[0].src).toContain("Bras%C3%A3o_do_munic%C3%ADpio_de_Aurora");
+  expect(manifest.icons[0].sizes).toBe("1280x1280");
 });

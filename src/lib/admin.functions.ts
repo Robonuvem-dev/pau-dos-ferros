@@ -16,7 +16,7 @@ export const gerarAnexoAtricon = createServerFn({ method: "POST" })
     const { gerarTexto } = await import("./ai.server");
     const falhas = data.itens.filter((i) => i.status !== "atende");
     const prompt = [
-      "Município: Pau dos Ferros/RN. Avaliação do portal pelos 88 pontos da matriz ATRICON.",
+      "Município: Aurora das Veredas. Avaliação do portal pelos 88 pontos da matriz ATRICON.",
       `Total atendido: ${data.itens.length - falhas.length} de ${data.itens.length}.`,
       "Itens pendentes ou em portal de terceiro:",
       ...falhas.map((i) => `- [${i.id}] ${i.dimensao}: ${i.descricao} (${i.status})`),

@@ -1,24 +1,18 @@
 {
   "id": "/",
-  "name": "Prefeitura de Pau dos Ferros",
-  "short_name": "Pau dos Ferros",
+  "name": "Prefeitura de Aurora das Veredas",
+  "short_name": "Aurora das Veredas",
   "lang": "pt-BR",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0064ad",
-  "description": "Serviços, notícias e transparência municipal de Pau dos Ferros.",
+  "description": "Serviços, notícias e transparência municipal de Aurora das Veredas.",
   "icons": [
     {
-      "src": "/app-icons/pwa-favicon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/app-icons/pwa-favicon-512.png",
-      "sizes": "512x512",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Bras%C3%A3o_do_munic%C3%ADpio_de_Aurora_%28SC%29.svg/1280px-Bras%C3%A3o_do_munic%C3%ADpio_de_Aurora_%28SC%29.svg.png",
+      "sizes": "1280x1280",
       "type": "image/png",
       "purpose": "any"
     }

@@ -9,7 +9,7 @@ import { moduleQuery } from "@/lib/queries";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/prefeitura")({
-  head: () => pageHead("A Prefeitura", "Gestão municipal, prefeito, vice-prefeito e informações institucionais de Pau dos Ferros/RN."),
+  head: () => pageHead("A Prefeitura", "Gestão municipal, prefeito, vice-prefeito e informações institucionais de Aurora das Veredas."),
   loader: ({ context }) => context.queryClient.ensureQueryData(moduleQuery("agentes-politicos")),
   component: Prefeitura,
   errorComponent: QueryError,
@@ -20,7 +20,7 @@ function Prefeitura() {
   const { data } = useSuspenseQuery(moduleQuery("agentes-politicos"));
   return (
     <>
-      <PageHeader title="A Prefeitura" subtitle="Conheça a gestão municipal de Pau dos Ferros." />
+      <PageHeader title="A Prefeitura" subtitle="Conheça a gestão municipal de Aurora das Veredas." />
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-10 lg:grid-cols-[2fr_1fr]">
         <section>
           <h2 className="section-title">Agentes políticos</h2>
@@ -43,7 +43,7 @@ function Prefeitura() {
           </div>
           <h2 className="section-title mt-12">O município</h2>
           <MunicipioInformacoes />
-          <p className="mt-4 leading-relaxed">Pau dos Ferros é polo regional do Alto Oeste Potiguar, no Rio Grande do Norte, referência em educação, saúde e comércio para dezenas de municípios vizinhos. A Prefeitura atua por meio de suas secretarias para oferecer serviços públicos de qualidade, com transparência e participação popular.</p>
+          <p className="mt-4 leading-relaxed">Aurora das Veredas reúne serviços municipais voltados ao desenvolvimento da cidade e ao bem-estar da população. A Prefeitura atua por meio de suas secretarias para oferecer serviços públicos de qualidade, com transparência e participação popular.</p>
         </section>
         <aside className="space-y-3">
           <h2 className="font-display text-xl font-bold">Acesso rápido</h2>

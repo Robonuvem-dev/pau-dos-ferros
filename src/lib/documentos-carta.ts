@@ -1,3 +1,4 @@
+import { municipalText } from "./municipal-brand";
 import { db } from './data';
 export async function gerarDocumentoCarta(formato: 'csv'|'json'|'ficha'|'estatisticas', ids?: string[]) {
   const {data,error} = await db.rpc('gerar_documento_carta', {_formato:formato,_ids:ids??null});
@@ -6,6 +7,6 @@ export async function gerarDocumentoCarta(formato: 'csv'|'json'|'ficha'|'estatis
 }
 export async function baixarDocumentoCarta(formato:'csv'|'json'|'ficha'|'estatisticas', ids?:string[]) {
   const doc=await gerarDocumentoCarta(formato,ids);
-  const url=URL.createObjectURL(new Blob([doc.conteudo],{type:doc.mime}));
+  const url=URL.createObjectURL(new Blob([municipalText(doc.conteudo)],{type:doc.mime}));
   const a=document.createElement('a');a.href=url;a.download=doc.nome;a.click();URL.revokeObjectURL(url);
 }
